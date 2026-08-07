@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Karya Portfolio</title>
+    <style>
+        /* --- RESET & GLOBAL --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f5f7fa;
+            color: #1e293b;
+            padding: 0;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 6rem;
+            flex: 1;
+        }
+
+        /* --- TYPOGRAPHY & UTILITIES --- */
+        h1, h2, h3 {
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            background: #2563eb;
+            color: white;
+            font-size: 0.9rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            margin-left: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+            border-left: 5px solid #2563eb;
+            padding-left: 1rem;
+        }
+
+        /* --- STATISTIK --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+            margin-bottom: 2rem;
+            border: 1px solid #e9edf2;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- HEADER dengan tombol upload --- */
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .btn-upload {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-upload:hover {
+            background: #1d4ed8;
+            transform: scale(1.02);
+        }
+
+        /* --- MODAL UPLOAD (pop up) --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(3px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 1.5rem;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: white;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem 2.2rem;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            animation: fadeUp 0.25s ease;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: scale(0.96) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem 1.8rem;
+        }
+        .form-grid .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #334155;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.7rem 1rem;
+            border: 1px solid #d1d9e6;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            background: #fafcff;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: 2px solid #2563eb;
+            outline-offset: 1px;
+            border-color: transparent;
+            background: white;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.8rem;
+            align-items: center;
+            border-top: 1px solid #e9edf2;
+            padding-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.8rem;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #eef2f6;
+            color: #1e293b;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: scale(1.01);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #d1d9e6;
+        }
+        .btn-outline:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-sm {
+            padding: 0.3rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        /* --- YouTube PREVIEW di modal --- */
+        .youtube-preview {
+            margin-top: 0.8rem;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            aspect-ratio: 16 / 9;
+            max-width: 400px;
+            border: 1px solid #d1d9e6;
+        }
+        .youtube-preview iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* --- TOOLBAR (search & filter & sort) --- */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 1.5rem;
+            background: white;
+            padding: 1.2rem 1.8rem;
+            border-radius: 40px;
+            margin-bottom: 2rem;
+            align-items: center;
+            border: 1px solid #e9edf2;
+        }
+
+        .toolbar .search-box {
+            flex: 1 1 200px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f1f5f9;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+        }
+        .toolbar .search-box input {
+            border: none;
+            background: transparent;
+            padding: 0.5rem 0;
+            width: 100%;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .toolbar select {
+            padding: 0.5rem 1.5rem 0.5rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #d1d9e6;
+            background: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* --- CARD GRID --- */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+            transition: all 0.25s ease;
+            border: 1px solid #edf2f7;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.08);
+            border-color: #d1d9e6;
+        }
+
+        .card-thumbnail {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #eef2f6;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-body {
+            padding: 1.5rem 1.5rem 1.2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .card-meta {
+            font-size: 0.9rem;
+            color: #475569;
+        }
+        .card-meta strong {
+            color: #1e293b;
+        }
+
+        .card-desc {
+            color: #334155;
+            font-size: 0.95rem;
+            margin: 0.3rem 0 0.6rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 0.8rem;
+            margin: 0.5rem 0 0.8rem;
+        }
+
+        .card-links a {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: #f1f5f9;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            transition: 0.15s;
+        }
+        .card-links a:hover {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .card-youtube {
+            margin: 0.5rem 0 0.2rem;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            aspect-ratio: 16 / 9;
+        }
+        .card-youtube iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+            border-top: 1px solid #edf2f7;
+            padding-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* --- EMPTY STATE --- */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: #94a3b8;
+        }
+
+        /* --- BOTTOM NAVIGATION --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e9edf2;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.04);
+            z-index: 100;
+            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,0.92);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            border: none;
+            background: transparent;
+            font-weight: 500;
+            gap: 2px;
+        }
+
+        .nav-item:hover {
+            color: #2563eb;
+        }
+        .nav-item.active {
+            color: #2563eb;
+        }
+        .nav-item .nav-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 640px) {
+            .container { padding: 1rem 1rem 5rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .toolbar { border-radius: 24px; padding: 1rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            .header-bar { flex-direction: row; }
+            .btn-upload { padding: 0.5rem 1.2rem; font-size: 0.9rem; }
+        }
+
+        /* icon fallback */
+        .icon { font-weight: 400; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER dengan tombol upload di pojok kanan -->
+    <div class="header-bar">
+        <h1>📂 Portfolio Karya <span class="badge">v2</span></h1>
+        <button class="btn-upload" id="openUploadModalBtn">➕ Upload Karya</button>
+    </div>
+
+    <!-- STATISTIK -->
+    <div class="stats-grid" id="statsContainer">
+        <div class="stat-item"><div class="stat-number" id="totalKarya">0</div><div class="stat-label">Total Karya</div></div>
+        <div class="stat-item"><div class="stat-number" id="totalKategori">0</div><div class="stat-label">Total Kategori</div></div>
+        <div class="stat-item"><div class="stat-number" id="totalVideo">0</div><div class="stat-label">Total Video</div></div>
+    </div>
+
+    <!-- TOOLBAR: search, filter, sort -->
+    <div class="toolbar">
+        <div class="search-box">
+            <span>🔍</span>
+            <input type="text" id="searchInput" placeholder="Cari judul...">
+        </div>
+        <select id="filterKategori">
+            <option value="">📂 Semua Kategori</option>
+        </select>
+        <select id="sortOption">
+            <option value="terbaru">⬇️ Terbaru</option>
+            <option value="lama">⬆️ Terlama</option>
+            <option value="judul-asc">A-Z</option>
+            <option value="judul-desc">Z-A</option>
+        </select>
+    </div>
+
+    <!-- CARD GRID -->
+    <div id="cardGrid" class="card-grid">
+        <!-- card akan di-render via JS -->
+    </div>
+
+</div>
+
+<!-- ============ MODAL UPLOAD (POP UP) ============ -->
+<div class="modal-overlay" id="uploadModal">
+    <div class="modal-box">
+        <h2 style="margin-bottom: 1.2rem;">➕ Upload Karya Baru</h2>
+        <form id="karyaForm">
+            <div class="form-grid">
+                <!-- Nama (String) -->
+                <div class="form-group">
+                    <label for="judul">Nama Karya *</label>
+                    <input type="text" id="judul" placeholder="Nama proyek..." required>
+                </div>
+                <!-- Pembuat -->
+                <div class="form-group">
+                    <label for="pembuat">Nama Pembuat</label>
+                    <input type="text" id="pembuat" placeholder="Nama Anda...">
+                </div>
+                <!-- Kategori: opsi preset -->
+                <div class="form-group">
+                    <label for="kategori">Kategori</label>
+                    <select id="kategori">
+                        <option value="">Pilih kategori...</option>
+                        <option value="Assets">Assets</option>
+                        <option value="Font">Font</option>
+                        <option value="UI/UX">UI/UX</option>
+                        <option value="Web">Web</option>
+                        <option value="Mobile">Mobile</option>
+                        <option value="Desain">Desain</option>
+                        <option value="Ilustrasi">Ilustrasi</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+                <!-- Deskripsi -->
+                <div class="form-group full-width">
+                    <label for="deskripsi">Deskripsi Karya</label>
+                    <textarea id="deskripsi" rows="2" placeholder="Ceritakan tentang karya ini..."></textarea>
+                </div>
+                <!-- Thumbnail (gambar) -->
+                <div class="form-group">
+                    <label for="thumbnail">Thumbnail (URL Gambar)</label>
+                    <input type="text" id="thumbnail" placeholder="https://...">
+                </div>
+                <!-- Link Website -->
+                <div class="form-group">
+                    <label for="linkWebsite">Link Website</label>
+                    <input type="url" id="linkWebsite" placeholder="https://...">
+                </div>
+                <!-- Link GitHub -->
+                <div class="form-group">
+                    <label for="linkGithub">Link GitHub</label>
+                    <input type="url" id="linkGithub" placeholder="https://github.com/...">
+                </div>
+                <!-- Link Google Drive (5MB) -->
+                <div class="form-group">
+                    <label for="linkDrive">Link Google Drive (5MB)</label>
+                    <input type="url" id="linkDrive" placeholder="https://drive.google.com/...">
+                </div>
+                <!-- Link Figma -->
+                <div class="form-group">
+                    <label for="linkFigma">Link Figma</label>
+                    <input type="url" id="linkFigma" placeholder="https://figma.com/...">
+                </div>
+                <!-- Link Demo -->
+                <div class="form-group">
+                    <label for="linkDemo">Link Demo</label>
+                    <input type="url" id="linkDemo" placeholder="https://...">
+                </div>
+                <!-- Link YouTube -->
+                <div class="form-group">
+                    <label for="linkYoutube">Link Video YouTube</label>
+                    <input type="url" id="linkYoutube" placeholder="https://youtu.be/... atau https://youtube.com/watch?v=...">
+                </div>
+            </div>
+            <!-- preview youtube -->
+            <div id="youtubePreviewContainer" class="youtube-preview" style="display: none; margin-top: 1rem;"></div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="submitBtn">💾 Simpan Karya</button>
+                <button type="reset" class="btn btn-outline" id="resetBtn">↺ Reset</button>
+                <button type="button" class="btn btn-outline" id="closeUploadModalBtn">Tutup</button>
+                <span style="margin-left: auto; font-size: 0.85rem; color: #64748b;">* Judul wajib, minimal satu link</span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============ BOTTOM NAVIGATION ============ -->
+<nav class="bottom-nav">
+    <button class="nav-item active" data-nav="semua">
+        <span class="nav-icon">🏠</span>
+        <span>Semua</span>
+    </button>
+    <button class="nav-item" data-nav="cari">
+        <span class="nav-icon">🔍</span>
+        <span>Cari</span>
+    </button>
+    <button class="nav-item" data-nav="kreator">
+        <span class="nav-icon">👤</span>
+        <span>Kreator</span>
+    </button>
+    <button class="nav-item" data-nav="about">
+        <span class="nav-icon">ℹ️</span>
+        <span>About</span>
+    </button>
+</nav>
+
+<script>
+    (function() {
+        "use strict";
+
+        // --- STATE ---
+        let karyaData = [];
+        let editIndex = null;
+
+        // DOM refs
+        const cardGrid = document.getElementById('cardGrid');
+        const searchInput = document.getElementById('searchInput');
+        const filterKategori = document.getElementById('filterKategori');
+        const sortOption = document.getElementById('sortOption');
+
+        const statsTotal = document.getElementById('totalKarya');
+        const statsKategori = document.getElementById('totalKategori');
+        const statsVideo = document.getElementById('totalVideo');
+
+        // form fields
+        const fJudul = document.getElementById('judul');
+        const fPembuat = document.getElementById('pembuat');
+        const fKategori = document.getElementById('kategori');
+        const fDeskripsi = document.getElementById('deskripsi');
+        const fThumbnail = document.getElementById('thumbnail');
+        const fLinkWebsite = document.getElementById('linkWebsite');
+        const fLinkGithub = document.getElementById('linkGithub');
+        const fLinkDrive = document.getElementById('linkDrive');
+        const fLinkFigma = document.getElementById('linkFigma');
+        const fLinkDemo = document.getElementById('linkDemo');
+        const fLinkYoutube = document.getElementById('linkYoutube');
+
+        const youtubePreviewContainer = document.getElementById('youtubePreviewContainer');
+
+        // modal upload
+        const uploadModal = document.getElementById('uploadModal');
+        const openUploadBtn = document.getElementById('openUploadModalBtn');
+        const closeUploadBtn = document.getElementById('closeUploadModalBtn');
+
+        // form
+        const form = document.getElementById('karyaForm');
+
+        // --- HELPERS ---
+        function getYoutubeEmbedId(url) {
+            if (!url) return null;
+            let clean = url.trim();
+            const matchWatch = clean.match(/[?&]v=([^&]+)/);
+            if (matchWatch) return matchWatch[1];
+            const matchShort = clean.match(/youtu\.be\/([^?&]+)/);
+            if (matchShort) return matchShort[1];
+            const matchEmbed = clean.match(/youtube\.com\/embed\/([^?&]+)/);
+            if (matchEmbed) return matchEmbed[1];
+            return null;
+        }
+
+        function embedYoutubeUrl(videoId) {
+            if (!videoId) return null;
+            return `https://www.youtube.com/embed/${videoId}?rel=0`;
+        }
+
+        function hasAnyLink(data) {
+            const links = [
+                data.linkWebsite, data.linkGithub, data.linkDrive,
+                data.linkFigma, data.linkDemo, data.linkYoutube
+            ];
+            return links.some(l => l && l.trim() !== '');
+        }
+
+        function getFormData() {
+            return {
+                judul: fJudul.value.trim(),
+                pembuat: fPembuat.value.trim(),
+                kategori: fKategori.value.trim(),
+                deskripsi: fDeskripsi.value.trim(),
+                thumbnail: fThumbnail.value.trim(),
+                linkWebsite: fLinkWebsite.value.trim(),
+                linkGithub: fLinkGithub.value.trim(),
+                linkDrive: fLinkDrive.value.trim(),
+                linkFigma: fLinkFigma.value.trim(),
+                linkDemo: fLinkDemo.value.trim(),
+                linkYoutube: fLinkYoutube.value.trim(),
+                createdAt: Date.now()
+            };
+        }
+
+        function resetForm() {
+            fJudul.value = '';
+            fPembuat.value = '';
+            fKategori.value = '';
+            fDeskripsi.value = '';
+            fThumbnail.value = '';
+            fLinkWebsite.value = '';
+            fLinkGithub.value = '';
+            fLinkDrive.value = '';
+            fLinkFigma.value = '';
+            fLinkDemo.value = '';
+            fLinkYoutube.value = '';
+            youtubePreviewContainer.style.display = 'none';
+            youtubePreviewContainer.innerHTML = '';
+            document.getElementById('submitBtn').textContent = '💾 Simpan Karya';
+            editIndex = null;
+        }
+
+        // --- VALIDASI & SUBMIT ---
+        function validateAndSubmit(e) {
+            e.preventDefault();
+            const data = getFormData();
+            if (!data.judul) {
+                alert('Nama Karya wajib diisi.');
+                fJudul.focus();
+                return;
+            }
+            if (!hasAnyLink(data)) {
+                alert('Minimal satu link harus diisi (Website, GitHub, Drive, Figma, Demo, atau YouTube).');
+                return;
+            }
+            if (data.linkYoutube) {
+                const vid = getYoutubeEmbedId(data.linkYoutube);
+                if (!vid) {
+                    alert('Format link YouTube tidak valid. Gunakan URL seperti https://youtu.be/... atau https://youtube.com/watch?v=...');
+                    fLinkYoutube.focus();
+                    return;
+                }
+            }
+
+            if (editIndex !== null) {
+                data.createdAt = karyaData[editIndex].createdAt;
+                karyaData[editIndex] = data;
+                editIndex = null;
+                document.getElementById('submitBtn').textContent = '💾 Simpan Karya';
+            } else {
+                karyaData.push(data);
+            }
+
+            saveToLocalStorage();
+            resetForm();
+            renderAll();
+            uploadModal.classList.remove('active');
+        }
+
+        // --- RENDER CARDS ---
+        function renderCards(filteredData) {
+            if (!filteredData) filteredData = getFilteredAndSortedData();
+
+            if (filteredData.length === 0) {
+                cardGrid.innerHTML = `<div class="empty-state"><div style="font-size:3rem;">📭</div><p>Belum ada karya. Upload karya pertama!</p></div>`;
+                return;
+            }
+
+            let html = '';
+            filteredData.forEach((item, idx) => {
+                const realIndex = karyaData.indexOf(item);
+                const youtubeId = item.linkYoutube ? getYoutubeEmbedId(item.linkYoutube) : null;
+                const embedUrl = youtubeId ? embedYoutubeUrl(youtubeId) : null;
+                const thumbnailUrl = item.thumbnail || '';
+
+                html += `
+                    <div class="card">
+                        ${thumbnailUrl ? `<img class="card-thumbnail" src="${thumbnailUrl}" alt="thumbnail" loading="lazy" onerror="this.style.display='none'">` : `<div class="card-thumbnail" style="background:#e2e8f0; display:flex; align-items:center; justify-content:center; color:#94a3b8;">🖼️</div>`}
+                        <div class="card-body">
+                            <div class="card-title">${escapeHtml(item.judul)}</div>
+                            ${item.pembuat ? `<div class="card-meta"><strong>👤</strong> ${escapeHtml(item.pembuat)}</div>` : ''}
+                            ${item.kategori ? `<div class="card-meta"><strong>📁</strong> ${escapeHtml(item.kategori)}</div>` : ''}
+                            ${item.deskripsi ? `<div class="card-desc">${escapeHtml(item.deskripsi)}</div>` : ''}
+                            <div class="card-links">
+                                ${item.linkWebsite ? `<a href="${escapeHtml(item.linkWebsite)}" target="_blank">🌐 Website</a>` : ''}
+                                ${item.linkGithub ? `<a href="${escapeHtml(item.linkGithub)}" target="_blank">🐙 GitHub</a>` : ''}
+                                ${item.linkDrive ? `<a href="${escapeHtml(item.linkDrive)}" target="_blank">☁️ Drive</a>` : ''}
+                                ${item.linkFigma ? `<a href="${escapeHtml(item.linkFigma)}" target="_blank">🎨 Figma</a>` : ''}
+                                ${item.linkDemo ? `<a href="${escapeHtml(item.linkDemo)}" target="_blank">▶️ Demo</a>` : ''}
+                                ${item.linkYoutube ? `<a href="${escapeHtml(item.linkYoutube)}" target="_blank">📺 YouTube</a>` : ''}
+                            </div>
+                            ${embedUrl ? `<div class="card-youtube"><iframe src="${embedUrl}" allowfullscreen loading="lazy"></iframe></div>` : ''}
+                            <div class="card-actions">
+                                <button class="btn btn-primary btn-sm" data-edit-index="${realIndex}">✏️ Edit</button>
+                                <button class="btn btn-danger btn-sm" data-delete-index="${realIndex}">🗑️ Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            cardGrid.innerHTML = html;
+
+            cardGrid.querySelectorAll('[data-edit-index]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.editIndex);
+                    openEditInModal(idx);
+                });
+            });
+            cardGrid.querySelectorAll('[data-delete-index]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.deleteIndex);
+                    if (confirm('Yakin ingin menghapus karya ini?')) {
+                        karyaData.splice(idx, 1);
+                        saveToLocalStorage();
+                        renderAll();
+                    }
+                });
+            });
+        }
+
+        // --- FILTER, SEARCH, SORT ---
+        function getFilteredAndSortedData() {
+            let filtered = [...karyaData];
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            if (searchTerm) {
+                filtered = filtered.filter(item => item.judul.toLowerCase().includes(searchTerm));
+            }
+            const kategoriFilter = filterKategori.value;
+            if (kategoriFilter) {
+                filtered = filtered.filter(item => item.kategori === kategoriFilter);
+            }
+            const sort = sortOption.value;
+            if (sort === 'terbaru') {
+                filtered.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            } else if (sort === 'lama') {
+                filtered.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+            } else if (sort === 'judul-asc') {
+                filtered.sort((a, b) => a.judul.localeCompare(b.judul));
+            } else if (sort === 'judul-desc') {
+                filtered.sort((a, b) => b.judul.localeCompare(a.judul));
+            }
+            return filtered;
+        }
+
+        // --- STATISTIK ---
+        function updateStats() {
+            const total = karyaData.length;
+            const kategoriSet = new Set(karyaData.map(item => item.kategori).filter(Boolean));
+            const videoCount = karyaData.filter(item => item.linkYoutube && getYoutubeEmbedId(item.linkYoutube)).length;
+            statsTotal.textContent = total;
+            statsKategori.textContent = kategoriSet.size;
+            statsVideo.textContent = videoCount;
+
+            const currentFilter = filterKategori.value;
+            filterKategori.innerHTML = `<option value="">📂 Semua Kategori</option>`;
+            const sortedKategori = Array.from(kategoriSet).sort();
+            sortedKategori.forEach(kat => {
+                const opt = document.createElement('option');
+                opt.value = kat;
+                opt.textContent = kat;
+                filterKategori.appendChild(opt);
+            });
+            filterKategori.value = currentFilter;
+        }
+
+        // --- LOCAL STORAGE ---
+        function saveToLocalStorage() {
+            localStorage.setItem('portfolioKarya', JSON.stringify(karyaData));
+        }
+
+        function loadFromLocalStorage() {
+            const stored = localStorage.getItem('portfolioKarya');
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed)) {
+                        karyaData = parsed;
+                        karyaData.forEach(item => {
+                            if (!item.createdAt) item.createdAt = Date.now();
+                        });
+                    }
+                } catch (e) { karyaData = []; }
+            } else {
+                karyaData = [
+                    {
+                        judul: 'Website Portfolio',
+                        pembuat: 'Andi',
+                        kategori: 'Web',
+                        deskripsi: 'Portfolio pribadi dengan animasi.',
+                        thumbnail: 'https://placehold.co/400x225/1e293b/white?text=Portfolio',
+                        linkWebsite: 'https://example.com',
+                        linkGithub: 'https://github.com',
+                        linkDrive: '',
+                        linkFigma: '',
+                        linkDemo: 'https://example.com/demo',
+                        linkYoutube: 'https://youtu.be/dQw4w9WgXcQ',
+                        createdAt: Date.now() - 100000
+                    }
+                ];
+                saveToLocalStorage();
+            }
+        }
+
+        // --- RENDER ALL ---
+        function renderAll() {
+            const filtered = getFilteredAndSortedData();
+            renderCards(filtered);
+            updateStats();
+        }
+
+        // --- EDIT di dalam modal upload ---
+        function openEditInModal(index) {
+            const item = karyaData[index];
+            if (!item) return;
+            editIndex = index;
+            fJudul.value = item.judul || '';
+            fPembuat.value = item.pembuat || '';
+            fKategori.value = item.kategori || '';
+            fDeskripsi.value = item.deskripsi || '';
+            fThumbnail.value = item.thumbnail || '';
+            fLinkWebsite.value = item.linkWebsite || '';
+            fLinkGithub.value = item.linkGithub || '';
+            fLinkDrive.value = item.linkDrive || '';
+            fLinkFigma.value = item.linkFigma || '';
+            fLinkDemo.value = item.linkDemo || '';
+            fLinkYoutube.value = item.linkYoutube || '';
+            document.getElementById('submitBtn').textContent = '✏️ Update Karya';
+            uploadModal.classList.add('active');
+            // update preview
+            updateYoutubePreview();
+        }
+
+        // --- YOUTUBE PREVIEW ---
+        function updateYoutubePreview() {
+            const url = fLinkYoutube.value.trim();
+            const videoId = getYoutubeEmbedId(url);
+            if (videoId) {
+                const embed = embedYoutubeUrl(videoId);
+                youtubePreviewContainer.style.display = 'block';
+                youtubePreviewContainer.innerHTML = `<iframe src="${embed}" allowfullscreen></iframe>`;
+            } else {
+                youtubePreviewContainer.style.display = 'none';
+                youtubePreviewContainer.innerHTML = '';
+            }
+        }
+
+        // --- ESCAPE HTML ---
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // --- NAVIGASI BOTTOM ---
+        function setupNavigation() {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(n => n.classList.remove('active'));
+                    this.classList.add('active');
+                    const nav = this.dataset.nav;
+                    if (nav === 'semua') {
+                        searchInput.value = '';
+                        filterKategori.value = '';
+                        renderAll();
+                    } else if (nav === 'cari') {
+                        searchInput.focus();
+                    } else if (nav === 'kreator') {
+                        alert('👤 Kreator: Andi & Tim');
+                    } else if (nav === 'about') {
+                        alert('ℹ️ Portfolio Karya v2 - Dibuat dengan ❤️');
+                    }
+                });
+            });
+        }
+
+        // --- INIT ---
+        function init() {
+            loadFromLocalStorage();
+
+            // form submit
+            form.addEventListener('submit', validateAndSubmit);
+
+            // reset form
+            document.getElementById('resetBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                resetForm();
+                document.getElementById('submitBtn').textContent = '💾 Simpan Karya';
+                editIndex = null;
+            });
+
+            // youtube preview
+            fLinkYoutube.addEventListener('input', updateYoutubePreview);
+
+            // search, filter, sort
+            searchInput.addEventListener('input', renderAll);
+            filterKategori.addEventListener('change', renderAll);
+            sortOption.addEventListener('change', renderAll);
+
+            // modal upload
+            openUploadBtn.addEventListener('click', function() {
+                resetForm();
+                document.getElementById('submitBtn').textContent = '💾 Simpan Karya';
+                editIndex = null;
+                uploadModal.classList.add('active');
+            });
+            closeUploadBtn.addEventListener('click', function() {
+                uploadModal.classList.remove('active');
+            });
+            uploadModal.addEventListener('click', function(e) {
+                if (e.target === this) uploadModal.classList.remove('active');
+            });
+
+            // navigation
+            setupNavigation();
+
+            renderAll();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    })();
+</script>
+
+</body>
+</html>
