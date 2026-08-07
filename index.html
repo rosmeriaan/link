@@ -3,32 +3,52 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#14151c" />
     <title>PresetHub · Komunitas Kreator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
            VARIABLES & RESET
            ============================================================ */
         :root {
-            --bg: #f1f3f5;
+            /* Paper + ink: warm, slightly cool-gray paper against near-black ink (not the generic cream/terracotta pairing) */
+            --bg: #F0EFEA;
             --surface: #ffffff;
             --surface-card: #ffffff;
-            --border: #e5e7eb;
-            --border-light: #f1f3f5;
-            --text: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --accent-light: #eff6ff;
+            --border: #E4E1D8;
+            --border-light: #EDEBE3;
+            --text: #16171D;
+            --text-secondary: #63625B;
+            --text-muted: #9C9B92;
+            --ink: #14151C;
+
+            /* Signal violet: this app's one true accent — a creative-software violet, not SaaS blue */
+            --accent: #5B4EFF;
+            --accent-hover: #4636E0;
+            --accent-light: #EEECFF;
+
+            /* Amber = energy / trending / live. Mint = free / success. Used sparingly, never as primary. */
+            --amber: #FFB800;
+            --amber-light: #FFF3D6;
+            --amber-ink: #8A5700;
+            --mint: #00B589;
+            --mint-light: #DEFBF3;
+            --mint-ink: #0B6B54;
+
             --radius: 16px;
             --radius-sm: 12px;
             --radius-xs: 8px;
-            --shadow: 0 1px 3px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
-            --shadow-lg: 0 8px 40px rgba(0,0,0,0.08);
+            --shadow: 0 1px 3px rgba(20,21,28,0.05);
+            --shadow-md: 0 4px 20px rgba(20,21,28,0.08);
+            --shadow-lg: 0 8px 40px rgba(20,21,28,0.14);
             --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-display: 'Space Grotesk', var(--font);
+            --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --nav-height: 64px;
         }
@@ -49,16 +69,10 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ============================================================
-           SCROLLBAR
-           ============================================================ */
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
 
-        /* ============================================================
-           LAYOUT
-           ============================================================ */
         .app {
             display: flex;
             flex-direction: column;
@@ -66,9 +80,6 @@
             padding-bottom: calc(var(--nav-height) + 16px + var(--safe-bottom));
         }
 
-        /* ============================================================
-           HEADER
-           ============================================================ */
         .header {
             position: sticky;
             top: 0;
@@ -88,8 +99,9 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-family: var(--font-display);
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             letter-spacing: -0.02em;
             flex-shrink: 0;
         }
@@ -197,9 +209,6 @@
             border: 2px solid var(--surface);
         }
 
-        /* ============================================================
-           FILTER CHIPS (horizontal scroll)
-           ============================================================ */
         .filter-chips {
             display: flex;
             gap: 0.5rem;
@@ -255,9 +264,6 @@
             stroke-linejoin: round;
         }
 
-        /* ============================================================
-           MAIN CONTENT
-           ============================================================ */
         .main {
             flex: 1;
             padding: 0.75rem 1rem;
@@ -266,9 +272,6 @@
             width: 100%;
         }
 
-        /* ============================================================
-           ASSET CARD — Mobile First
-           ============================================================ */
         .asset-card {
             background: var(--surface-card);
             border-radius: var(--radius);
@@ -323,6 +326,7 @@
         }
 
         .asset-card .body .title {
+            font-family: var(--font-display);
             font-size: 1rem;
             font-weight: 600;
             line-height: 1.3;
@@ -348,18 +352,18 @@
         }
 
         .asset-card .body .badges .badge.free {
-            background: #dcfce7;
-            color: #15803d;
+            background: var(--mint-light);
+            color: var(--mint-ink);
         }
 
         .asset-card .body .badges .badge.pro {
-            background: #fef3c7;
-            color: #b45309;
+            background: var(--amber-light);
+            color: var(--amber-ink);
         }
 
         .asset-card .body .badges .badge.featured {
-            background: #dbeafe;
-            color: #1d4ed8;
+            background: var(--accent-light);
+            color: var(--accent-hover);
         }
 
         .asset-card .body .creator {
@@ -528,8 +532,352 @@
         }
 
         /* ============================================================
-           EMPTY STATE
+           HOME — SIGNATURE SECTION DIVIDER (timeline ruler)
+           A horizontal ruler with tick marks + a filled keyframe diamond,
+           echoing the editing-software timeline this whole app is about.
            ============================================================ */
+        .section {
+            margin-bottom: 1.75rem;
+        }
+
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.85rem;
+            padding-top: 0.15rem;
+        }
+
+        .section-divider .keyframe {
+            width: 9px;
+            height: 9px;
+            background: var(--accent);
+            border-radius: 2px;
+            transform: rotate(45deg);
+            flex-shrink: 0;
+        }
+
+        .section-divider.amber .keyframe { background: var(--amber); }
+        .section-divider.mint .keyframe { background: var(--mint); }
+
+        .section-divider h2 {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+
+        .section-divider .ruler {
+            flex: 1;
+            height: 1px;
+            background-image: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 1px, transparent 1px, transparent 8px);
+        }
+
+        .section-divider .section-meta {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        /* Horizontal rail (used by trending + creator strips) */
+        .rail {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 0.15rem;
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .rail::-webkit-scrollbar { display: none; }
+
+        /* ---- Trending card (large, featured) ---- */
+        .trend-card {
+            flex: 0 0 auto;
+            width: 78vw;
+            max-width: 300px;
+            scroll-snap-align: start;
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .trend-card:active { transform: scale(0.98); }
+
+        .trend-card .rank {
+            position: absolute;
+            top: 0.6rem;
+            left: 0.6rem;
+            z-index: 2;
+            background: rgba(20,21,28,0.72);
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.15rem 0.5rem;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .trend-card .rank .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--amber);
+            flex-shrink: 0;
+        }
+
+        .trend-card .thumb {
+            width: 100%;
+            aspect-ratio: 16/10;
+            object-fit: contain;
+            background-color: #0f172a;
+            display: block;
+        }
+
+        .trend-card .thumb-placeholder {
+            width: 100%;
+            aspect-ratio: 16/10;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .trend-card .thumb-placeholder svg {
+            width: 40px; height: 40px;
+            stroke: #52525b; fill: none; stroke-width: 1.5;
+        }
+
+        .trend-card .tc-body {
+            padding: 0.7rem 0.85rem 0.85rem;
+        }
+
+        .trend-card .tc-title {
+            font-family: var(--font-display);
+            font-size: 0.92rem;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 0.3rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .trend-card .tc-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .trend-card .tc-meta .tc-downloads {
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ---- Creator spotlight card ---- */
+        .creator-card {
+            flex: 0 0 auto;
+            width: 132px;
+            scroll-snap-align: start;
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1rem 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .creator-card:active { transform: scale(0.96); }
+
+        .creator-card .avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+        }
+
+        .creator-card .cc-name {
+            font-size: 0.82rem;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 0.15rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .creator-card .cc-software {
+            font-size: 0.66rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .creator-card .cc-stat {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--accent);
+            background: var(--accent-light);
+            border-radius: 100px;
+            padding: 0.15rem 0.5rem;
+            display: inline-block;
+        }
+
+        /* ---- NEW ribbon for latest uploads ---- */
+        .ribbon-new {
+            position: absolute;
+            top: 0.6rem;
+            right: 0.6rem;
+            z-index: 2;
+            background: var(--mint);
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.15rem 0.5rem;
+            border-radius: 100px;
+        }
+
+        .card-media-wrap { position: relative; }
+
+        /* ---- Top download ranked rows ---- */
+        .rank-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.65rem 0.25rem;
+            border-bottom: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .rank-row:last-child { border-bottom: none; }
+        .rank-row:active { background: var(--bg); }
+
+        .rank-row .rr-num {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            width: 1.6rem;
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .rank-row:nth-child(1) .rr-num { color: var(--amber-ink); }
+        .rank-row:nth-child(2) .rr-num { color: var(--text-secondary); }
+        .rank-row:nth-child(3) .rr-num { color: var(--text-secondary); }
+
+        .rank-row .rr-thumb {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-xs);
+            object-fit: cover;
+            background: #0f172a;
+            flex-shrink: 0;
+        }
+
+        .rank-row .rr-thumb-placeholder {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-xs);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rank-row .rr-thumb-placeholder svg {
+            width: 20px; height: 20px; stroke: #52525b; fill: none; stroke-width: 1.5;
+        }
+
+        .rank-row .rr-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .rank-row .rr-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .rank-row .rr-creator {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .rank-row .rr-count {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+            text-align: right;
+        }
+
+        .rank-row .rr-count small {
+            display: block;
+            font-family: var(--font);
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .rank-list {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.25rem 0.85rem;
+        }
+
+        @media (min-width: 640px) {
+            .rail { margin: 0 -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+        }
+
+        @media (min-width: 1024px) {
+            .rail { margin: 0 -2rem; padding-left: 2rem; padding-right: 2rem; }
+            .trend-card { width: 260px; }
+        }
+
         .empty-state {
             text-align: center;
             padding: 3rem 1rem;
@@ -547,9 +895,6 @@
             margin-bottom: 0.75rem;
         }
 
-        /* ============================================================
-           BOTTOM NAVIGATION
-           ============================================================ */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -621,9 +966,6 @@
             border: 2px solid var(--surface);
         }
 
-        /* ============================================================
-           FAB (Floating Action Button)
-           ============================================================ */
         .fab {
             position: fixed;
             bottom: calc(var(--nav-height) + 20px + var(--safe-bottom));
@@ -634,7 +976,7 @@
             background: var(--accent);
             color: white;
             border: none;
-            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35);
+            box-shadow: 0 4px 20px rgba(91, 78, 255, 0.35);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -658,9 +1000,6 @@
             stroke-linejoin: round;
         }
 
-        /* ============================================================
-           MODAL / BOTTOM SHEET
-           ============================================================ */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -719,6 +1058,7 @@
         }
 
         .modal-sheet .modal-header h2 {
+            font-family: var(--font-display);
             font-size: 1.1rem;
             font-weight: 600;
         }
@@ -751,9 +1091,6 @@
             stroke-linejoin: round;
         }
 
-        /* ============================================================
-           FORM (di dalam modal)
-           ============================================================ */
         .form-group {
             margin-bottom: 0.75rem;
         }
@@ -847,9 +1184,6 @@
             margin-top: 0.2rem;
         }
 
-        /* ============================================================
-           DETAIL ASSET (di dalam modal)
-           ============================================================ */
         .detail-thumb {
             width: 100%;
             aspect-ratio: 16 / 9;
@@ -860,6 +1194,7 @@
         }
 
         .detail-title {
+            font-family: var(--font-display);
             font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 0.1rem;
@@ -1009,9 +1344,6 @@
             stroke-linejoin: round;
         }
 
-        /* ============================================================
-           TOAST
-           ============================================================ */
         .toast-container {
             position: fixed;
             bottom: calc(var(--nav-height) + 20px + var(--safe-bottom));
@@ -1058,9 +1390,6 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* ============================================================
-           SKELETON LOADING
-           ============================================================ */
         .skeleton {
             background: linear-gradient(90deg, var(--bg) 25%, #e8eaed 50%, var(--bg) 75%);
             background-size: 200% 100%;
@@ -1102,9 +1431,6 @@
         .skeleton-card .skeleton-body .skeleton-line.w80 { width: 80%; }
         .skeleton-card .skeleton-body .skeleton-line.w30 { width: 30%; }
 
-        /* ============================================================
-           RESPONSIVE: Tablet & Desktop
-           ============================================================ */
         @media (min-width: 640px) {
             .main {
                 padding: 1rem 1.5rem;
@@ -1134,7 +1460,6 @@
                 font-size: 1.15rem;
             }
 
-            /* Desktop: sidebar muncul, bottom nav hilang */
             .bottom-nav {
                 display: none;
             }
@@ -1147,7 +1472,6 @@
                 padding-bottom: 0;
             }
 
-            /* Tampilkan sidebar di desktop */
             .sidebar-desktop {
                 display: flex !important;
             }
@@ -1157,9 +1481,6 @@
             }
         }
 
-        /* ============================================================
-           DESKTOP SIDEBAR (hidden by default)
-           ============================================================ */
         .sidebar-desktop {
             display: none;
             position: fixed;
@@ -1176,7 +1497,8 @@
         }
 
         .sidebar-desktop .brand {
-            font-size: 1.1rem;
+            font-family: var(--font-display);
+            font-size: 1.15rem;
             font-weight: 700;
             letter-spacing: -0.02em;
             padding-bottom: 1.5rem;
@@ -1263,9 +1585,6 @@
 
 <div class="app">
 
-    <!-- ============================================================
-    DESKTOP SIDEBAR
-    ============================================================ -->
     <aside class="sidebar-desktop" id="sidebarDesktop">
         <div class="brand">
             <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
@@ -1300,9 +1619,6 @@
         <div class="footer">v2.3 · <span id="totalDesktop">0</span> asset</div>
     </aside>
 
-    <!-- ============================================================
-    HEADER
-    ============================================================ -->
     <header class="header">
         <div class="header-brand">
             <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
@@ -1323,9 +1639,6 @@
         </div>
     </header>
 
-    <!-- ============================================================
-    FILTER CHIPS
-    ============================================================ -->
     <div class="filter-chips" id="filterChips">
         <span class="chip active" data-filter="all">Semua</span>
         <span class="chip" data-filter="after-effects">AE</span>
@@ -1339,24 +1652,14 @@
         <span class="chip" data-filter="transition">Transition</span>
     </div>
 
-    <!-- ============================================================
-    MAIN CONTENT
-    ============================================================ -->
     <main class="main" id="mainContent">
-        <!-- Cards akan di-render oleh JS -->
         <div id="cardGrid"></div>
     </main>
 
-    <!-- ============================================================
-    FLOATING ACTION BUTTON
-    ============================================================ -->
     <button class="fab" id="fabUpload">
         <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     </button>
 
-    <!-- ============================================================
-    BOTTOM NAVIGATION
-    ============================================================ -->
     <nav class="bottom-nav">
         <button class="nav-btn active" data-nav="home">
             <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -1376,9 +1679,6 @@
         </button>
     </nav>
 
-    <!-- ============================================================
-    MODAL UPLOAD (Bottom Sheet)
-    ============================================================ -->
     <div class="modal-overlay" id="uploadModal">
         <div class="modal-sheet">
             <div class="handle"></div>
@@ -1462,9 +1762,6 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    MODAL DETAIL (Bottom Sheet)
-    ============================================================ -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal-sheet">
             <div class="handle"></div>
@@ -1472,33 +1769,22 @@
         </div>
     </div>
 
-    <!-- ============================================================
-    TOAST CONTAINER
-    ============================================================ -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- ============================================================
-    JAVASCRIPT
-    ============================================================ -->
     <script>
         (function() {
             'use strict';
 
-            // ============================================================
-            // STATE
-            // ============================================================
             let assets = [];
             let editIndex = null;
             let currentFilter = 'all';
             let currentChip = 'all';
             let currentView = 'all';
 
-            // DOM refs
             const cardGrid = document.getElementById('cardGrid');
             const searchInput = document.getElementById('searchInput');
             const filterChips = document.getElementById('filterChips');
 
-            // Form
             const fJudul = document.getElementById('fJudul');
             const fPembuat = document.getElementById('fPembuat');
             const fKategori = document.getElementById('fKategori');
@@ -1512,16 +1798,12 @@
             const submitBtn = document.getElementById('submitBtn');
             const modalTitle = document.getElementById('modalTitle');
 
-            // Modals
             const uploadModal = document.getElementById('uploadModal');
             const detailModal = document.getElementById('detailModal');
             const closeUpload = document.getElementById('closeUploadModal');
             const fabUpload = document.getElementById('fabUpload');
             const totalDesktop = document.getElementById('totalDesktop');
 
-            // ============================================================
-            // HELPERS
-            // ============================================================
             function getYoutubeId(url) {
                 if (!url) return null;
                 const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/) || url.match(/youtube\.com\/embed\/([^?&]+)/);
@@ -1559,9 +1841,6 @@
 
             function randomId() { return Math.random().toString(36).substring(2, 9); }
 
-            // ============================================================
-            // TOAST
-            // ============================================================
             function showToast(message, type = 'info') {
                 const container = document.getElementById('toastContainer');
                 const toast = document.createElement('div');
@@ -1586,9 +1865,6 @@
                 }, 3000);
             }
 
-            // ============================================================
-            // STORAGE
-            // ============================================================
             function save() {
                 localStorage.setItem('presethub_assets', JSON.stringify(assets));
             }
@@ -1615,7 +1891,6 @@
                     } catch (e) {}
                 }
 
-                // Sample data
                 assets = [
                     {
                         id: 'a1',
@@ -1681,9 +1956,6 @@
                 save();
             }
 
-            // ============================================================
-            // RENDER
-            // ============================================================
             function getFiltered() {
                 let result = [...assets];
 
@@ -1698,7 +1970,6 @@
                     );
                 }
 
-                // View filter (sidebar)
                 if (currentView === 'trending') {
                     result.sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
                 } else if (currentView === 'favorites') {
@@ -1709,7 +1980,6 @@
                     result = result.filter(item => item.license === 'pro');
                 }
 
-                // Chip filter
                 if (currentChip !== 'all') {
                     result = result.filter(item => {
                         if (currentChip === 'after-effects') return item.software === 'After Effects';
@@ -1728,12 +1998,213 @@
                 return result;
             }
 
-            function render() {
-                const filtered = getFiltered();
-                const total = assets.length;
-                totalDesktop.textContent = total;
+            // A default, unfiltered browse — this is when the sectioned homepage shows.
+            // The moment the person searches or narrows a filter, we drop to a flat result grid.
+            function isHomeState() {
+                return currentView === 'all' && currentChip === 'all' && !searchInput.value.trim();
+            }
 
-                if (filtered.length === 0) {
+            function heatScore(item) {
+                // "Trending" = recent engagement, not just raw downloads
+                return (item.downloads || 0) * 1 + (item.likes || 0) * 3 + (item.views || 0) * 0.1;
+            }
+
+            function aggregateCreators() {
+                const map = new Map();
+                assets.forEach(item => {
+                    const name = item.pembuat || 'Anonim';
+                    if (!map.has(name)) {
+                        map.set(name, { name, count: 0, downloads: 0, softwareCounts: {} });
+                    }
+                    const c = map.get(name);
+                    c.count += 1;
+                    c.downloads += (item.downloads || 0);
+                    if (item.software) c.softwareCounts[item.software] = (c.softwareCounts[item.software] || 0) + 1;
+                });
+                return Array.from(map.values()).map(c => {
+                    let topSoftware = '';
+                    let max = 0;
+                    Object.entries(c.softwareCounts).forEach(([sw, n]) => { if (n > max) { max = n; topSoftware = sw; } });
+                    return { ...c, topSoftware };
+                }).sort((a, b) => b.downloads - a.downloads);
+            }
+
+            // ---------- card templates ----------
+            function assetCardHTML(item, opts) {
+                opts = opts || {};
+                const youtubeId = item.linkYoutube ? getYoutubeId(item.linkYoutube) : null;
+                const embedUrl = youtubeId ? embedYoutube(youtubeId) : null;
+                const thumb = item.thumbnail || '';
+                const tags = (item.tag || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+                const isFree = item.license === 'free';
+                const isPro = item.license === 'pro';
+                const badgeClass = isFree ? 'free' : 'pro';
+                const badgeText = isFree ? 'Gratis' : 'Pro';
+
+                return `
+                    <div class="asset-card" data-id="${item.id}">
+                        <div class="card-media-wrap">
+                            ${opts.newRibbon ? `<span class="ribbon-new">Baru</span>` : ''}
+                            ${thumb ? `<img class="thumb" src="${escapeHtml(thumb)}" alt="${escapeHtml(item.judul)}" loading="lazy" onerror="this.style.display='none'">` :
+                                `<div class="thumb-placeholder"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg></div>`
+                            }
+                        </div>
+                        <div class="body">
+                            <div class="top">
+                                <div class="title">${escapeHtml(item.judul)}</div>
+                                <div class="badges">
+                                    ${isFree || isPro ? `<span class="badge ${badgeClass}">${badgeText}</span>` : ''}
+                                </div>
+                            </div>
+                            <div class="creator">
+                                <div class="avatar">${getInitials(item.pembuat)}</div>
+                                <span class="name">${escapeHtml(item.pembuat || 'Anonim')}</span>
+                                <span class="verified">
+                                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                </span>
+                            </div>
+                            <div class="stats">
+                                <span>
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    ${formatNumber(item.downloads || 0)}
+                                </span>
+                                <span>
+                                    <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    ${formatNumber(item.views || 0)}
+                                </span>
+                                <span>
+                                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                    ${formatNumber(item.likes || 0)}
+                                </span>
+                                ${item.software ? `<span>${escapeHtml(item.software)}</span>` : ''}
+                            </div>
+                            ${tags ? `<div class="tags">${tags}</div>` : ''}
+                            ${item.deskripsi ? `<div class="desc" style="font-size:0.8rem;color:var(--text-secondary);margin:0.3rem 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${escapeHtml(item.deskripsi)}</div>` : ''}
+                            ${embedUrl ? `<div style="border-radius:var(--radius-xs);overflow:hidden;aspect-ratio:16/9;background:#000;margin:0.4rem 0;"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none;" allowfullscreen loading="lazy"></iframe></div>` : ''}
+                            <div class="actions">
+                                <button class="btn-like ${item.favorite ? 'active' : ''}" data-like="${item.id}">
+                                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                    ${item.likes || 0}
+                                </button>
+                                <button class="btn-save" data-save="${item.id}">
+                                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                    Simpan
+                                </button>
+                                <button class="btn-download" data-download="${item.id}">
+                                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function trendCardHTML(item, rank) {
+                const thumb = item.thumbnail || '';
+                return `
+                    <div class="trend-card" data-id="${item.id}">
+                        <span class="rank"><span class="dot"></span>#${rank}</span>
+                        ${thumb ? `<img class="thumb" src="${escapeHtml(thumb)}" alt="${escapeHtml(item.judul)}" loading="lazy" onerror="this.style.display='none'">` :
+                            `<div class="thumb-placeholder"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg></div>`
+                        }
+                        <div class="tc-body">
+                            <div class="tc-title">${escapeHtml(item.judul)}</div>
+                            <div class="tc-meta">
+                                <span>${escapeHtml(item.pembuat || 'Anonim')}</span>
+                                <span class="tc-downloads">${formatNumber(item.downloads || 0)} unduh</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function creatorCardHTML(creator) {
+                return `
+                    <div class="creator-card" data-creator="${escapeHtml(creator.name)}">
+                        <div class="avatar">${getInitials(creator.name)}</div>
+                        <div class="cc-name">${escapeHtml(creator.name)}</div>
+                        <div class="cc-software">${creator.topSoftware ? escapeHtml(creator.topSoftware) : creator.count + ' preset'}</div>
+                        <span class="cc-stat">${formatNumber(creator.downloads)} unduh</span>
+                    </div>
+                `;
+            }
+
+            function rankRowHTML(item, rank) {
+                const thumb = item.thumbnail || '';
+                return `
+                    <div class="rank-row" data-id="${item.id}">
+                        <span class="rr-num">${String(rank).padStart(2, '0')}</span>
+                        ${thumb ? `<img class="rr-thumb" src="${escapeHtml(thumb)}" alt="${escapeHtml(item.judul)}" loading="lazy" onerror="this.style.display='none'">` :
+                            `<div class="rr-thumb-placeholder"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg></div>`
+                        }
+                        <div class="rr-info">
+                            <div class="rr-title">${escapeHtml(item.judul)}</div>
+                            <div class="rr-creator">${escapeHtml(item.pembuat || 'Anonim')}</div>
+                        </div>
+                        <div class="rr-count">${formatNumber(item.downloads || 0)}<small>unduh</small></div>
+                    </div>
+                `;
+            }
+
+            function sectionDivider(colorClass, title, meta) {
+                return `
+                    <div class="section-divider ${colorClass || ''}">
+                        <span class="keyframe"></span>
+                        <h2>${title}</h2>
+                        <span class="ruler"></span>
+                        ${meta ? `<span class="section-meta">${meta}</span>` : ''}
+                    </div>
+                `;
+            }
+
+            // ---------- render modes ----------
+            function renderHome() {
+                if (assets.length === 0) {
+                    cardGrid.innerHTML = `
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            <p>Belum ada preset di sini.</p>
+                            <p style="font-size:0.85rem;color:var(--text-muted);">Jadilah kreator pertama — upload preset kamu sekarang.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const trending = [...assets].sort((a, b) => heatScore(b) - heatScore(a)).slice(0, 6);
+                const creators = aggregateCreators().slice(0, 8);
+                const latest = [...assets].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 6);
+                const topDownload = [...assets].sort((a, b) => (b.downloads || 0) - (a.downloads || 0)).slice(0, 5);
+
+                let html = '';
+
+                html += `<div class="section">`;
+                html += sectionDivider('amber', '🔥 Trending Minggu Ini', trending.length + ' preset');
+                html += `<div class="rail">${trending.map((item, i) => trendCardHTML(item, i + 1)).join('')}</div>`;
+                html += `</div>`;
+
+                if (creators.length > 0) {
+                    html += `<div class="section">`;
+                    html += sectionDivider('', '⭐ Creator Pilihan', creators.length + ' kreator');
+                    html += `<div class="rail">${creators.map(creatorCardHTML).join('')}</div>`;
+                    html += `</div>`;
+                }
+
+                html += `<div class="section">`;
+                html += sectionDivider('mint', '🆕 Upload Terbaru', '');
+                html += latest.map((item, i) => assetCardHTML(item, { newRibbon: i < 3 })).join('');
+                html += `</div>`;
+
+                html += `<div class="section">`;
+                html += sectionDivider('', '🏆 Top Download', 'Top ' + topDownload.length);
+                html += `<div class="rank-list">${topDownload.map((item, i) => rankRowHTML(item, i + 1)).join('')}</div>`;
+                html += `</div>`;
+
+                cardGrid.innerHTML = html;
+            }
+
+            function renderFlatGrid(list) {
+                if (list.length === 0) {
                     cardGrid.innerHTML = `
                         <div class="empty-state">
                             <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
@@ -1743,145 +2214,88 @@
                     `;
                     return;
                 }
-
-                let html = '';
-                filtered.forEach((item) => {
-                    const idx = assets.indexOf(item);
-                    const youtubeId = item.linkYoutube ? getYoutubeId(item.linkYoutube) : null;
-                    const embedUrl = youtubeId ? embedYoutube(youtubeId) : null;
-                    const thumb = item.thumbnail || '';
-
-                    const tags = (item.tag || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
-
-                    const isFree = item.license === 'free';
-                    const isPro = item.license === 'pro';
-                    const badgeClass = isFree ? 'free' : 'pro';
-                    const badgeText = isFree ? 'Gratis' : 'Pro';
-
-                    html += `
-                        <div class="asset-card" data-id="${item.id}">
-                            ${thumb ? `<img class="thumb" src="${escapeHtml(thumb)}" alt="${escapeHtml(item.judul)}" loading="lazy" onerror="this.style.display='none'">` :
-                                `<div class="thumb-placeholder"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg></div>`
-                            }
-                            <div class="body">
-                                <div class="top">
-                                    <div class="title">${escapeHtml(item.judul)}</div>
-                                    <div class="badges">
-                                        ${isFree || isPro ? `<span class="badge ${badgeClass}">${badgeText}</span>` : ''}
-                                    </div>
-                                </div>
-                                <div class="creator">
-                                    <div class="avatar">${getInitials(item.pembuat)}</div>
-                                    <span class="name">${escapeHtml(item.pembuat || 'Anonim')}</span>
-                                    <span class="verified">
-                                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                    </span>
-                                </div>
-                                <div class="stats">
-                                    <span>
-                                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                                        ${formatNumber(item.downloads || 0)}
-                                    </span>
-                                    <span>
-                                        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                        ${formatNumber(item.views || 0)}
-                                    </span>
-                                    <span>
-                                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                        ${formatNumber(item.likes || 0)}
-                                    </span>
-                                    ${item.software ? `<span>${escapeHtml(item.software)}</span>` : ''}
-                                </div>
-                                ${tags ? `<div class="tags">${tags}</div>` : ''}
-                                ${item.deskripsi ? `<div class="desc" style="font-size:0.8rem;color:var(--text-secondary);margin:0.3rem 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${escapeHtml(item.deskripsi)}</div>` : ''}
-                                ${embedUrl ? `<div style="border-radius:var(--radius-xs);overflow:hidden;aspect-ratio:16/9;background:#000;margin:0.4rem 0;"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none;" allowfullscreen loading="lazy"></iframe></div>` : ''}
-                                <div class="actions">
-                                    <button class="btn-like ${item.favorite ? 'active' : ''}" data-like="${idx}">
-                                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                        ${item.likes || 0}
-                                    </button>
-                                    <button class="btn-save" data-save="${idx}">
-                                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                        Simpan
-                                    </button>
-                                    <button class="btn-download" data-download="${idx}">
-                                        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                        Download
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                cardGrid.innerHTML = html;
-
-                // Event listeners
-                cardGrid.querySelectorAll('[data-like]').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const idx = parseInt(this.dataset.like);
-                        if (!isNaN(idx) && assets[idx]) {
-                            assets[idx].likes = (assets[idx].likes || 0) + 1;
-                            assets[idx].favorite = !assets[idx].favorite;
-                            assets[idx].updatedAt = Date.now();
-                            save();
-                            render();
-                            showToast(assets[idx].favorite ? '❤️ Ditambahkan ke favorit' : '💔 Dihapus dari favorit', 'info');
-                        }
-                    });
-                });
-
-                cardGrid.querySelectorAll('[data-save]').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const idx = parseInt(this.dataset.save);
-                        if (!isNaN(idx) && assets[idx]) {
-                            assets[idx].saves = (assets[idx].saves || 0) + 1;
-                            assets[idx].updatedAt = Date.now();
-                            save();
-                            render();
-                            showToast('📌 Disimpan ke koleksi', 'success');
-                        }
-                    });
-                });
-
-                cardGrid.querySelectorAll('[data-download]').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const idx = parseInt(this.dataset.download);
-                        if (!isNaN(idx) && assets[idx]) {
-                            assets[idx].downloads = (assets[idx].downloads || 0) + 1;
-                            assets[idx].updatedAt = Date.now();
-                            save();
-                            render();
-                            if (assets[idx].linkDownload) {
-                                window.open(assets[idx].linkDownload, '_blank');
-                                showToast('⬇️ Memulai download...', 'success');
-                            } else {
-                                showToast('Link download tidak tersedia', 'error');
-                            }
-                        }
-                    });
-                });
-
-                // Klik card untuk detail
-                cardGrid.querySelectorAll('.asset-card').forEach(card => {
-                    card.addEventListener('click', function() {
-                        const id = this.dataset.id;
-                        const idx = assets.findIndex(a => a.id === id);
-                        if (idx !== -1) {
-                            assets[idx].views = (assets[idx].views || 0) + 1;
-                            save();
-                            openDetail(idx);
-                        }
-                    });
-                });
+                cardGrid.innerHTML = list.map(item => assetCardHTML(item)).join('');
             }
 
-            // ============================================================
-            // DETAIL
-            // ============================================================
+            function render() {
+                totalDesktop.textContent = assets.length;
+                if (isHomeState()) {
+                    renderHome();
+                } else {
+                    renderFlatGrid(getFiltered());
+                }
+            }
+
+            // One delegated listener handles clicks across every section (home + flat grid),
+            // since cards, trend rail, creator rail and rank rows all live inside #cardGrid.
+            cardGrid.addEventListener('click', function(e) {
+                const likeBtn = e.target.closest('[data-like]');
+                const saveBtn = e.target.closest('[data-save]');
+                const downloadBtn = e.target.closest('[data-download]');
+                const creatorCard = e.target.closest('[data-creator]');
+                const openable = e.target.closest('.asset-card, .trend-card, .rank-row');
+
+                if (likeBtn) {
+                    e.stopPropagation();
+                    const idx = assets.findIndex(a => a.id === likeBtn.dataset.like);
+                    if (idx !== -1) {
+                        assets[idx].likes = (assets[idx].likes || 0) + 1;
+                        assets[idx].favorite = !assets[idx].favorite;
+                        assets[idx].updatedAt = Date.now();
+                        save();
+                        render();
+                        showToast(assets[idx].favorite ? '❤️ Ditambahkan ke favorit' : '💔 Dihapus dari favorit', 'info');
+                    }
+                    return;
+                }
+
+                if (saveBtn) {
+                    e.stopPropagation();
+                    const idx = assets.findIndex(a => a.id === saveBtn.dataset.save);
+                    if (idx !== -1) {
+                        assets[idx].saves = (assets[idx].saves || 0) + 1;
+                        assets[idx].updatedAt = Date.now();
+                        save();
+                        render();
+                        showToast('📌 Disimpan ke koleksi', 'success');
+                    }
+                    return;
+                }
+
+                if (downloadBtn) {
+                    e.stopPropagation();
+                    const idx = assets.findIndex(a => a.id === downloadBtn.dataset.download);
+                    if (idx !== -1) {
+                        assets[idx].downloads = (assets[idx].downloads || 0) + 1;
+                        assets[idx].updatedAt = Date.now();
+                        save();
+                        render();
+                        if (assets[idx].linkDownload) {
+                            window.open(assets[idx].linkDownload, '_blank');
+                            showToast('⬇️ Memulai download...', 'success');
+                        } else {
+                            showToast('Link download tidak tersedia', 'error');
+                        }
+                    }
+                    return;
+                }
+
+                if (creatorCard) {
+                    showToast('👤 Profil kreator (coming soon)', 'info');
+                    return;
+                }
+
+                if (openable) {
+                    const id = openable.dataset.id;
+                    const idx = assets.findIndex(a => a.id === id);
+                    if (idx !== -1) {
+                        assets[idx].views = (assets[idx].views || 0) + 1;
+                        save();
+                        openDetail(idx);
+                    }
+                }
+            });
+
             function openDetail(index) {
                 const item = assets[index];
                 if (!item) return;
@@ -1955,9 +2369,6 @@
                 });
             }
 
-            // ============================================================
-            // FORM UPLOAD
-            // ============================================================
             function getFormData() {
                 return {
                     id: randomId(),
@@ -2041,9 +2452,6 @@
                 uploadModal.classList.remove('active');
             }
 
-            // ============================================================
-            // NAVIGATION
-            // ============================================================
             function setView(view) {
                 currentView = view;
                 document.querySelectorAll('.sidebar-desktop nav button').forEach(btn => {
@@ -2083,34 +2491,27 @@
                 }
             }
 
-            // ============================================================
-            // INIT
-            // ============================================================
             function init() {
                 load();
 
-                // Sidebar nav (desktop)
                 document.querySelectorAll('.sidebar-desktop nav button').forEach(btn => {
                     btn.addEventListener('click', function() {
                         setView(this.dataset.view);
                     });
                 });
 
-                // Filter chips
                 document.querySelectorAll('.filter-chips .chip').forEach(chip => {
                     chip.addEventListener('click', function() {
                         setChip(this.dataset.filter);
                     });
                 });
 
-                // Bottom nav
                 document.querySelectorAll('.bottom-nav .nav-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         setNav(this.dataset.nav);
                     });
                 });
 
-                // Upload modal
                 fabUpload.addEventListener('click', function() {
                     resetForm();
                     uploadModal.classList.add('active');
@@ -2134,19 +2535,15 @@
                     if (e.target === this) uploadModal.classList.remove('active');
                 });
 
-                // Search
                 searchInput.addEventListener('input', render);
 
-                // Form submit
                 document.getElementById('uploadForm').addEventListener('submit', handleSubmit);
 
-                // Reset
                 document.getElementById('resetBtn').addEventListener('click', function(e) {
                     e.preventDefault();
                     resetForm();
                 });
 
-                // Keyboard shortcuts
                 document.addEventListener('keydown', function(e) {
                     if (e.key === 'Escape') {
                         if (uploadModal.classList.contains('active')) uploadModal.classList.remove('active');
