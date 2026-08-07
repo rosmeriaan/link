@@ -2,300 +2,130 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="theme-color" content="#0f172a" />
+    <title>PresetHub · Komunitas Kreator</title>
     <style>
-        /* ========== RESET & VARIABLES ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* ============================================================
+           VARIABLES & RESET
+           ============================================================ */
         :root {
             --bg: #f1f3f5;
             --surface: #ffffff;
-            --surface-hover: #f8f9fa;
+            --surface-card: #ffffff;
             --border: #e5e7eb;
-            --border-focus: #cbd5e1;
+            --border-light: #f1f3f5;
             --text: #0f172a;
             --text-secondary: #475569;
             --text-muted: #94a3b8;
             --accent: #2563eb;
             --accent-hover: #1d4ed8;
             --accent-light: #eff6ff;
-            --radius: 14px;
-            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-sm: 12px;
             --radius-xs: 8px;
-            --shadow: 0 1px 3px rgba(0,0,0,0.06);
-            --shadow-hover: 0 8px 30px rgba(0,0,0,0.08);
+            --shadow: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.08);
             --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --font: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --nav-height: 64px;
         }
 
-        html, body { height: 100%; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        body {
+        html, body {
+            height: 100%;
             font-family: var(--font);
             background: var(--bg);
             color: var(--text);
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ========== SCROLLBAR ========== */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        /* ============================================================
+           SCROLLBAR
+           ============================================================ */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
 
-        /* ========== LAYOUT ========== */
-        .app { display: flex; flex: 1; min-height: 100vh; }
-
-        /* ========== SIDEBAR ========== */
-        .sidebar {
-            width: 220px;
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            padding: 1.5rem 1rem;
+        /* ============================================================
+           LAYOUT
+           ============================================================ */
+        .app {
             display: flex;
             flex-direction: column;
-            flex-shrink: 0;
+            min-height: 100vh;
+            padding-bottom: calc(var(--nav-height) + 16px + var(--safe-bottom));
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .header {
             position: sticky;
             top: 0;
-            height: 100vh;
-            overflow-y: auto;
+            z-index: 50;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
         }
 
-        .sidebar-brand {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 1.5rem;
+        .header-brand {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-        }
-
-        .sidebar-brand span { color: var(--accent); }
-
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-            flex: 1;
-        }
-
-        .sidebar-nav button {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.6rem 1rem;
-            border: none;
-            background: transparent;
-            border-radius: var(--radius-xs);
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: var(--transition);
-            width: 100%;
-            text-align: left;
-        }
-
-        .sidebar-nav button:hover {
-            background: var(--surface-hover);
-            color: var(--text);
-        }
-
-        .sidebar-nav button.active {
-            background: var(--accent-light);
-            color: var(--accent);
-        }
-
-        .sidebar-nav button .nav-icon {
-            width: 20px;
-            height: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
             flex-shrink: 0;
         }
 
-        .sidebar-nav button .nav-icon svg {
-            width: 20px;
-            height: 20px;
-            stroke: currentColor;
+        .header-brand svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--accent);
             fill: none;
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
 
-        .sidebar-footer {
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+        .header-brand span { color: var(--accent); }
 
-        /* ========== MAIN CONTENT ========== */
-        .main {
+        .header-search {
             flex: 1;
-            padding: 1.5rem 2rem 5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        /* ========== HEADER ========== */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .header h1 small {
-            font-size: 0.85rem;
-            font-weight: 400;
-            color: var(--text-muted);
-            margin-left: 0.5rem;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.55rem 1.4rem;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: var(--transition);
-            background: var(--surface);
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-        }
-
-        .btn svg {
-            width: 18px;
-            height: 18px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .btn:hover {
-            background: var(--surface-hover);
-            border-color: var(--border-focus);
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            border-color: var(--accent-hover);
-        }
-
-        .btn-danger {
-            background: #ef4444;
-            color: white;
-            border-color: #ef4444;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-            border-color: #dc2626;
-        }
-
-        .btn-sm {
-            padding: 0.3rem 0.8rem;
-            font-size: 0.8rem;
-            border-radius: var(--radius-xs);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-        }
-
-        .btn-ghost:hover {
-            background: var(--surface-hover);
-        }
-
-        /* ========== STATS ========== */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 0.75rem 1rem;
-            text-align: center;
-        }
-
-        .stat-card .number {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .stat-card .label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            color: var(--text-muted);
-        }
-
-        /* ========== TOOLBAR ========== */
-        .toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 0.75rem 1rem;
-            margin-bottom: 1.5rem;
-            align-items: center;
-        }
-
-        .toolbar .search {
-            flex: 1 1 200px;
+            max-width: 400px;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             background: var(--bg);
-            border-radius: var(--radius-xs);
-            padding: 0.2rem 0.75rem;
+            border-radius: 100px;
+            padding: 0.35rem 1rem;
+            transition: var(--transition);
         }
 
-        .toolbar .search svg {
-            width: 16px;
-            height: 16px;
+        .header-search:focus-within {
+            background: var(--surface);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .header-search svg {
+            width: 18px;
+            height: 18px;
             stroke: var(--text-muted);
             fill: none;
             stroke-width: 2;
@@ -304,7 +134,7 @@
             flex-shrink: 0;
         }
 
-        .toolbar .search input {
+        .header-search input {
             border: none;
             background: transparent;
             padding: 0.45rem 0;
@@ -315,43 +145,107 @@
             color: var(--text);
         }
 
-        .toolbar select {
-            padding: 0.45rem 1.5rem 0.45rem 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xs);
-            background: var(--surface);
-            font-size: 0.85rem;
-            cursor: pointer;
-            outline: none;
-            font-family: inherit;
-            color: var(--text);
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.5rem center;
+        .header-search input::placeholder {
+            color: var(--text-muted);
         }
 
-        .toolbar .badge-filter {
+        .header-actions {
             display: flex;
-            gap: 0.3rem;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
         }
 
-        .toolbar .badge-filter .chip {
-            padding: 0.2rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
+        .header-actions .btn-icon {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        .header-actions .btn-icon:hover,
+        .header-actions .btn-icon:active {
+            background: var(--bg);
+        }
+
+        .header-actions .btn-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .header-actions .btn-icon .badge-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid var(--surface);
+        }
+
+        /* ============================================================
+           FILTER CHIPS (horizontal scroll)
+           ============================================================ */
+        .filter-chips {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 60px;
+            z-index: 40;
+        }
+
+        .filter-chips::-webkit-scrollbar { display: none; }
+
+        .filter-chips .chip {
+            flex-shrink: 0;
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
             background: var(--bg);
             border: 1px solid var(--border);
             cursor: pointer;
             transition: var(--transition);
             color: var(--text-secondary);
+            white-space: nowrap;
             display: flex;
             align-items: center;
             gap: 0.3rem;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
-        .toolbar .badge-filter .chip svg {
+        .filter-chips .chip:active {
+            transform: scale(0.96);
+        }
+
+        .filter-chips .chip.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .filter-chips .chip svg {
             width: 14px;
             height: 14px;
             stroke: currentColor;
@@ -361,93 +255,229 @@
             stroke-linejoin: round;
         }
 
-        .toolbar .badge-filter .chip.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
+        /* ============================================================
+           MAIN CONTENT
+           ============================================================ */
+        .main {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .toolbar .badge-filter .chip:hover {
-            border-color: var(--text-muted);
-        }
-
-        /* ========== CARD GRID ========== */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.25rem;
-        }
-
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
+        /* ============================================================
+           ASSET CARD — Mobile First
+           ============================================================ */
+        .asset-card {
+            background: var(--surface-card);
             border-radius: var(--radius);
+            border: 1px solid var(--border);
             overflow: hidden;
+            margin-bottom: 1rem;
             transition: var(--transition);
             cursor: pointer;
-            position: relative;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .card:hover {
-            border-color: var(--border-focus);
-            box-shadow: var(--shadow-hover);
-            transform: translateY(-2px);
+        .asset-card:active {
+            transform: scale(0.99);
         }
 
-        .card-thumb {
+        .asset-card .thumb {
             width: 100%;
             aspect-ratio: 16 / 9;
             background: var(--bg);
-            object-fit: cover;
+            object-fit: contain;
             display: block;
+            background-color: #0f172a;
         }
 
-        .card-thumb-placeholder {
+        .asset-card .thumb-placeholder {
             width: 100%;
             aspect-ratio: 16 / 9;
-            background: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 100%);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--text-muted);
         }
 
-        .card-thumb-placeholder svg {
+        .asset-card .thumb-placeholder svg {
             width: 48px;
             height: 48px;
             stroke: var(--text-muted);
             fill: none;
             stroke-width: 1.5;
+        }
+
+        .asset-card .body {
+            padding: 0.75rem 1rem 1rem;
+        }
+
+        .asset-card .body .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .asset-card .body .title {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .asset-card .body .badges {
+            display: flex;
+            gap: 0.3rem;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .asset-card .body .badges .badge {
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            padding: 0.1rem 0.5rem;
+            border-radius: 100px;
+            background: var(--bg);
+            color: var(--text-secondary);
+        }
+
+        .asset-card .body .badges .badge.free {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .asset-card .body .badges .badge.pro {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .asset-card .body .badges .badge.featured {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .asset-card .body .creator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.4rem 0 0.25rem;
+        }
+
+        .asset-card .body .creator .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: var(--accent);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .asset-card .body .creator .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .asset-card .body .creator .name {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .asset-card .body .creator .verified {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .asset-card .body .creator .verified svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--accent);
+            fill: var(--accent);
+        }
+
+        .asset-card .body .stats {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.4rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .asset-card .body .stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .asset-card .body .stats svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
         }
 
-        .card-body {
-            padding: 1rem 1.25rem 1rem;
-        }
-
-        .card-body .title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.15rem;
+        .asset-card .body .tags {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
         }
 
-        .card-body .title .fav {
-            font-size: 0;
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: var(--transition);
+        .asset-card .body .tags .tag {
+            font-size: 0.65rem;
+            padding: 0.05rem 0.6rem;
+            border-radius: 100px;
+            background: var(--bg);
+            color: var(--text-secondary);
+        }
+
+        .asset-card .body .actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .asset-card .body .actions .btn-like,
+        .asset-card .body .actions .btn-save {
             background: none;
             border: none;
-            padding: 0;
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--radius-xs);
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
             display: flex;
             align-items: center;
+            gap: 0.3rem;
+            transition: var(--transition);
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .card-body .title .fav svg {
+        .asset-card .body .actions .btn-like:active,
+        .asset-card .body .actions .btn-save:active {
+            transform: scale(0.92);
+        }
+
+        .asset-card .body .actions .btn-like svg,
+        .asset-card .body .actions .btn-save svg {
             width: 18px;
             height: 18px;
             stroke: currentColor;
@@ -457,121 +487,37 @@
             stroke-linejoin: round;
         }
 
-        .card-body .title .fav.active svg {
-            fill: #f59e0b;
-            stroke: #f59e0b;
+        .asset-card .body .actions .btn-like.active svg {
+            fill: #ef4444;
+            stroke: #ef4444;
         }
 
-        .card-body .meta {
+        .asset-card .body .actions .btn-save.active svg {
+            fill: var(--accent);
+            stroke: var(--accent);
+        }
+
+        .asset-card .body .actions .btn-download {
+            margin-left: auto;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.3rem 1rem;
+            border-radius: var(--radius-xs);
             font-size: 0.8rem;
-            color: var(--text-secondary);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.3rem 0.6rem;
-            margin: 0.2rem 0 0.4rem;
-            align-items: center;
-        }
-
-        .card-body .meta svg {
-            width: 14px;
-            height: 14px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .card-body .meta .tag {
-            background: var(--bg);
-            padding: 0.05rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-        }
-
-        .card-body .desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin: 0.3rem 0 0.5rem;
-            line-height: 1.5;
-        }
-
-        .card-body .links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.3rem;
-            margin: 0.4rem 0;
-        }
-
-        .card-body .links a {
-            font-size: 0.7rem;
-            padding: 0.1rem 0.6rem;
-            border-radius: 12px;
-            background: var(--bg);
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.2rem;
-        }
-
-        .card-body .links a svg {
-            width: 12px;
-            height: 12px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .card-body .links a:hover {
-            background: var(--accent-light);
-            color: var(--accent);
-        }
-
-        .card-body .card-youtube {
-            border-radius: var(--radius-xs);
-            overflow: hidden;
-            aspect-ratio: 16 / 9;
-            background: #000;
-            margin: 0.4rem 0;
-        }
-
-        .card-body .card-youtube iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .card-body .card-actions {
-            display: flex;
-            gap: 0.3rem;
-            margin-top: 0.6rem;
-            padding-top: 0.6rem;
-            border-top: 1px solid var(--border);
-            justify-content: flex-end;
-        }
-
-        .card-body .card-actions .menu-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
+            font-weight: 600;
             cursor: pointer;
-            padding: 0.2rem 0.5rem;
-            border-radius: var(--radius-xs);
             transition: var(--transition);
             display: flex;
             align-items: center;
+            gap: 0.3rem;
         }
 
-        .card-body .card-actions .menu-btn svg {
+        .asset-card .body .actions .btn-download:active {
+            transform: scale(0.95);
+        }
+
+        .asset-card .body .actions .btn-download svg {
             width: 16px;
             height: 16px;
             stroke: currentColor;
@@ -581,12 +527,9 @@
             stroke-linejoin: round;
         }
 
-        .card-body .card-actions .menu-btn:hover {
-            background: var(--bg);
-            color: var(--text);
-        }
-
-        /* ========== EMPTY STATE ========== */
+        /* ============================================================
+           EMPTY STATE
+           ============================================================ */
         .empty-state {
             text-align: center;
             padding: 3rem 1rem;
@@ -594,75 +537,469 @@
         }
 
         .empty-state svg {
-            width: 48px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
             stroke: currentColor;
             fill: none;
             stroke-width: 1.5;
             stroke-linecap: round;
             stroke-linejoin: round;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
-        /* ========== MODAL ========== */
+        /* ============================================================
+           BOTTOM NAVIGATION
+           ============================================================ */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: calc(var(--nav-height) + var(--safe-bottom));
+            padding-bottom: var(--safe-bottom);
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .bottom-nav .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.1rem;
+            border: none;
+            background: none;
+            color: var(--text-muted);
+            font-size: 0.6rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.3rem 0.8rem;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .bottom-nav .nav-btn:active {
+            transform: scale(0.92);
+        }
+
+        .bottom-nav .nav-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .bottom-nav .nav-btn.active {
+            color: var(--accent);
+        }
+
+        .bottom-nav .nav-btn .nav-label {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .bottom-nav .nav-btn .badge-dot {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid var(--surface);
+        }
+
+        /* ============================================================
+           FAB (Floating Action Button)
+           ============================================================ */
+        .fab {
+            position: fixed;
+            bottom: calc(var(--nav-height) + 20px + var(--safe-bottom));
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            z-index: 90;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .fab:active {
+            transform: scale(0.92);
+        }
+
+        .fab svg {
+            width: 28px;
+            height: 28px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ============================================================
+           MODAL / BOTTOM SHEET
+           ============================================================ */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(2px);
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             display: none;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
-            z-index: 1000;
-            padding: 1.5rem;
+            z-index: 200;
+            padding: 1.5rem 1rem calc(var(--safe-bottom) + 1rem);
+            animation: fadeIn 0.2s ease;
         }
 
         .modal-overlay.active {
             display: flex;
         }
 
-        .modal {
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-sheet {
             background: var(--surface);
-            border-radius: var(--radius);
-            max-width: 680px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            max-width: 600px;
             width: 100%;
-            max-height: 90vh;
+            max-height: 92vh;
             overflow-y: auto;
-            padding: 1.75rem 2rem 2rem;
-            animation: modalIn 0.2s ease;
+            padding: 1.5rem 1.25rem 2rem;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid var(--border);
+            border-bottom: none;
         }
 
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.97) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .modal-header {
+        .modal-sheet .handle {
+            width: 40px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            margin: 0 auto 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .modal-sheet .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1rem;
         }
 
-        .modal-header h2 {
-            font-size: 1.25rem;
+        .modal-sheet .modal-header h2 {
+            font-size: 1.1rem;
             font-weight: 600;
         }
 
-        .modal-close {
+        .modal-sheet .modal-close {
             background: none;
             border: none;
+            padding: 0.25rem;
             cursor: pointer;
             color: var(--text-muted);
-            padding: 0.2rem 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .modal-sheet .modal-close:active {
+            transform: scale(0.92);
+        }
+
+        .modal-sheet .modal-close svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ============================================================
+           FORM (di dalam modal)
+           ============================================================ */
+        .form-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.2rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            border: 1px solid var(--border);
             border-radius: var(--radius-xs);
+            font-size: 0.9rem;
+            font-family: inherit;
+            background: var(--surface);
+            transition: var(--transition);
+            color: var(--text);
+            -webkit-appearance: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: 1px;
+            border-color: transparent;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .form-actions .btn {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: var(--radius-xs);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .form-actions .btn:active {
+            transform: scale(0.96);
+        }
+
+        .form-actions .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .form-actions .btn-secondary {
+            background: var(--bg);
+            color: var(--text-secondary);
+        }
+
+        .form-actions .btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .form-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        /* ============================================================
+           DETAIL ASSET (di dalam modal)
+           ============================================================ */
+        .detail-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #0f172a;
+            border-radius: var(--radius-sm);
+            object-fit: contain;
+            margin-bottom: 0.75rem;
+        }
+
+        .detail-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.1rem;
+        }
+
+        .detail-creator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.3rem 0 0.5rem;
+        }
+
+        .detail-creator .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--accent);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .detail-creator .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .detail-creator .name {
+            font-weight: 500;
+        }
+
+        .detail-creator .verified svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--accent);
+            fill: var(--accent);
+        }
+
+        .detail-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin: 0.5rem 0;
+        }
+
+        .detail-stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .detail-stats svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .detail-desc {
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin: 0.5rem 0;
+        }
+
+        .detail-tags .tag {
+            background: var(--bg);
+            padding: 0.1rem 0.7rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .detail-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .detail-links a {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 100px;
+            background: var(--bg);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .detail-links a:active {
+            transform: scale(0.96);
+        }
+
+        .detail-links a:hover {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .detail-download-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--radius-xs);
+            background: var(--accent);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 0.75rem 0 0.5rem;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .modal-close svg {
+        .detail-download-btn:active {
+            transform: scale(0.97);
+        }
+
+        .detail-download-btn svg {
             width: 20px;
             height: 20px;
             stroke: currentColor;
@@ -672,140 +1009,18 @@
             stroke-linejoin: round;
         }
 
-        .modal-close:hover {
-            background: var(--bg);
-        }
-
-        .modal .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem 1.5rem;
-        }
-
-        .modal .form-grid .full {
-            grid-column: 1 / -1;
-        }
-
-        .modal .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-        }
-
-        .modal .form-group label {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-
-        .modal .form-group input,
-        .modal .form-group select,
-        .modal .form-group textarea {
-            padding: 0.5rem 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xs);
-            font-size: 0.9rem;
-            font-family: inherit;
-            background: var(--surface);
-            transition: var(--transition);
-            color: var(--text);
-        }
-
-        .modal .form-group input:focus,
-        .modal .form-group select:focus,
-        .modal .form-group textarea:focus {
-            outline: 2px solid var(--accent);
-            outline-offset: 1px;
-            border-color: transparent;
-        }
-
-        .modal .form-group textarea {
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        .modal .form-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-            padding-top: 1.25rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .modal .youtube-preview {
-            border-radius: var(--radius-xs);
-            overflow: hidden;
-            aspect-ratio: 16 / 9;
-            background: #000;
-            margin-top: 0.75rem;
-            display: none;
-        }
-
-        .modal .youtube-preview iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* ========== DETAIL VIEW ========== */
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem 1.5rem;
-            margin: 0.5rem 0 1rem;
-        }
-
-        .detail-grid .item {
-            font-size: 0.85rem;
-        }
-
-        .detail-grid .item .label {
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-
-        .detail-grid .item .value {
-            font-weight: 500;
-        }
-
-        .detail-grid .item .value a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .detail-grid .item .value a:hover {
-            text-decoration: underline;
-        }
-
-        .detail-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.3rem;
-            margin: 0.3rem 0 0.5rem;
-        }
-
-        .detail-tags .tag {
-            background: var(--bg);
-            padding: 0.05rem 0.7rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        /* ========== TOAST ========== */
+        /* ============================================================
+           TOAST
+           ============================================================ */
         .toast-container {
             position: fixed;
-            bottom: 80px;
-            right: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            z-index: 2000;
-            max-width: 340px;
-            width: 100%;
+            bottom: calc(var(--nav-height) + 20px + var(--safe-bottom));
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 300;
+            max-width: 400px;
+            width: 90%;
+            pointer-events: none;
         }
 
         .toast {
@@ -814,11 +1029,13 @@
             padding: 0.6rem 1.2rem;
             border-radius: var(--radius-sm);
             font-size: 0.85rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-lg);
             animation: toastIn 0.3s ease;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            pointer-events: auto;
+            margin-bottom: 0.5rem;
         }
 
         .toast svg {
@@ -837,985 +1054,1117 @@
         .toast.info { background: var(--accent); }
 
         @keyframes toastIn {
-            from { opacity: 0; transform: translateY(10px) scale(0.97); }
+            from { opacity: 0; transform: translateY(10px) scale(0.96); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 820px) {
-            .sidebar { display: none; }
-            .main { padding: 1rem 1rem 5rem; }
-            .modal .form-grid { grid-template-columns: 1fr; }
-            .detail-grid { grid-template-columns: 1fr; }
-            .stats { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        @media (max-width: 480px) {
-            .stats { grid-template-columns: 1fr 1fr; }
-            .toolbar { flex-direction: column; align-items: stretch; }
-            .header h1 { font-size: 1.2rem; }
-        }
-
-        /* ========== SKELETON ========== */
+        /* ============================================================
+           SKELETON LOADING
+           ============================================================ */
         .skeleton {
-            background: var(--bg);
+            background: linear-gradient(90deg, var(--bg) 25%, #e8eaed 50%, var(--bg) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
             border-radius: var(--radius-xs);
-            animation: pulse 1.5s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
-        .skeleton-thumb {
+        .skeleton-card {
+            background: var(--surface-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .skeleton-card .skeleton-thumb {
             aspect-ratio: 16 / 9;
             width: 100%;
-            border-radius: var(--radius) var(--radius) 0 0;
+            background: var(--bg);
         }
 
-        .skeleton-text {
-            height: 12px;
-            margin: 0.3rem 0;
-            border-radius: 4px;
+        .skeleton-card .skeleton-body {
+            padding: 0.75rem 1rem 1rem;
         }
-        .skeleton-text.w60 { width: 60%; }
-        .skeleton-text.w40 { width: 40%; }
-        .skeleton-text.w80 { width: 80%; }
+
+        .skeleton-card .skeleton-body .skeleton-line {
+            height: 12px;
+            border-radius: 4px;
+            margin-bottom: 0.4rem;
+        }
+
+        .skeleton-card .skeleton-body .skeleton-line.w60 { width: 60%; }
+        .skeleton-card .skeleton-body .skeleton-line.w40 { width: 40%; }
+        .skeleton-card .skeleton-body .skeleton-line.w80 { width: 80%; }
+        .skeleton-card .skeleton-body .skeleton-line.w30 { width: 30%; }
+
+        /* ============================================================
+           RESPONSIVE: Tablet & Desktop
+           ============================================================ */
+        @media (min-width: 640px) {
+            .main {
+                padding: 1rem 1.5rem;
+                max-width: 720px;
+            }
+
+            .asset-card .body {
+                padding: 1rem 1.25rem 1.25rem;
+            }
+
+            .asset-card .body .title {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .main {
+                max-width: 960px;
+                padding: 1.5rem 2rem;
+            }
+
+            .asset-card {
+                margin-bottom: 1.25rem;
+            }
+
+            .asset-card .body .title {
+                font-size: 1.15rem;
+            }
+
+            /* Desktop: sidebar muncul, bottom nav hilang */
+            .bottom-nav {
+                display: none;
+            }
+
+            .fab {
+                display: none;
+            }
+
+            .app {
+                padding-bottom: 0;
+            }
+
+            /* Tampilkan sidebar di desktop */
+            .sidebar-desktop {
+                display: flex !important;
+            }
+
+            .header {
+                padding: 0.75rem 2rem;
+            }
+        }
+
+        /* ============================================================
+           DESKTOP SIDEBAR (hidden by default)
+           ============================================================ */
+        .sidebar-desktop {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 220px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem 1rem;
+            flex-direction: column;
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        .sidebar-desktop .brand {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-desktop .brand svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .sidebar-desktop .brand span { color: var(--accent); }
+
+        .sidebar-desktop nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            flex: 1;
+        }
+
+        .sidebar-desktop nav button {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1rem;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-xs);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            text-align: left;
+        }
+
+        .sidebar-desktop nav button:hover {
+            background: var(--surface-hover);
+            color: var(--text);
+        }
+
+        .sidebar-desktop nav button.active {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .sidebar-desktop nav button svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .sidebar-desktop .footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        @media (min-width: 1024px) {
+            .app {
+                padding-left: 220px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="app">
 
-    <!-- ====== SIDEBAR ====== -->
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <svg viewBox="0 0 24 24" width="24" height="24" stroke="#2563eb" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="2.18"/>
-                <line x1="8" y1="2" x2="8" y2="22"/>
-                <line x1="16" y1="2" x2="16" y2="22"/>
-                <line x1="2" y1="8" x2="22" y2="8"/>
-                <line x1="2" y1="16" x2="22" y2="16"/>
-            </svg>
-            <span>Portfolio</span>Manager
+    <!-- ============================================================
+    DESKTOP SIDEBAR
+    ============================================================ -->
+    <aside class="sidebar-desktop" id="sidebarDesktop">
+        <div class="brand">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
+            <span>Preset</span>Hub
         </div>
-        <nav class="sidebar-nav">
+        <nav>
             <button class="active" data-view="all">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                </span>
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                 Semua
             </button>
+            <button data-view="trending">
+                <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                Trending
+            </button>
             <button data-view="favorites">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                </span>
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 Favorit
             </button>
-            <button data-view="videos">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
-                </span>
-                Video
+            <button data-view="free">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Gratis
             </button>
-            <button data-view="web">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                </span>
-                Website
+            <button data-view="pro">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Pro
             </button>
-            <button data-view="assets">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                </span>
-                Assets
-            </button>
-            <button data-view="about">
-                <span class="nav-icon">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                </span>
-                About
+            <button data-view="creators">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Kreator
             </button>
         </nav>
-        <div class="sidebar-footer">
-            v2.3 · <span id="totalCountSidebar">0</span> karya
-        </div>
+        <div class="footer">v2.3 · <span id="totalDesktop">0</span> asset</div>
     </aside>
 
-    <!-- ====== MAIN ====== -->
-    <main class="main">
-
-        <!-- Header -->
-        <div class="header">
-            <h1>
-                Karya Saya
-                <small id="subtitleHeader">semua project</small>
-            </h1>
-            <button class="btn btn-primary" id="openUploadBtn">
-                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Tambah Karya
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header class="header">
+        <div class="header-brand">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
+            <span>Preset</span>Hub
+        </div>
+        <div class="header-search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" placeholder="Cari preset, kreator, tag..." />
+        </div>
+        <div class="header-actions">
+            <button class="btn-icon" id="notifBtn" title="Notifikasi">
+                <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span class="badge-dot"></span>
+            </button>
+            <button class="btn-icon" id="profileBtn" title="Profil">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </button>
         </div>
+    </header>
 
-        <!-- Stats -->
-        <div class="stats" id="statsContainer">
-            <div class="stat-card"><div class="number" id="statTotal">0</div><div class="label">Total</div></div>
-            <div class="stat-card"><div class="number" id="statKategori">0</div><div class="label">Kategori</div></div>
-            <div class="stat-card"><div class="number" id="statVideo">0</div><div class="label">Video</div></div>
-            <div class="stat-card"><div class="number" id="statFavorite">0</div><div class="label">Favorit</div></div>
-        </div>
+    <!-- ============================================================
+    FILTER CHIPS
+    ============================================================ -->
+    <div class="filter-chips" id="filterChips">
+        <span class="chip active" data-filter="all">Semua</span>
+        <span class="chip" data-filter="after-effects">AE</span>
+        <span class="chip" data-filter="premiere">Premiere</span>
+        <span class="chip" data-filter="capcut">CapCut</span>
+        <span class="chip" data-filter="alight">Alight Motion</span>
+        <span class="chip" data-filter="vn">VN</span>
+        <span class="chip" data-filter="free">Gratis</span>
+        <span class="chip" data-filter="pro">Pro</span>
+        <span class="chip" data-filter="velocity">Velocity</span>
+        <span class="chip" data-filter="transition">Transition</span>
+    </div>
 
-        <!-- Toolbar -->
-        <div class="toolbar">
-            <div class="search">
-                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" id="searchInput" placeholder="Cari judul, kreator, kategori..." />
-            </div>
-            <select id="filterKategori">
-                <option value="">Semua Kategori</option>
-            </select>
-            <select id="sortOption">
-                <option value="terbaru">Terbaru</option>
-                <option value="lama">Terlama</option>
-                <option value="judul-asc">A–Z</option>
-                <option value="judul-desc">Z–A</option>
-            </select>
-            <div class="badge-filter" id="tagFilterContainer">
-                <span class="chip active" data-tag="all">Semua</span>
-                <span class="chip" data-tag="website">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    Website
-                </span>
-                <span class="chip" data-tag="github">
-                    <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                    GitHub
-                </span>
-                <span class="chip" data-tag="video">
-                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
-                    Video
-                </span>
-                <span class="chip" data-tag="demo">
-                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    Demo
-                </span>
-            </div>
-        </div>
-
-        <!-- Card Grid -->
-        <div id="cardGrid" class="card-grid"></div>
-
+    <!-- ============================================================
+    MAIN CONTENT
+    ============================================================ -->
+    <main class="main" id="mainContent">
+        <!-- Cards akan di-render oleh JS -->
+        <div id="cardGrid"></div>
     </main>
-</div>
 
-<!-- ====== MODAL UPLOAD / EDIT ====== -->
-<div class="modal-overlay" id="uploadModal">
-    <div class="modal">
-        <div class="modal-header">
-            <h2 id="modalTitle">Tambah Karya</h2>
-            <button class="modal-close" id="closeUploadModal">
-                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-        </div>
-        <form id="karyaForm">
-            <div class="form-grid">
+    <!-- ============================================================
+    FLOATING ACTION BUTTON
+    ============================================================ -->
+    <button class="fab" id="fabUpload">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+
+    <!-- ============================================================
+    BOTTOM NAVIGATION
+    ============================================================ -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-nav="home">
+            <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-btn" data-nav="search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span class="nav-label">Cari</span>
+        </button>
+        <button class="nav-btn" data-nav="saved">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span class="nav-label">Saved</span>
+        </button>
+        <button class="nav-btn" data-nav="profile">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="nav-label">Profil</span>
+        </button>
+    </nav>
+
+    <!-- ============================================================
+    MODAL UPLOAD (Bottom Sheet)
+    ============================================================ -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal-sheet">
+            <div class="handle"></div>
+            <div class="modal-header">
+                <h2 id="modalTitle">Upload Preset</h2>
+                <button class="modal-close" id="closeUploadModal">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="uploadForm">
                 <div class="form-group">
-                    <label for="fJudul">Nama Karya *</label>
-                    <input type="text" id="fJudul" placeholder="Nama proyek..." required />
+                    <label for="fJudul">Nama Preset *</label>
+                    <input type="text" id="fJudul" placeholder="Mis: Cinematic Transition Pack" required />
                 </div>
                 <div class="form-group">
-                    <label for="fPembuat">Kreator</label>
-                    <input type="text" id="fPembuat" placeholder="Nama Anda..." />
+                    <label for="fPembuat">Nama Kreator</label>
+                    <input type="text" id="fPembuat" placeholder="Nama Anda" />
                 </div>
                 <div class="form-group">
                     <label for="fKategori">Kategori</label>
                     <select id="fKategori">
                         <option value="">Pilih...</option>
-                        <option value="Assets">Assets</option>
-                        <option value="Font">Font</option>
-                        <option value="UI/UX">UI/UX</option>
-                        <option value="Web">Web</option>
-                        <option value="Mobile">Mobile</option>
-                        <option value="Desain">Desain</option>
-                        <option value="Ilustrasi">Ilustrasi</option>
-                        <option value="Lainnya">Lainnya</option>
+                        <option value="Transition">Transition</option>
+                        <option value="Velocity">Velocity</option>
+                        <option value="Overlay">Overlay</option>
+                        <option value="Color Grade">Color Grade</option>
+                        <option value="Text Effect">Text Effect</option>
+                        <option value="LUT">LUT</option>
+                        <option value="Preset Pack">Preset Pack</option>
+                        <option value="Audio">Audio</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="fTag">Tag (pisahkan dengan koma)</label>
-                    <input type="text" id="fTag" placeholder="HTML, CSS, React..." />
+                    <input type="text" id="fTag" placeholder="AE, Premiere, CapCut, Pro" />
                 </div>
-                <div class="form-group full">
+                <div class="form-group">
+                    <label for="fSoftware">Software</label>
+                    <select id="fSoftware">
+                        <option value="">Pilih...</option>
+                        <option value="After Effects">After Effects</option>
+                        <option value="Premiere Pro">Premiere Pro</option>
+                        <option value="CapCut">CapCut</option>
+                        <option value="Alight Motion">Alight Motion</option>
+                        <option value="VN Video Editor">VN Video Editor</option>
+                        <option value="DaVinci Resolve">DaVinci Resolve</option>
+                        <option value="Universal">Universal</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="fDeskripsi">Deskripsi</label>
-                    <textarea id="fDeskripsi" rows="2" placeholder="Ceritakan tentang karya ini..."></textarea>
+                    <textarea id="fDeskripsi" rows="3" placeholder="Jelaskan preset ini..."></textarea>
                 </div>
                 <div class="form-group">
                     <label for="fThumbnail">Thumbnail (URL)</label>
                     <input type="text" id="fThumbnail" placeholder="https://..." />
                 </div>
                 <div class="form-group">
-                    <label for="fLinkWebsite">Website</label>
-                    <input type="url" id="fLinkWebsite" placeholder="https://..." />
+                    <label for="fLinkDownload">Link Download *</label>
+                    <input type="url" id="fLinkDownload" placeholder="https://drive.google.com/..." required />
                 </div>
                 <div class="form-group">
-                    <label for="fLinkGithub">GitHub</label>
-                    <input type="url" id="fLinkGithub" placeholder="https://github.com/..." />
-                </div>
-                <div class="form-group">
-                    <label for="fLinkDrive">Google Drive</label>
-                    <input type="url" id="fLinkDrive" placeholder="https://drive.google.com/..." />
-                </div>
-                <div class="form-group">
-                    <label for="fLinkFigma">Figma</label>
-                    <input type="url" id="fLinkFigma" placeholder="https://figma.com/..." />
-                </div>
-                <div class="form-group">
-                    <label for="fLinkDemo">Demo</label>
-                    <input type="url" id="fLinkDemo" placeholder="https://..." />
-                </div>
-                <div class="form-group">
-                    <label for="fLinkYoutube">YouTube</label>
+                    <label for="fLinkYoutube">YouTube Preview</label>
                     <input type="url" id="fLinkYoutube" placeholder="https://youtu.be/..." />
                 </div>
-            </div>
-            <div class="youtube-preview" id="youtubePreview"></div>
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary" id="submitBtn">
-                    <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                    Simpan
-                </button>
-                <button type="reset" class="btn" id="resetBtn">
-                    <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9m0 0v6m0-6h-6"/></svg>
-                    Reset
-                </button>
-                <span style="margin-left:auto;font-size:0.75rem;color:var(--text-muted);">* Judul wajib, minimal satu link</span>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- ====== MODAL DETAIL ====== -->
-<div class="modal-overlay" id="detailModal">
-    <div class="modal">
-        <div class="modal-header">
-            <h2 id="detailTitle">Detail Karya</h2>
-            <button class="modal-close" id="closeDetailModal">
-                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-        </div>
-        <div id="detailContent"></div>
-    </div>
-</div>
-
-<!-- ====== MODAL CONFIRM ====== -->
-<div class="modal-overlay" id="confirmModal">
-    <div class="modal" style="max-width:420px;">
-        <div class="modal-header">
-            <h2>Konfirmasi</h2>
-            <button class="modal-close" id="closeConfirmModal">
-                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-        </div>
-        <p id="confirmMessage" style="margin:0.5rem 0 1.5rem;">Yakin ingin menghapus karya ini?</p>
-        <div style="display:flex;gap:0.75rem;justify-content:flex-end;">
-            <button class="btn" id="confirmCancel">Batal</button>
-            <button class="btn btn-danger" id="confirmOk">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                Hapus
-            </button>
+                <div class="form-group">
+                    <label for="fLicense">Lisensi</label>
+                    <select id="fLicense">
+                        <option value="free">Gratis</option>
+                        <option value="pro">Pro (Berbayar)</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                        Publikasikan
+                    </button>
+                    <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
+                </div>
+            </form>
         </div>
     </div>
-</div>
 
-<!-- ====== TOAST ====== -->
-<div class="toast-container" id="toastContainer"></div>
+    <!-- ============================================================
+    MODAL DETAIL (Bottom Sheet)
+    ============================================================ -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-sheet">
+            <div class="handle"></div>
+            <div id="detailContent"></div>
+        </div>
+    </div>
 
-<script>
-    (function() {
-        "use strict";
+    <!-- ============================================================
+    TOAST CONTAINER
+    ============================================================ -->
+    <div class="toast-container" id="toastContainer"></div>
 
-        // ===========================
-        //  STATE
-        // ===========================
-        let karya = [];
-        let editIndex = null;
-        let deleteTarget = null;
-        let currentView = 'all';
-        let currentTagFilter = 'all';
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
 
-        // DOM refs
-        const cardGrid = document.getElementById('cardGrid');
-        const searchInput = document.getElementById('searchInput');
-        const filterKategori = document.getElementById('filterKategori');
-        const sortOption = document.getElementById('sortOption');
-        const tagFilterContainer = document.getElementById('tagFilterContainer');
+            // ============================================================
+            // STATE
+            // ============================================================
+            let assets = [];
+            let editIndex = null;
+            let currentFilter = 'all';
+            let currentChip = 'all';
+            let currentView = 'all';
 
-        // Stats
-        const statTotal = document.getElementById('statTotal');
-        const statKategori = document.getElementById('statKategori');
-        const statVideo = document.getElementById('statVideo');
-        const statFavorite = document.getElementById('statFavorite');
-        const totalCountSidebar = document.getElementById('totalCountSidebar');
+            // DOM refs
+            const cardGrid = document.getElementById('cardGrid');
+            const searchInput = document.getElementById('searchInput');
+            const filterChips = document.getElementById('filterChips');
 
-        // Form
-        const fJudul = document.getElementById('fJudul');
-        const fPembuat = document.getElementById('fPembuat');
-        const fKategori = document.getElementById('fKategori');
-        const fTag = document.getElementById('fTag');
-        const fDeskripsi = document.getElementById('fDeskripsi');
-        const fThumbnail = document.getElementById('fThumbnail');
-        const fLinkWebsite = document.getElementById('fLinkWebsite');
-        const fLinkGithub = document.getElementById('fLinkGithub');
-        const fLinkDrive = document.getElementById('fLinkDrive');
-        const fLinkFigma = document.getElementById('fLinkFigma');
-        const fLinkDemo = document.getElementById('fLinkDemo');
-        const fLinkYoutube = document.getElementById('fLinkYoutube');
-        const youtubePreview = document.getElementById('youtubePreview');
-        const submitBtn = document.getElementById('submitBtn');
-        const modalTitle = document.getElementById('modalTitle');
+            // Form
+            const fJudul = document.getElementById('fJudul');
+            const fPembuat = document.getElementById('fPembuat');
+            const fKategori = document.getElementById('fKategori');
+            const fTag = document.getElementById('fTag');
+            const fSoftware = document.getElementById('fSoftware');
+            const fDeskripsi = document.getElementById('fDeskripsi');
+            const fThumbnail = document.getElementById('fThumbnail');
+            const fLinkDownload = document.getElementById('fLinkDownload');
+            const fLinkYoutube = document.getElementById('fLinkYoutube');
+            const fLicense = document.getElementById('fLicense');
+            const submitBtn = document.getElementById('submitBtn');
+            const modalTitle = document.getElementById('modalTitle');
 
-        // Modals
-        const uploadModal = document.getElementById('uploadModal');
-        const detailModal = document.getElementById('detailModal');
-        const confirmModal = document.getElementById('confirmModal');
-        const confirmMessage = document.getElementById('confirmMessage');
+            // Modals
+            const uploadModal = document.getElementById('uploadModal');
+            const detailModal = document.getElementById('detailModal');
+            const closeUpload = document.getElementById('closeUploadModal');
+            const fabUpload = document.getElementById('fabUpload');
+            const totalDesktop = document.getElementById('totalDesktop');
 
-        // ===========================
-        //  HELPERS
-        // ===========================
-        function getYoutubeId(url) {
-            if (!url) return null;
-            const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/) || url.match(/youtube\.com\/embed\/([^?&]+)/);
-            return m ? m[1] : null;
-        }
-
-        function embedYoutube(id) { return `https://www.youtube.com/embed/${id}?rel=0`; }
-
-        function hasLink(data) {
-            return [data.linkWebsite, data.linkGithub, data.linkDrive, data.linkFigma, data.linkDemo, data.linkYoutube]
-                .some(l => l && l.trim() !== '');
-        }
-
-        function getFormData() {
-            return {
-                judul: fJudul.value.trim(),
-                pembuat: fPembuat.value.trim(),
-                kategori: fKategori.value,
-                tag: fTag.value.split(',').map(s => s.trim()).filter(Boolean),
-                deskripsi: fDeskripsi.value.trim(),
-                thumbnail: fThumbnail.value.trim(),
-                linkWebsite: fLinkWebsite.value.trim(),
-                linkGithub: fLinkGithub.value.trim(),
-                linkDrive: fLinkDrive.value.trim(),
-                linkFigma: fLinkFigma.value.trim(),
-                linkDemo: fLinkDemo.value.trim(),
-                linkYoutube: fLinkYoutube.value.trim(),
-                favorite: false,
-                createdAt: Date.now(),
-                updatedAt: Date.now()
-            };
-        }
-
-        function setFormData(data) {
-            fJudul.value = data.judul || '';
-            fPembuat.value = data.pembuat || '';
-            fKategori.value = data.kategori || '';
-            fTag.value = (data.tag || []).join(', ');
-            fDeskripsi.value = data.deskripsi || '';
-            fThumbnail.value = data.thumbnail || '';
-            fLinkWebsite.value = data.linkWebsite || '';
-            fLinkGithub.value = data.linkGithub || '';
-            fLinkDrive.value = data.linkDrive || '';
-            fLinkFigma.value = data.linkFigma || '';
-            fLinkDemo.value = data.linkDemo || '';
-            fLinkYoutube.value = data.linkYoutube || '';
-        }
-
-        function resetForm() {
-            fJudul.value = '';
-            fPembuat.value = '';
-            fKategori.value = '';
-            fTag.value = '';
-            fDeskripsi.value = '';
-            fThumbnail.value = '';
-            fLinkWebsite.value = '';
-            fLinkGithub.value = '';
-            fLinkDrive.value = '';
-            fLinkFigma.value = '';
-            fLinkDemo.value = '';
-            fLinkYoutube.value = '';
-            youtubePreview.style.display = 'none';
-            youtubePreview.innerHTML = '';
-            submitBtn.textContent = 'Simpan';
-            modalTitle.textContent = 'Tambah Karya';
-            editIndex = null;
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-            return text.replace(/[&<>"']/g, m => map[m]);
-        }
-
-        function formatDate(ts) {
-            if (!ts) return '-';
-            const d = new Date(ts);
-            const now = new Date();
-            const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24));
-            if (diff === 0) return 'Hari ini';
-            if (diff === 1) return 'Kemarin';
-            if (diff < 7) return `${diff} hari lalu`;
-            return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-        }
-
-        // ===========================
-        //  TOAST
-        // ===========================
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-
-            let icon = '';
-            if (type === 'success') {
-                icon = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`;
-            } else if (type === 'error') {
-                icon = `<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
-            } else {
-                icon = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+            // ============================================================
+            // HELPERS
+            // ============================================================
+            function getYoutubeId(url) {
+                if (!url) return null;
+                const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/) || url.match(/youtube\.com\/embed\/([^?&]+)/);
+                return m ? m[1] : null;
             }
 
-            toast.innerHTML = `${icon} ${message}`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateY(10px)';
-                toast.style.transition = '0.3s';
-                setTimeout(() => toast.remove(), 400);
-            }, 3000);
-        }
+            function embedYoutube(id) { return `https://www.youtube.com/embed/${id}?rel=0`; }
 
-        // ===========================
-        //  STORAGE
-        // ===========================
-        function save() {
-            localStorage.setItem('portfolioKarya_v2', JSON.stringify(karya));
-        }
-
-        function load() {
-            const stored = localStorage.getItem('portfolioKarya_v2');
-            if (stored) {
-                try {
-                    const parsed = JSON.parse(stored);
-                    if (Array.isArray(parsed)) {
-                        karya = parsed;
-                        karya.forEach(item => {
-                            if (!item.createdAt) item.createdAt = Date.now();
-                            if (!item.updatedAt) item.updatedAt = Date.now();
-                            if (item.favorite === undefined) item.favorite = false;
-                            if (!item.tag) item.tag = [];
-                        });
-                        return;
-                    }
-                } catch (e) {}
+            function formatNumber(n) {
+                if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+                return n.toString();
             }
-            // Data awal
-            karya = [
-                {
-                    judul: 'Website Portfolio',
-                    pembuat: 'Andi',
-                    kategori: 'Web',
-                    tag: ['HTML', 'CSS', 'JavaScript'],
-                    deskripsi: 'Portfolio pribadi dengan animasi halus dan dark mode.',
-                    thumbnail: 'https://placehold.co/400x225/1e293b/white?text=Portfolio',
-                    linkWebsite: 'https://example.com',
-                    linkGithub: 'https://github.com',
-                    linkDrive: '',
-                    linkFigma: '',
-                    linkDemo: 'https://example.com/demo',
-                    linkYoutube: 'https://youtu.be/dQw4w9WgXcQ',
-                    favorite: true,
-                    createdAt: Date.now() - 100000,
-                    updatedAt: Date.now() - 50000
-                },
-                {
-                    judul: 'UI Design System',
-                    pembuat: 'Budi',
-                    kategori: 'UI/UX',
-                    tag: ['Figma', 'Design', 'Component'],
-                    deskripsi: 'Sistem desain untuk aplikasi enterprise.',
-                    thumbnail: '',
-                    linkWebsite: '',
-                    linkGithub: '',
-                    linkDrive: '',
-                    linkFigma: 'https://figma.com/file/xxx',
-                    linkDemo: '',
-                    linkYoutube: '',
-                    favorite: false,
-                    createdAt: Date.now() - 200000,
-                    updatedAt: Date.now() - 100000
+
+            function formatDate(ts) {
+                if (!ts) return '-';
+                const d = new Date(ts);
+                const now = new Date();
+                const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24));
+                if (diff === 0) return 'Hari ini';
+                if (diff === 1) return 'Kemarin';
+                if (diff < 7) return `${diff} hari lalu`;
+                return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+            }
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+                return text.replace(/[&<>"']/g, m => map[m]);
+            }
+
+            function getInitials(name) {
+                if (!name) return '?';
+                return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+            }
+
+            function randomId() { return Math.random().toString(36).substring(2, 9); }
+
+            // ============================================================
+            // TOAST
+            // ============================================================
+            function showToast(message, type = 'info') {
+                const container = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+
+                let icon = '';
+                if (type === 'success') {
+                    icon = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`;
+                } else if (type === 'error') {
+                    icon = `<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+                } else {
+                    icon = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
                 }
-            ];
-            save();
-        }
 
-        // ===========================
-        //  FILTER & SORT
-        // ===========================
-        function getFiltered() {
-            let result = [...karya];
-
-            if (currentView === 'favorites') {
-                result = result.filter(item => item.favorite);
-            } else if (currentView === 'videos') {
-                result = result.filter(item => item.linkYoutube && getYoutubeId(item.linkYoutube));
-            } else if (currentView === 'web') {
-                result = result.filter(item => item.linkWebsite);
-            } else if (currentView === 'assets') {
-                result = result.filter(item => item.kategori === 'Assets' || item.kategori === 'Font');
+                toast.innerHTML = `${icon} ${message}`;
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(10px)';
+                    toast.style.transition = '0.3s';
+                    setTimeout(() => toast.remove(), 400);
+                }, 3000);
             }
 
-            const q = searchInput.value.toLowerCase().trim();
-            if (q) {
-                result = result.filter(item =>
-                    item.judul.toLowerCase().includes(q) ||
-                    (item.pembuat && item.pembuat.toLowerCase().includes(q)) ||
-                    (item.kategori && item.kategori.toLowerCase().includes(q)) ||
-                    (item.tag && item.tag.some(t => t.toLowerCase().includes(q)))
-                );
+            // ============================================================
+            // STORAGE
+            // ============================================================
+            function save() {
+                localStorage.setItem('presethub_assets', JSON.stringify(assets));
             }
 
-            const kat = filterKategori.value;
-            if (kat) {
-                result = result.filter(item => item.kategori === kat);
+            function load() {
+                const stored = localStorage.getItem('presethub_assets');
+                if (stored) {
+                    try {
+                        const parsed = JSON.parse(stored);
+                        if (Array.isArray(parsed)) {
+                            assets = parsed;
+                            assets.forEach(item => {
+                                if (!item.createdAt) item.createdAt = Date.now();
+                                if (!item.updatedAt) item.updatedAt = Date.now();
+                                if (item.likes === undefined) item.likes = 0;
+                                if (item.saves === undefined) item.saves = 0;
+                                if (item.downloads === undefined) item.downloads = 0;
+                                if (item.views === undefined) item.views = 0;
+                                if (!item.tag) item.tag = [];
+                                if (!item.id) item.id = randomId();
+                            });
+                            return;
+                        }
+                    } catch (e) {}
+                }
+
+                // Sample data
+                assets = [
+                    {
+                        id: 'a1',
+                        judul: 'Cinematic Transition Pack',
+                        pembuat: 'Numan Creative',
+                        kategori: 'Transition',
+                        tag: ['Transition', 'Velocity', 'AE'],
+                        software: 'After Effects',
+                        deskripsi: '50 cinematic transitions untuk video editor profesional. Cocok untuk film pendek, trailer, dan konten branding.',
+                        thumbnail: 'https://placehold.co/600x338/0f172a/white?text=Cinematic+Transitions',
+                        linkDownload: 'https://drive.google.com/',
+                        linkYoutube: 'https://youtu.be/dQw4w9WgXcQ',
+                        license: 'pro',
+                        likes: 234,
+                        saves: 89,
+                        downloads: 1240,
+                        views: 4300,
+                        createdAt: Date.now() - 100000,
+                        updatedAt: Date.now() - 50000,
+                        favorite: true
+                    },
+                    {
+                        id: 'a2',
+                        judul: 'Color Grade LUT Pack',
+                        pembuat: 'Visual Lab',
+                        kategori: 'Color Grade',
+                        tag: ['LUT', 'Color', 'DaVinci'],
+                        software: 'DaVinci Resolve',
+                        deskripsi: '20 cinematic LUT untuk color grading profesional. Cocok untuk film dan video musik.',
+                        thumbnail: 'https://placehold.co/600x338/1e293b/white?text=LUT+Pack',
+                        linkDownload: 'https://drive.google.com/',
+                        linkYoutube: '',
+                        license: 'free',
+                        likes: 156,
+                        saves: 67,
+                        downloads: 3400,
+                        views: 8900,
+                        createdAt: Date.now() - 200000,
+                        updatedAt: Date.now() - 100000,
+                        favorite: false
+                    },
+                    {
+                        id: 'a3',
+                        judul: 'Velocity Text Presets',
+                        pembuat: 'Motion Pro',
+                        kategori: 'Text Effect',
+                        tag: ['Velocity', 'Text', 'CapCut'],
+                        software: 'CapCut',
+                        deskripsi: '30 text animation preset untuk CapCut. Mudah digunakan, tinggal drag and drop.',
+                        thumbnail: 'https://placehold.co/600x338/0f172a/white?text=Text+Presets',
+                        linkDownload: 'https://drive.google.com/',
+                        linkYoutube: 'https://youtu.be/dQw4w9WgXcQ',
+                        license: 'free',
+                        likes: 89,
+                        saves: 34,
+                        downloads: 5600,
+                        views: 12000,
+                        createdAt: Date.now() - 300000,
+                        updatedAt: Date.now() - 150000,
+                        favorite: false
+                    }
+                ];
+                save();
             }
 
-            if (currentTagFilter !== 'all') {
-                result = result.filter(item => {
-                    if (currentTagFilter === 'website') return item.linkWebsite;
-                    if (currentTagFilter === 'github') return item.linkGithub;
-                    if (currentTagFilter === 'video') return item.linkYoutube && getYoutubeId(item.linkYoutube);
-                    if (currentTagFilter === 'demo') return item.linkDemo;
-                    return true;
+            // ============================================================
+            // RENDER
+            // ============================================================
+            function getFiltered() {
+                let result = [...assets];
+
+                const q = searchInput.value.toLowerCase().trim();
+                if (q) {
+                    result = result.filter(item =>
+                        item.judul.toLowerCase().includes(q) ||
+                        (item.pembuat && item.pembuat.toLowerCase().includes(q)) ||
+                        (item.kategori && item.kategori.toLowerCase().includes(q)) ||
+                        (item.tag && item.tag.some(t => t.toLowerCase().includes(q))) ||
+                        (item.software && item.software.toLowerCase().includes(q))
+                    );
+                }
+
+                // View filter (sidebar)
+                if (currentView === 'trending') {
+                    result.sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
+                } else if (currentView === 'favorites') {
+                    result = result.filter(item => item.favorite);
+                } else if (currentView === 'free') {
+                    result = result.filter(item => item.license === 'free');
+                } else if (currentView === 'pro') {
+                    result = result.filter(item => item.license === 'pro');
+                }
+
+                // Chip filter
+                if (currentChip !== 'all') {
+                    result = result.filter(item => {
+                        if (currentChip === 'after-effects') return item.software === 'After Effects';
+                        if (currentChip === 'premiere') return item.software === 'Premiere Pro';
+                        if (currentChip === 'capcut') return item.software === 'CapCut';
+                        if (currentChip === 'alight') return item.software === 'Alight Motion';
+                        if (currentChip === 'vn') return item.software === 'VN Video Editor';
+                        if (currentChip === 'free') return item.license === 'free';
+                        if (currentChip === 'pro') return item.license === 'pro';
+                        if (currentChip === 'velocity') return item.tag && item.tag.some(t => t.toLowerCase() === 'velocity');
+                        if (currentChip === 'transition') return item.kategori === 'Transition';
+                        return true;
+                    });
+                }
+
+                return result;
+            }
+
+            function render() {
+                const filtered = getFiltered();
+                const total = assets.length;
+                totalDesktop.textContent = total;
+
+                if (filtered.length === 0) {
+                    cardGrid.innerHTML = `
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            <p>Tidak ada preset ditemukan</p>
+                            <p style="font-size:0.85rem;color:var(--text-muted);">Coba ubah filter atau upload preset baru</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                filtered.forEach((item) => {
+                    const idx = assets.indexOf(item);
+                    const youtubeId = item.linkYoutube ? getYoutubeId(item.linkYoutube) : null;
+                    const embedUrl = youtubeId ? embedYoutube(youtubeId) : null;
+                    const thumb = item.thumbnail || '';
+
+                    const tags = (item.tag || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+
+                    const isFree = item.license === 'free';
+                    const isPro = item.license === 'pro';
+                    const badgeClass = isFree ? 'free' : 'pro';
+                    const badgeText = isFree ? 'Gratis' : 'Pro';
+
+                    html += `
+                        <div class="asset-card" data-id="${item.id}">
+                            ${thumb ? `<img class="thumb" src="${escapeHtml(thumb)}" alt="${escapeHtml(item.judul)}" loading="lazy" onerror="this.style.display='none'">` :
+                                `<div class="thumb-placeholder"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg></div>`
+                            }
+                            <div class="body">
+                                <div class="top">
+                                    <div class="title">${escapeHtml(item.judul)}</div>
+                                    <div class="badges">
+                                        ${isFree || isPro ? `<span class="badge ${badgeClass}">${badgeText}</span>` : ''}
+                                    </div>
+                                </div>
+                                <div class="creator">
+                                    <div class="avatar">${getInitials(item.pembuat)}</div>
+                                    <span class="name">${escapeHtml(item.pembuat || 'Anonim')}</span>
+                                    <span class="verified">
+                                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                    </span>
+                                </div>
+                                <div class="stats">
+                                    <span>
+                                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                        ${formatNumber(item.downloads || 0)}
+                                    </span>
+                                    <span>
+                                        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                        ${formatNumber(item.views || 0)}
+                                    </span>
+                                    <span>
+                                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                        ${formatNumber(item.likes || 0)}
+                                    </span>
+                                    ${item.software ? `<span>${escapeHtml(item.software)}</span>` : ''}
+                                </div>
+                                ${tags ? `<div class="tags">${tags}</div>` : ''}
+                                ${item.deskripsi ? `<div class="desc" style="font-size:0.8rem;color:var(--text-secondary);margin:0.3rem 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${escapeHtml(item.deskripsi)}</div>` : ''}
+                                ${embedUrl ? `<div style="border-radius:var(--radius-xs);overflow:hidden;aspect-ratio:16/9;background:#000;margin:0.4rem 0;"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none;" allowfullscreen loading="lazy"></iframe></div>` : ''}
+                                <div class="actions">
+                                    <button class="btn-like ${item.favorite ? 'active' : ''}" data-like="${idx}">
+                                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                        ${item.likes || 0}
+                                    </button>
+                                    <button class="btn-save" data-save="${idx}">
+                                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                        Simpan
+                                    </button>
+                                    <button class="btn-download" data-download="${idx}">
+                                        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                        Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                cardGrid.innerHTML = html;
+
+                // Event listeners
+                cardGrid.querySelectorAll('[data-like]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const idx = parseInt(this.dataset.like);
+                        if (!isNaN(idx) && assets[idx]) {
+                            assets[idx].likes = (assets[idx].likes || 0) + 1;
+                            assets[idx].favorite = !assets[idx].favorite;
+                            assets[idx].updatedAt = Date.now();
+                            save();
+                            render();
+                            showToast(assets[idx].favorite ? '❤️ Ditambahkan ke favorit' : '💔 Dihapus dari favorit', 'info');
+                        }
+                    });
+                });
+
+                cardGrid.querySelectorAll('[data-save]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const idx = parseInt(this.dataset.save);
+                        if (!isNaN(idx) && assets[idx]) {
+                            assets[idx].saves = (assets[idx].saves || 0) + 1;
+                            assets[idx].updatedAt = Date.now();
+                            save();
+                            render();
+                            showToast('📌 Disimpan ke koleksi', 'success');
+                        }
+                    });
+                });
+
+                cardGrid.querySelectorAll('[data-download]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const idx = parseInt(this.dataset.download);
+                        if (!isNaN(idx) && assets[idx]) {
+                            assets[idx].downloads = (assets[idx].downloads || 0) + 1;
+                            assets[idx].updatedAt = Date.now();
+                            save();
+                            render();
+                            if (assets[idx].linkDownload) {
+                                window.open(assets[idx].linkDownload, '_blank');
+                                showToast('⬇️ Memulai download...', 'success');
+                            } else {
+                                showToast('Link download tidak tersedia', 'error');
+                            }
+                        }
+                    });
+                });
+
+                // Klik card untuk detail
+                cardGrid.querySelectorAll('.asset-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        const idx = assets.findIndex(a => a.id === id);
+                        if (idx !== -1) {
+                            assets[idx].views = (assets[idx].views || 0) + 1;
+                            save();
+                            openDetail(idx);
+                        }
+                    });
                 });
             }
 
-            const sort = sortOption.value;
-            if (sort === 'terbaru') {
-                result.sort((a, b) => (b.updatedAt || b.createdAt) - (a.updatedAt || a.createdAt));
-            } else if (sort === 'lama') {
-                result.sort((a, b) => (a.createdAt) - (b.createdAt));
-            } else if (sort === 'judul-asc') {
-                result.sort((a, b) => a.judul.localeCompare(b.judul));
-            } else if (sort === 'judul-desc') {
-                result.sort((a, b) => b.judul.localeCompare(a.judul));
-            }
+            // ============================================================
+            // DETAIL
+            // ============================================================
+            function openDetail(index) {
+                const item = assets[index];
+                if (!item) return;
 
-            return result;
-        }
-
-        // ===========================
-        //  RENDER
-        // ===========================
-        function render() {
-            const filtered = getFiltered();
-            const total = karya.length;
-
-            const kategoriSet = new Set(karya.map(item => item.kategori).filter(Boolean));
-            const videoCount = karya.filter(item => item.linkYoutube && getYoutubeId(item.linkYoutube)).length;
-            const favCount = karya.filter(item => item.favorite).length;
-            statTotal.textContent = total;
-            statKategori.textContent = kategoriSet.size;
-            statVideo.textContent = videoCount;
-            statFavorite.textContent = favCount;
-            totalCountSidebar.textContent = total;
-
-            const currentKat = filterKategori.value;
-            filterKategori.innerHTML = `<option value="">Semua Kategori</option>`;
-            Array.from(kategoriSet).sort().forEach(k => {
-                const opt = document.createElement('option');
-                opt.value = k;
-                opt.textContent = k;
-                filterKategori.appendChild(opt);
-            });
-            filterKategori.value = currentKat;
-
-            if (filtered.length === 0) {
-                cardGrid.innerHTML = `
-                    <div class="empty-state" style="grid-column:1/-1;">
-                        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                        <p>Tidak ada karya ditemukan.</p>
-                        <p style="font-size:0.8rem;">Coba ubah filter atau tambahkan karya baru.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-            filtered.forEach((item) => {
-                const realIdx = karya.indexOf(item);
                 const youtubeId = item.linkYoutube ? getYoutubeId(item.linkYoutube) : null;
                 const embedUrl = youtubeId ? embedYoutube(youtubeId) : null;
                 const thumb = item.thumbnail || '';
 
                 const tags = (item.tag || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+                const isFree = item.license === 'free';
+                const isPro = item.license === 'pro';
+                const badgeClass = isFree ? 'free' : 'pro';
+                const badgeText = isFree ? 'Gratis' : 'Pro';
 
-                let linksHtml = '';
-                const linkMap = [
-                    { key: 'linkWebsite', label: 'Website' },
-                    { key: 'linkGithub', label: 'GitHub' },
-                    { key: 'linkDrive', label: 'Drive' },
-                    { key: 'linkFigma', label: 'Figma' },
-                    { key: 'linkDemo', label: 'Demo' },
-                    { key: 'linkYoutube', label: 'YouTube' }
-                ];
-                linkMap.forEach(({ key, label }) => {
-                    if (item[key]) {
-                        linksHtml += `<a href="${escapeHtml(item[key])}" target="_blank">${label}</a>`;
-                    }
-                });
-
-                html += `
-                    <div class="card" data-index="${realIdx}">
-                        ${thumb ? `<img class="card-thumb" src="${escapeHtml(thumb)}" alt="${escapeHtml(item.judul)}" loading="lazy" onerror="this.style.display='none'">` :
-                            `<div class="card-thumb-placeholder"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg></div>`}
-                        <div class="card-body">
-                            <div class="title">
-                                <span>${escapeHtml(item.judul)}</span>
-                                <button class="fav ${item.favorite ? 'active' : ''}" data-fav="${realIdx}">
-                                    ${item.favorite ?
-                                        `<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>` :
-                                        `<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
-                                    }
-                                </button>
-                            </div>
-                            <div class="meta">
-                                ${item.pembuat ? `<span>${escapeHtml(item.pembuat)}</span>` : ''}
-                                ${item.kategori ? `<span>${escapeHtml(item.kategori)}</span>` : ''}
-                                <span>${formatDate(item.updatedAt || item.createdAt)}</span>
-                            </div>
-                            ${tags ? `<div class="meta">${tags}</div>` : ''}
-                            ${item.deskripsi ? `<div class="desc">${escapeHtml(item.deskripsi)}</div>` : ''}
-                            ${linksHtml ? `<div class="links">${linksHtml}</div>` : ''}
-                            ${embedUrl ? `<div class="card-youtube"><iframe src="${embedUrl}" allowfullscreen loading="lazy"></iframe></div>` : ''}
-                            <div class="card-actions">
-                                <button class="menu-btn" data-detail="${realIdx}">
-                                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                                </button>
-                                <button class="menu-btn" data-edit="${realIdx}">
-                                    <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                </button>
-                                <button class="menu-btn" data-delete="${realIdx}">
-                                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                </button>
-                            </div>
-                        </div>
+                const detailContent = document.getElementById('detailContent');
+                detailContent.innerHTML = `
+                    <div class="modal-header">
+                        <h2>${escapeHtml(item.judul)}</h2>
+                        <button class="modal-close" id="closeDetailModal">
+                            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                    ${thumb ? `<img class="detail-thumb" src="${escapeHtml(thumb)}" alt="${escapeHtml(item.judul)}" onerror="this.style.display='none'">` : ''}
+                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.3rem;">
+                        ${isFree || isPro ? `<span class="badge ${badgeClass}" style="font-size:0.7rem;font-weight:700;padding:0.1rem 0.6rem;border-radius:100px;">${badgeText}</span>` : ''}
+                        ${item.software ? `<span style="font-size:0.75rem;background:var(--bg);padding:0.1rem 0.6rem;border-radius:100px;">${escapeHtml(item.software)}</span>` : ''}
+                    </div>
+                    <div class="detail-creator">
+                        <div class="avatar">${getInitials(item.pembuat)}</div>
+                        <span class="name">${escapeHtml(item.pembuat || 'Anonim')}</span>
+                        <span class="verified">
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </span>
+                    </div>
+                    <div class="detail-stats">
+                        <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${formatNumber(item.downloads || 0)} download</span>
+                        <span><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ${formatNumber(item.views || 0)} views</span>
+                        <span><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ${item.likes || 0}</span>
+                    </div>
+                    ${item.deskripsi ? `<div class="detail-desc">${escapeHtml(item.deskripsi)}</div>` : ''}
+                    ${tags ? `<div class="detail-tags">${tags}</div>` : ''}
+                    ${embedUrl ? `<div style="border-radius:var(--radius-xs);overflow:hidden;aspect-ratio:16/9;background:#000;margin:0.5rem 0;"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none;" allowfullscreen></iframe></div>` : ''}
+                    <button class="detail-download-btn" id="detailDownloadBtn">
+                        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Download Preset
+                    </button>
+                    <div style="font-size:0.7rem;color:var(--text-muted);text-align:center;margin-top:0.3rem;">
+                        Diupload ${formatDate(item.createdAt)} · Diupdate ${formatDate(item.updatedAt)}
                     </div>
                 `;
-            });
 
-            cardGrid.innerHTML = html;
+                detailModal.classList.add('active');
 
-            cardGrid.querySelectorAll('[data-fav]').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const idx = parseInt(this.dataset.fav);
-                    karya[idx].favorite = !karya[idx].favorite;
-                    karya[idx].updatedAt = Date.now();
-                    save();
-                    render();
-                    showToast(karya[idx].favorite ? 'Ditambahkan ke favorit' : 'Dihapus dari favorit', 'info');
+                document.getElementById('closeDetailModal').addEventListener('click', function() {
+                    detailModal.classList.remove('active');
                 });
-            });
 
-            cardGrid.querySelectorAll('[data-detail]').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const idx = parseInt(this.dataset.detail);
-                    openDetail(idx);
+                document.getElementById('detailDownloadBtn').addEventListener('click', function() {
+                    if (item.linkDownload) {
+                        assets[index].downloads = (assets[index].downloads || 0) + 1;
+                        save();
+                        window.open(item.linkDownload, '_blank');
+                        showToast('⬇️ Memulai download...', 'success');
+                    } else {
+                        showToast('Link download tidak tersedia', 'error');
+                    }
                 });
-            });
 
-            cardGrid.querySelectorAll('[data-edit]').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const idx = parseInt(this.dataset.edit);
-                    openEdit(idx);
+                detailModal.addEventListener('click', function(e) {
+                    if (e.target === this) detailModal.classList.remove('active');
                 });
-            });
-
-            cardGrid.querySelectorAll('[data-delete]').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const idx = parseInt(this.dataset.delete);
-                    confirmDelete(idx);
-                });
-            });
-
-            cardGrid.querySelectorAll('.card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const idx = parseInt(this.dataset.index);
-                    if (!isNaN(idx)) openDetail(idx);
-                });
-            });
-        }
-
-        // ===========================
-        //  DETAIL
-        // ===========================
-        function openDetail(index) {
-            const item = karya[index];
-            if (!item) return;
-            const youtubeId = item.linkYoutube ? getYoutubeId(item.linkYoutube) : null;
-            const embedUrl = youtubeId ? embedYoutube(youtubeId) : null;
-
-            const tags = (item.tag || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
-
-            let linksHtml = '';
-            const linkMap = [
-                { key: 'linkWebsite', label: 'Website' },
-                { key: 'linkGithub', label: 'GitHub' },
-                { key: 'linkDrive', label: 'Drive' },
-                { key: 'linkFigma', label: 'Figma' },
-                { key: 'linkDemo', label: 'Demo' },
-                { key: 'linkYoutube', label: 'YouTube' }
-            ];
-            linkMap.forEach(({ key, label }) => {
-                if (item[key]) {
-                    linksHtml += `<a href="${escapeHtml(item[key])}" target="_blank">${label}</a> `;
-                }
-            });
-
-            const thumb = item.thumbnail ?
-                `<img src="${escapeHtml(item.thumbnail)}" style="max-width:100%;max-height:300px;border-radius:var(--radius-xs);margin:0.5rem 0;object-fit:cover;" onerror="this.style.display='none'">` : '';
-
-            document.getElementById('detailTitle').textContent = item.judul;
-            document.getElementById('detailContent').innerHTML = `
-                ${thumb}
-                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin:0.5rem 0;font-size:0.9rem;color:var(--text-secondary);">
-                    ${item.pembuat ? `<span>${escapeHtml(item.pembuat)}</span>` : ''}
-                    ${item.kategori ? `<span>${escapeHtml(item.kategori)}</span>` : ''}
-                    <span>${item.favorite ? 'Favorit' : ''}</span>
-                </div>
-                ${tags ? `<div style="margin:0.3rem 0;">${tags}</div>` : ''}
-                ${item.deskripsi ? `<p style="margin:0.5rem 0;">${escapeHtml(item.deskripsi)}</p>` : ''}
-                ${linksHtml ? `<div style="margin:0.5rem 0;"><strong>Link:</strong> ${linksHtml}</div>` : ''}
-                ${embedUrl ? `<div style="aspect-ratio:16/9;border-radius:var(--radius-xs);overflow:hidden;margin:0.5rem 0;background:#000;"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none;" allowfullscreen></iframe></div>` : ''}
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 1rem;margin-top:0.5rem;font-size:0.85rem;border-top:1px solid var(--border);padding-top:0.75rem;">
-                    <div><span style="color:var(--text-muted);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.03em;">Dibuat</span><br>${formatDate(item.createdAt)}</div>
-                    <div><span style="color:var(--text-muted);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.03em;">Diupdate</span><br>${formatDate(item.updatedAt || item.createdAt)}</div>
-                </div>
-            `;
-            detailModal.classList.add('active');
-        }
-
-        // ===========================
-        //  EDIT
-        // ===========================
-        function openEdit(index) {
-            const item = karya[index];
-            if (!item) return;
-            editIndex = index;
-            setFormData(item);
-            submitBtn.textContent = 'Update';
-            modalTitle.textContent = 'Edit Karya';
-            uploadModal.classList.add('active');
-            updateYoutubePreview();
-        }
-
-        // ===========================
-        //  CONFIRM DELETE
-        // ===========================
-        function confirmDelete(index) {
-            deleteTarget = index;
-            confirmMessage.textContent = `Yakin ingin menghapus "${karya[index].judul}"?`;
-            confirmModal.classList.add('active');
-        }
-
-        function doDelete() {
-            if (deleteTarget !== null) {
-                const name = karya[deleteTarget]?.judul || 'Karya';
-                karya.splice(deleteTarget, 1);
-                save();
-                render();
-                showToast(`"${name}" telah dihapus`, 'info');
-                deleteTarget = null;
             }
-            confirmModal.classList.remove('active');
-        }
 
-        // ===========================
-        //  YOUTUBE PREVIEW
-        // ===========================
-        function updateYoutubePreview() {
-            const url = fLinkYoutube.value.trim();
-            const id = getYoutubeId(url);
-            if (id) {
-                youtubePreview.style.display = 'block';
-                youtubePreview.innerHTML = `<iframe src="${embedYoutube(id)}" allowfullscreen></iframe>`;
-            } else {
-                youtubePreview.style.display = 'none';
-                youtubePreview.innerHTML = '';
+            // ============================================================
+            // FORM UPLOAD
+            // ============================================================
+            function getFormData() {
+                return {
+                    id: randomId(),
+                    judul: fJudul.value.trim(),
+                    pembuat: fPembuat.value.trim() || 'Anonim',
+                    kategori: fKategori.value,
+                    tag: fTag.value.split(',').map(s => s.trim()).filter(Boolean),
+                    software: fSoftware.value,
+                    deskripsi: fDeskripsi.value.trim(),
+                    thumbnail: fThumbnail.value.trim(),
+                    linkDownload: fLinkDownload.value.trim(),
+                    linkYoutube: fLinkYoutube.value.trim(),
+                    license: fLicense.value,
+                    likes: 0,
+                    saves: 0,
+                    downloads: 0,
+                    views: 0,
+                    favorite: false,
+                    createdAt: Date.now(),
+                    updatedAt: Date.now()
+                };
             }
-        }
 
-        // ===========================
-        //  SUBMIT FORM
-        // ===========================
-        function handleSubmit(e) {
-            e.preventDefault();
-            const data = getFormData();
+            function resetForm() {
+                fJudul.value = '';
+                fPembuat.value = '';
+                fKategori.value = '';
+                fTag.value = '';
+                fSoftware.value = '';
+                fDeskripsi.value = '';
+                fThumbnail.value = '';
+                fLinkDownload.value = '';
+                fLinkYoutube.value = '';
+                fLicense.value = 'free';
+                submitBtn.textContent = 'Publikasikan';
+                modalTitle.textContent = 'Upload Preset';
+                editIndex = null;
+            }
 
-            if (!data.judul) {
-                showToast('Nama Karya wajib diisi', 'error');
-                fJudul.focus();
-                return;
-            }
-            if (!hasLink(data)) {
-                showToast('Minimal satu link harus diisi', 'error');
-                return;
-            }
-            if (data.linkYoutube) {
-                const id = getYoutubeId(data.linkYoutube);
-                if (!id) {
-                    showToast('Format YouTube tidak valid', 'error');
-                    fLinkYoutube.focus();
+            function handleSubmit(e) {
+                e.preventDefault();
+                const data = getFormData();
+
+                if (!data.judul) {
+                    showToast('Nama preset wajib diisi', 'error');
+                    fJudul.focus();
                     return;
                 }
-            }
-
-            if (editIndex !== null) {
-                data.createdAt = karya[editIndex].createdAt;
-                data.favorite = karya[editIndex].favorite || false;
-                karya[editIndex] = data;
-                showToast('Karya berhasil diupdate', 'success');
-            } else {
-                data.favorite = false;
-                karya.push(data);
-                showToast('Karya berhasil ditambahkan', 'success');
-            }
-
-            save();
-            resetForm();
-            render();
-            uploadModal.classList.remove('active');
-        }
-
-        // ===========================
-        //  NAVIGATION
-        // ===========================
-        function setView(view) {
-            currentView = view;
-            document.querySelectorAll('.sidebar-nav button').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.view === view);
-            });
-            const labels = {
-                all: 'semua project',
-                favorites: 'favorit',
-                videos: 'dengan video',
-                web: 'website',
-                assets: 'assets & font',
-                about: 'tentang'
-            };
-            document.getElementById('subtitleHeader').textContent = labels[view] || 'semua project';
-            render();
-        }
-
-        // ===========================
-        //  INIT
-        // ===========================
-        function init() {
-            load();
-
-            document.querySelectorAll('.sidebar-nav button').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    setView(this.dataset.view);
-                });
-            });
-
-            document.getElementById('openUploadBtn').addEventListener('click', function() {
-                resetForm();
-                uploadModal.classList.add('active');
-            });
-            document.getElementById('closeUploadModal').addEventListener('click', function() {
-                uploadModal.classList.remove('active');
-            });
-            uploadModal.addEventListener('click', function(e) {
-                if (e.target === this) uploadModal.classList.remove('active');
-            });
-
-            document.getElementById('closeDetailModal').addEventListener('click', function() {
-                detailModal.classList.remove('active');
-            });
-            detailModal.addEventListener('click', function(e) {
-                if (e.target === this) detailModal.classList.remove('active');
-            });
-
-            document.getElementById('closeConfirmModal').addEventListener('click', function() {
-                confirmModal.classList.remove('active');
-                deleteTarget = null;
-            });
-            document.getElementById('confirmCancel').addEventListener('click', function() {
-                confirmModal.classList.remove('active');
-                deleteTarget = null;
-            });
-            document.getElementById('confirmOk').addEventListener('click', doDelete);
-            confirmModal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    confirmModal.classList.remove('active');
-                    deleteTarget = null;
+                if (!data.linkDownload) {
+                    showToast('Link download wajib diisi', 'error');
+                    fLinkDownload.focus();
+                    return;
                 }
-            });
-
-            document.getElementById('karyaForm').addEventListener('submit', handleSubmit);
-
-            document.getElementById('resetBtn').addEventListener('click', function(e) {
-                e.preventDefault();
-                resetForm();
-            });
-
-            fLinkYoutube.addEventListener('input', updateYoutubePreview);
-
-            searchInput.addEventListener('input', render);
-            filterKategori.addEventListener('change', render);
-            sortOption.addEventListener('change', render);
-
-            tagFilterContainer.querySelectorAll('.chip').forEach(chip => {
-                chip.addEventListener('click', function() {
-                    tagFilterContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-                    this.classList.add('active');
-                    currentTagFilter = this.dataset.tag;
-                    render();
-                });
-            });
-
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    if (uploadModal.classList.contains('active')) uploadModal.classList.remove('active');
-                    if (detailModal.classList.contains('active')) detailModal.classList.remove('active');
-                    if (confirmModal.classList.contains('active')) {
-                        confirmModal.classList.remove('active');
-                        deleteTarget = null;
+                if (data.linkYoutube) {
+                    const id = getYoutubeId(data.linkYoutube);
+                    if (!id) {
+                        showToast('Format YouTube tidak valid', 'error');
+                        fLinkYoutube.focus();
+                        return;
                     }
                 }
-                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                    e.preventDefault();
-                    searchInput.focus();
+
+                if (editIndex !== null) {
+                    data.createdAt = assets[editIndex].createdAt;
+                    data.likes = assets[editIndex].likes || 0;
+                    data.saves = assets[editIndex].saves || 0;
+                    data.downloads = assets[editIndex].downloads || 0;
+                    data.views = assets[editIndex].views || 0;
+                    data.favorite = assets[editIndex].favorite || false;
+                    data.id = assets[editIndex].id || randomId();
+                    assets[editIndex] = data;
+                    showToast('✅ Preset berhasil diupdate', 'success');
+                } else {
+                    assets.push(data);
+                    showToast('✅ Preset berhasil dipublikasikan!', 'success');
                 }
-                if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
-                    e.preventDefault();
+
+                save();
+                resetForm();
+                render();
+                uploadModal.classList.remove('active');
+            }
+
+            // ============================================================
+            // NAVIGATION
+            // ============================================================
+            function setView(view) {
+                currentView = view;
+                document.querySelectorAll('.sidebar-desktop nav button').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === view);
+                });
+                render();
+            }
+
+            function setChip(filter) {
+                currentChip = filter;
+                document.querySelectorAll('.filter-chips .chip').forEach(c => {
+                    c.classList.toggle('active', c.dataset.filter === filter);
+                });
+                render();
+            }
+
+            function setNav(nav) {
+                document.querySelectorAll('.bottom-nav .nav-btn').forEach(b => {
+                    b.classList.toggle('active', b.dataset.nav === nav);
+                });
+                if (nav === 'home') {
+                    currentView = 'all';
+                    document.querySelectorAll('.sidebar-desktop nav button').forEach(b => {
+                        b.classList.toggle('active', b.dataset.view === 'all');
+                    });
+                    render();
+                } else if (nav === 'search') {
+                    searchInput.focus();
+                } else if (nav === 'saved') {
+                    currentView = 'favorites';
+                    document.querySelectorAll('.sidebar-desktop nav button').forEach(b => {
+                        b.classList.toggle('active', b.dataset.view === 'favorites');
+                    });
+                    render();
+                } else if (nav === 'profile') {
+                    showToast('👤 Profil kreator (coming soon)', 'info');
+                }
+            }
+
+            // ============================================================
+            // INIT
+            // ============================================================
+            function init() {
+                load();
+
+                // Sidebar nav (desktop)
+                document.querySelectorAll('.sidebar-desktop nav button').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        setView(this.dataset.view);
+                    });
+                });
+
+                // Filter chips
+                document.querySelectorAll('.filter-chips .chip').forEach(chip => {
+                    chip.addEventListener('click', function() {
+                        setChip(this.dataset.filter);
+                    });
+                });
+
+                // Bottom nav
+                document.querySelectorAll('.bottom-nav .nav-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        setNav(this.dataset.nav);
+                    });
+                });
+
+                // Upload modal
+                fabUpload.addEventListener('click', function() {
                     resetForm();
                     uploadModal.classList.add('active');
-                }
-            });
+                });
 
-            render();
-            showToast('Portfolio Manager siap digunakan', 'info');
-        }
+                document.querySelectorAll('.header-actions .btn-icon').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        if (this.id === 'notifBtn') {
+                            showToast('🔔 Belum ada notifikasi', 'info');
+                        } else if (this.id === 'profileBtn') {
+                            showToast('👤 Profil kreator (coming soon)', 'info');
+                        }
+                    });
+                });
 
-        document.addEventListener('DOMContentLoaded', init);
-    })();
-</script>
+                closeUpload.addEventListener('click', function() {
+                    uploadModal.classList.remove('active');
+                });
+
+                uploadModal.addEventListener('click', function(e) {
+                    if (e.target === this) uploadModal.classList.remove('active');
+                });
+
+                // Search
+                searchInput.addEventListener('input', render);
+
+                // Form submit
+                document.getElementById('uploadForm').addEventListener('submit', handleSubmit);
+
+                // Reset
+                document.getElementById('resetBtn').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    resetForm();
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        if (uploadModal.classList.contains('active')) uploadModal.classList.remove('active');
+                        if (detailModal.classList.contains('active')) detailModal.classList.remove('active');
+                    }
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                        e.preventDefault();
+                        searchInput.focus();
+                    }
+                });
+
+                render();
+                showToast('🎬 PresetHub siap digunakan', 'info');
+            }
+
+            document.addEventListener('DOMContentLoaded', init);
+        })();
+    </script>
 
 </body>
 </html>
