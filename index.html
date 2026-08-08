@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 
-    <!-- Firebase v9 Compat SDK -->
+    <!-- Firebase v9 Modular SDK via compat -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js">
@@ -482,7 +482,7 @@
         }
 
         /* ============================================================
-           MAIN / GRID — mobile balanced
+           MAIN / GRID
            ============================================================ */
         .main {
             max-width: 1360px;
@@ -499,8 +499,6 @@
             color: var(--text-muted);
             margin-bottom: 0.8rem;
         }
-
-        /* Grid: 2 kolom di mobile, 3+ di tablet/desktop */
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -530,7 +528,6 @@
             }
         }
 
-        /* Card — konsisten di semua layar */
         .card {
             cursor: pointer;
             display: flex;
@@ -884,6 +881,7 @@
             gap: 1.1rem;
             margin-top: 0.55rem;
             flex-wrap: wrap;
+            align-items: center;
         }
         .profile-header .stats span {
             font-size: 0.76rem;
@@ -910,6 +908,25 @@
             fill: none;
             stroke-width: 2;
         }
+        .profile-header .edit-profile-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.2rem 0.7rem;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: border-color .15s, background .15s;
+        }
+        .profile-header .edit-profile-btn:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -922,13 +939,6 @@
             border: none;
             background: none;
             padding: 0;
-        }
-        .back-link svg {
-            width: 14px;
-            height: 14px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
         }
         .back-link:hover {
             color: var(--text);
@@ -1454,6 +1464,10 @@
             font-size: 0.78rem;
             padding: 0.4rem 0.9rem;
         }
+        .detail-actions .btn-danger {
+            font-size: 0.78rem;
+            padding: 0.4rem 0.9rem;
+        }
 
         /* ============================================================
            LOGIN MODAL
@@ -1477,7 +1491,7 @@
         }
 
         /* ============================================================
-           SETUP GUIDE BANNER
+           SETUP GUIDE
            ============================================================ */
         .setup-guide {
             background: #fff3cd;
@@ -1519,7 +1533,7 @@
         }
 
         /* ============================================================
-           RESPONSIVE FIXES — mobile balanced
+           RESPONSIVE
            ============================================================ */
         @media (max-width:380px) {
             .creator-grid {
@@ -1545,7 +1559,6 @@
                 gap: 0.7rem;
             }
         }
-        /* Pastikan card tidak melebar sebelah */
         .card .thumb {
             aspect-ratio: 4/5;
             width: 100%;
@@ -1553,7 +1566,6 @@
         .card-info {
             width: 100%;
         }
-        /* Semua elemen block rata kiri-kanan */
         .app,
         .main,
         .filter-bar,
@@ -1561,15 +1573,12 @@
             width: 100%;
             overflow-x: hidden;
         }
-
         @media (prefers-reduced-motion:reduce) {
             * {
                 animation-duration: 0.01ms !important;
                 transition-duration: 0.01ms !important;
             }
         }
-
-        /* username hint di form */
         .username-hint {
             font-size: 0.7rem;
             color: var(--text-muted);
@@ -1582,6 +1591,20 @@
         .username-hint .cross {
             color: #a13d3d;
             font-weight: 600;
+        }
+        .profile-header .stats .edit-profile-btn {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+        }
+        .preset-owner-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .preset-owner-actions .btn {
+            font-size: 0.72rem;
+            padding: 0.3rem 0.7rem;
         }
     </style>
 </head>
@@ -1645,10 +1668,9 @@
                 <p>Ikuti langkah-langkah berikut:</p>
                 <ol style="padding-left:1.2rem;margin:0.4rem 0;color:#856404;">
                     <li>Buka <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a></li>
-                    <li>Pilih project kamu → <strong>Firestore Database</strong> → <strong>Buat database</strong> (mode production)</li>
+                    <li>Pilih project kamu → <strong>Firestore Database</strong> → <strong>Buat database</strong></li>
                     <li>Buka <strong>Authentication</strong> → aktifkan <strong>Email/Password</strong></li>
-                    <li>Buka <strong>Project Settings</strong> → copy konfigurasi SDK</li>
-                    <li>Ganti <code>firebaseConfig</code> di kode dengan konfigurasi milikmu</li>
+                    <li>Pastikan konfigurasi Firebase sudah benar</li>
                 </ol>
                 <p style="font-size:0.8rem;margin-top:0.3rem;">Setelah setup, refresh halaman.</p>
             </div>
@@ -1776,7 +1798,7 @@
                             <div class="form-group"><label>Link Asset 1</label><input type="url" id="fLinkAsset1" placeholder="https://..." /></div>
                             <div class="form-group"><label>Link Asset 2</label><input type="url" id="fLinkAsset2" placeholder="https://..." /></div>
                         </div>
-                        <div class="form-hint" id="fileLinksHint">Untuk template <strong>gratis</strong>, sertakan link download atau project. Untuk template <strong>berbayar</strong>, link tidak akan ditampilkan — pembeli akan menghubungi kamu via WA/email.</div>
+                        <div class="form-hint" id="fileLinksHint">Untuk template <strong>gratis</strong>, sertakan link download atau project. Untuk template <strong>berbayar</strong>, link tidak akan ditampilkan.</div>
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Publikasikan</button>
@@ -1807,6 +1829,10 @@
                             <input type="text" id="rUsername" required placeholder="contoh: imctfy" pattern="[a-zA-Z0-9_]{3,20}" />
                             <div class="username-hint" id="usernameHint">Min 3 karakter, hanya huruf/angka/garis bawah.</div>
                         </div>
+                        <div class="form-group">
+                            <label>Nama Tampilan *</label>
+                            <input type="text" id="rDisplayName" required placeholder="Nama yang akan dilihat publik" />
+                        </div>
                         <div class="form-group"><label>Bio</label><textarea id="rBio" rows="2" placeholder="Sedikit tentang kamu sebagai kreator"></textarea></div>
                         <div class="form-group"><label>Software *</label>
                             <select id="rSoftware" required>
@@ -1830,6 +1856,48 @@
             </div>
         </div>
 
+        <!-- EDIT PROFILE MODAL -->
+        <div class="modal-overlay" id="editProfileModal">
+            <div class="modal-sheet">
+                <div class="sheet-handle"></div>
+                <div class="modal-head">
+                    <h2>Edit Profil Kreator</h2>
+                    <button class="modal-close" id="closeEditProfileModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                </div>
+                <form id="editProfileForm">
+                    <div class="form-section">
+                        <div class="section-label">Ubah Profil</div>
+                        <div class="form-group">
+                            <label>Username * (unik, akan muncul di URL)</label>
+                            <input type="text" id="eUsername" required placeholder="contoh: imctfy" pattern="[a-zA-Z0-9_]{3,20}" />
+                            <div class="username-hint" id="eUsernameHint">Min 3 karakter, hanya huruf/angka/garis bawah.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Tampilan *</label>
+                            <input type="text" id="eDisplayName" required placeholder="Nama yang akan dilihat publik" />
+                        </div>
+                        <div class="form-group"><label>Bio</label><textarea id="eBio" rows="2" placeholder="Sedikit tentang kamu sebagai kreator"></textarea></div>
+                        <div class="form-group"><label>Software</label>
+                            <select id="eSoftware">
+                                <option value="Alight Motion">Alight Motion</option>
+                                <option value="Node Video">Node Video</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <div class="section-label">Kontak</div>
+                        <div class="form-group"><label>No. WhatsApp</label><input type="text" id="eWa" placeholder="628xxxxxxxx" /></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="eEmail" placeholder="kreator@email.com" /></div>
+                        <div class="form-group"><label>Portfolio</label><input type="url" id="ePortfolio" placeholder="https://..." /></div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <button type="button" class="btn btn-secondary" id="cancelEditProfile">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div class="toast-container" id="toastContainer"></div>
     </div>
 
@@ -1838,15 +1906,16 @@
             'use strict';
 
             /* ============================================================
-               🔥 FIREBASE CONFIG — GANTI DENGAN PUNYA KAMU
+               FIREBASE CONFIG — dari user
                ============================================================ */
             const firebaseConfig = {
-                apiKey: "AIzaSyDemoKeyDoNotUseInProduction",
-                authDomain: "your-project.firebaseapp.com",
-                projectId: "your-project-id",
-                storageBucket: "your-project.appspot.com",
-                messagingSenderId: "123456789",
-                appId: "1:123456789:web:abcdef"
+                apiKey: "AIzaSyDTqzvWQUcR4piWnprU7baAp-CRgbWRFxE",
+                authDomain: "preset-lbry.firebaseapp.com",
+                projectId: "preset-lbry",
+                storageBucket: "preset-lbry.firebasestorage.app",
+                messagingSenderId: "753769822591",
+                appId: "1:753769822591:web:7cd6eae45f4a8c4936c24a",
+                measurementId: "G-CCT5VC473G"
             };
 
             /* ============================================================
@@ -1913,7 +1982,9 @@
                 ext: '<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
                 check: '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',
                 alert: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16" r="0.6"/></svg>',
-                userPlus: '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="19" y1="2" x2="19" y2="8"/><line x1="16" y1="5" x2="22" y2="5"/></svg>'
+                userPlus: '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="19" y1="2" x2="19" y2="8"/><line x1="16" y1="5" x2="22" y2="5"/></svg>',
+                trash: '<svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>',
+                edit: '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>'
             };
 
             /* ============================================================
@@ -1927,10 +1998,11 @@
             let currentCreator = null;
             let currentUser = null;
             let currentUserCreator = null;
+            let currentUserCreatorId = null; // doc id di firestore
             let isCreator = false;
             let unsubscribeTemplates = null;
             let unsubscribeCreators = null;
-            let viewedTemplates = {}; // cache untuk cegah view spam
+            let viewedTemplates = {};
 
             const cardGrid = document.getElementById('cardGrid');
             const searchInput = document.getElementById('searchInput');
@@ -2025,6 +2097,7 @@
                     mobileUploadBtn.style.display = 'none';
                     isCreator = false;
                     currentUserCreator = null;
+                    currentUserCreatorId = null;
                     viewedTemplates = {};
                 }
             }
@@ -2036,10 +2109,11 @@
                         if (!snapshot.empty) {
                             isCreator = true;
                             currentUserCreator = snapshot.docs[0].data();
-                            currentUserCreator.id = snapshot.docs[0].id;
+                            currentUserCreatorId = snapshot.docs[0].id;
                         } else {
                             isCreator = false;
                             currentUserCreator = null;
+                            currentUserCreatorId = null;
                         }
                     })
                     .catch(() => { isCreator = false; });
@@ -2189,6 +2263,13 @@
                             data.id = doc.id;
                             allCreators.push(data);
                         });
+                        // Update current user creator data jika ada
+                        if (currentUser && currentUserCreatorId) {
+                            const updated = allCreators.find(c => c.id === currentUserCreatorId);
+                            if (updated) {
+                                currentUserCreator = updated;
+                            }
+                        }
                         if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
                         else render();
                     }, err => {
@@ -2200,6 +2281,16 @@
             function addTemplate(data) {
                 if (!db) return Promise.reject('Firestore not ready');
                 return db.collection('templates').add(data);
+            }
+
+            function updateTemplate(docId, data) {
+                if (!db) return Promise.reject('Firestore not ready');
+                return db.collection('templates').doc(docId).update(data);
+            }
+
+            function deleteTemplate(docId) {
+                if (!db) return Promise.reject('Firestore not ready');
+                return db.collection('templates').doc(docId).delete();
             }
 
             function incrementField(docId, field, amount = 1) {
@@ -2214,7 +2305,11 @@
                 return db.collection('creators').add(data);
             }
 
-            // View tracking: cek apakah user sudah pernah view
+            function updateCreator(docId, data) {
+                if (!db) return Promise.reject('Firestore not ready');
+                return db.collection('creators').doc(docId).update(data);
+            }
+
             function hasUserViewed(templateId, userId) {
                 if (!db || !userId) return Promise.resolve(false);
                 return db.collection('templates').doc(templateId).collection('views').doc(userId).get()
@@ -2228,7 +2323,6 @@
                 });
             }
 
-            // Like tracking: cek apakah user sudah like
             function hasUserLiked(templateId, userId) {
                 if (!db || !userId) return Promise.resolve(false);
                 return db.collection('templates').doc(templateId).collection('likes').doc(userId).get()
@@ -2389,12 +2483,13 @@
                 }
                 html += `<div class="creator-grid">`;
                 creators.forEach(c => {
+                    const displayName = c.displayName || c.name || '';
                     const count = allTemplates.filter(t => (t.creator || '').toLowerCase() === (c.name || '')
                         .toLowerCase()).length;
                     html += `
                 <div class="creator-card" data-creator="${escapeHtml(c.name || '')}">
-                  <div class="avatar">${getInitials(c.name)}</div>
-                  <div class="name">${escapeHtml(c.name || '')}</div>
+                  <div class="avatar">${getInitials(displayName)}</div>
+                  <div class="name">${escapeHtml(displayName)}</div>
                   <div class="sub">${escapeHtml(c.software || '')}</div>
                   <div class="count">${count} template</div>
                 </div>
@@ -2418,25 +2513,37 @@
             }
 
             /* ============================================================
-               PROFILE HEADER
+               PROFILE HEADER — dengan edit profile untuk owner
                ============================================================ */
             function buildProfileHeader(name) {
                 const c = allCreators.find(cr => (cr.name || '').toLowerCase() === name.toLowerCase());
                 const count = allTemplates.filter(t => (t.creator || '').toLowerCase() === name.toLowerCase()).length;
+                const displayName = c && c.displayName ? escapeHtml(c.displayName) : escapeHtml(name);
                 const bio = c && c.bio ? escapeHtml(c.bio) : 'Belum menambahkan bio.';
                 const software = c && c.software ? escapeHtml(c.software) : '';
                 const portfolio = c && c.portfolio ? c.portfolio : '';
                 const wa = c && c.wa ? c.wa : '';
                 const email = c && c.email ? c.email : '';
+                const isOwnProfile = currentUser && c && c.uid === currentUser.uid;
+
+                let editBtn = '';
+                if (isOwnProfile) {
+                    editBtn =
+                        `<button class="edit-profile-btn" id="editProfileBtn">${ICON.edit} Edit Profil</button>`;
+                }
+
                 return `
               <button class="back-link" id="backToCreators">${ICON.arrowLeft} Semua kreator</button>
               <div class="profile-header">
-                <div class="avatar">${getInitials(name)}</div>
+                <div class="avatar">${getInitials(displayName)}</div>
                 <div class="info">
-                  <h1>${escapeHtml(name)}</h1>
+                  <h1>${displayName}</h1>
                   ${software ? `<div class="role">${software}</div>` : ''}
                   <div class="bio">${bio}</div>
-                  <div class="stats"><span><strong>${count}</strong> template</span></div>
+                  <div class="stats">
+                    <span><strong>${count}</strong> template</span>
+                    ${editBtn}
+                  </div>
                   ${portfolio ? `<a class="portfolio-link" href="${portfolio}" target="_blank" rel="noopener">${ICON.ext} Lihat portfolio</a>` : ''}
                   ${wa ? `<div class="contact-row" style="margin-top:0.4rem;">${ICON.wa} <a href="https://wa.me/${wa}" target="_blank" rel="noopener">${wa}</a></div>` : ''}
                   ${email ? `<div class="contact-row">${ICON.mail} <a href="mailto:${email}">${email}</a></div>` : ''}
@@ -2452,10 +2559,121 @@
                     render();
                     updateUrl();
                 });
+                const editBtn = document.getElementById('editProfileBtn');
+                if (editBtn) editBtn.addEventListener('click', openEditProfileModal);
             }
 
             /* ============================================================
-               DETAIL — dengan view & like tracking per user
+               EDIT PROFILE MODAL
+               ============================================================ */
+            function openEditProfileModal() {
+                if (!currentUserCreator || !currentUserCreatorId) {
+                    showToast('Data kreator tidak ditemukan', 'error');
+                    return;
+                }
+                const c = currentUserCreator;
+                document.getElementById('eUsername').value = c.name || '';
+                document.getElementById('eDisplayName').value = c.displayName || c.name || '';
+                document.getElementById('eBio').value = c.bio || '';
+                document.getElementById('eSoftware').value = c.software || 'Alight Motion';
+                document.getElementById('eWa').value = c.wa || '';
+                document.getElementById('eEmail').value = c.email || '';
+                document.getElementById('ePortfolio').value = c.portfolio || '';
+                document.getElementById('eUsernameHint').innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah.';
+                document.getElementById('editProfileModal').classList.add('active');
+            }
+
+            // Cek username availability di edit profile
+            document.getElementById('eUsername').addEventListener('input', function() {
+                const val = this.value.trim();
+                const hint = document.getElementById('eUsernameHint');
+                if (val.length < 3) {
+                    hint.innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">✗</span> Terlalu pendek';
+                    return;
+                }
+                if (!/^[a-zA-Z0-9_]{3,20}$/.test(val)) {
+                    hint.innerHTML =
+                        'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">✗</span> Karakter tidak valid';
+                    return;
+                }
+                // Cek di allCreators, exclude diri sendiri
+                const exists = allCreators.some(c =>
+                    (c.name || '').toLowerCase() === val.toLowerCase() &&
+                    c.id !== currentUserCreatorId
+                );
+                if (exists) {
+                    hint.innerHTML =
+                        'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">✗</span> Username sudah dipakai';
+                } else {
+                    hint.innerHTML =
+                        'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="check">✓</span> Tersedia';
+                }
+            });
+
+            document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (!db || !currentUserCreatorId) { showToast('Firebase belum siap', 'error'); return; }
+
+                const username = document.getElementById('eUsername').value.trim();
+                const displayName = document.getElementById('eDisplayName').value.trim();
+                const bio = document.getElementById('eBio').value.trim();
+                const software = document.getElementById('eSoftware').value;
+                const wa = document.getElementById('eWa').value.trim();
+                const email = document.getElementById('eEmail').value.trim();
+                const portfolio = document.getElementById('ePortfolio').value.trim();
+
+                if (!username) { showToast('Username wajib diisi', 'error'); return; }
+                if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+                    showToast('Username hanya huruf/angka/garis bawah, min 3 karakter', 'error');
+                    return;
+                }
+                if (!displayName) { showToast('Nama tampilan wajib diisi', 'error'); return; }
+
+                // Cek duplikat username
+                const exists = allCreators.some(c =>
+                    (c.name || '').toLowerCase() === username.toLowerCase() &&
+                    c.id !== currentUserCreatorId
+                );
+                if (exists) {
+                    showToast('Username sudah digunakan oleh kreator lain', 'error');
+                    return;
+                }
+
+                const data = {
+                    name: username,
+                    displayName: displayName,
+                    bio: bio,
+                    software: software,
+                    wa: wa,
+                    email: email,
+                    portfolio: portfolio
+                };
+
+                updateCreator(currentUserCreatorId, data)
+                    .then(() => {
+                        showToast('Profil berhasil diperbarui!', 'success');
+                        document.getElementById('editProfileModal').classList.remove('active');
+                        // Update local data
+                        currentUserCreator = { ...currentUserCreator, ...data };
+                        // Refresh view
+                        if (currentView === 'creators' && currentCreator) {
+                            render();
+                        } else {
+                            render();
+                        }
+                    })
+                    .catch(err => {
+                        showToast('Gagal update profil: ' + err.message, 'error');
+                    });
+            });
+
+            document.getElementById('closeEditProfileModal').addEventListener('click', () => document.getElementById(
+                'editProfileModal').classList.remove('active'));
+            document.getElementById('cancelEditProfile').addEventListener('click', () => document.getElementById(
+                'editProfileModal').classList.remove('active'));
+
+            /* ============================================================
+               DETAIL — dengan view, like, dan delete untuk owner
                ============================================================ */
             function openDetail(template) {
                 if (!template || !template.id) return;
@@ -2468,11 +2686,9 @@
                 if (userId && !viewedTemplates[template.id]) {
                     hasUserViewed(template.id, userId).then(exists => {
                         if (!exists) {
-                            // Increment view count dan record view
                             incrementField(template.id, 'views', 1).catch(() => {});
                             recordView(template.id, userId).catch(() => {});
                             viewedTemplates[template.id] = true;
-                            // Update tampilan view count di detail
                             const viewEl = document.getElementById('detailViewCount');
                             if (viewEl) {
                                 const curr = parseInt(viewEl.textContent.replace(/\D/g, '')) || 0;
@@ -2481,7 +2697,6 @@
                         }
                     }).catch(() => {});
                 } else if (!userId) {
-                    // Anonymous: tetap increment tapi tidak dicatat
                     incrementField(template.id, 'views', 1).catch(() => {});
                 }
 
@@ -2533,6 +2748,9 @@
               `;
                 }
 
+                // Cek apakah user adalah pemilik template
+                const isOwner = currentUser && template.creatorUid === currentUser.uid;
+
                 // Cek status like
                 let likedState = false;
                 const likeCheck = userId ? hasUserLiked(template.id, userId) : Promise.resolve(false);
@@ -2544,6 +2762,16 @@
                         else btn.classList.remove('liked');
                     }
                 }).catch(() => {});
+
+                // Owner actions
+                let ownerActions = '';
+                if (isOwner) {
+                    ownerActions = `
+                <div class="preset-owner-actions">
+                  <button class="btn btn-danger" id="deletePresetBtn" data-id="${template.id}">${ICON.trash} Hapus Preset</button>
+                </div>
+              `;
+                }
 
                 content.innerHTML = `
               <div class="modal-head">
@@ -2577,6 +2805,7 @@
                 ${!isFree ? `<button class="btn btn-primary" id="useTemplateBtn" data-id="${template.id}">${ICON.download} Gunakan Template</button>` :
                 `<a href="${template.linkDrive || template.linkProject || '#'}" target="_blank" rel="noopener" class="btn btn-primary" ${!template.linkDrive && !template.linkProject ? 'style="opacity:0.5;pointer-events:none;"' : ''}>${ICON.download} Unduh</a>`}
               </div>
+              ${ownerActions}
               ${contactHtml}
               ${linksHtml}
             `;
@@ -2596,7 +2825,7 @@
                     updateUrl();
                 });
 
-                // Like button — 1 akun hanya 1 like
+                // Like button
                 const likeBtn = document.getElementById('likeBtn');
                 if (likeBtn) {
                     likeBtn.addEventListener('click', function(e) {
@@ -2616,7 +2845,6 @@
                                 if (result.action === 'liked') {
                                     this.classList.add('liked');
                                     countEl.textContent = formatNumber(currentCount + 1);
-                                    // Update template data
                                     const tpl = allTemplates.find(t => t.id === id);
                                     if (tpl) tpl.likes = (tpl.likes || 0) + 1;
                                 } else {
@@ -2632,7 +2860,7 @@
                     });
                 }
 
-                // Use template (increment uses)
+                // Use template
                 const useBtn = document.getElementById('useTemplateBtn');
                 if (useBtn) {
                     useBtn.addEventListener('click', function() {
@@ -2648,6 +2876,30 @@
                                 showToast('Terima kasih telah menggunakan template ini!', 'success');
                             })
                             .catch(() => {});
+                    });
+                }
+
+                // Delete preset (owner only)
+                const deleteBtn = document.getElementById('deletePresetBtn');
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        if (!id || !db) return;
+                        if (!confirm('Yakin ingin menghapus preset ini? Tindakan ini tidak bisa dibatalkan.'))
+                            return;
+                        deleteTemplate(id)
+                            .then(() => {
+                                showToast('Preset berhasil dihapus', 'success');
+                                closeDetail();
+                                // Remove from local array
+                                const idx = allTemplates.findIndex(t => t.id === id);
+                                if (idx !== -1) allTemplates.splice(idx, 1);
+                                render();
+                                updateUrl();
+                            })
+                            .catch(err => {
+                                showToast('Gagal hapus: ' + err.message, 'error');
+                            });
                     });
                 }
             }
@@ -2705,10 +2957,10 @@
                         currentCreator = null;
                         setActiveNav('explore');
                         render();
-                        openDetail(tmpl);
+                        // Buka detail otomatis
+                        setTimeout(() => openDetail(tmpl), 300);
                         return;
                     } else {
-                        // Template tidak ditemukan, fallback ke explore
                         currentView = 'explore';
                         currentCreator = null;
                         setActiveNav('explore');
@@ -2749,7 +3001,7 @@
             }
 
             /* ============================================================
-               EVENTS — GRID (navigasi ke /{username}/{kode})
+               EVENTS — GRID
                ============================================================ */
             cardGrid.addEventListener('click', function(e) {
                 const card = e.target.closest('.card');
@@ -2758,7 +3010,6 @@
                 if (!t) return;
                 const username = t.creator || 'anonim';
                 const kode = t.kode || '';
-                // Update URL ke /{username}/{kode}
                 const newHash = `#/${encodeURIComponent(username)}/${kode}`;
                 if (window.location.hash !== newHash) history.pushState(null, '', newHash);
                 openDetail(t);
@@ -2938,7 +3189,7 @@
             });
 
             /* ============================================================
-               REGISTER CREATOR — dengan username unik
+               REGISTER CREATOR
                ============================================================ */
             function openRegisterModal() {
                 if (!currentUser) { showToast('Silakan masuk terlebih dahulu', 'info');
@@ -2946,31 +3197,34 @@
                 if (isCreator) { showToast('Anda sudah terdaftar sebagai kreator', 'info'); return; }
                 document.getElementById('registerCreatorModal').classList.add('active');
                 document.getElementById('rUsername').value = '';
+                document.getElementById('rUsername').dataset.checked = 'false';
                 document.getElementById('usernameHint').innerHTML =
                     'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="check">✓</span> Tersedia';
             }
 
-            // Cek username availability secara real-time
             document.getElementById('rUsername').addEventListener('input', function() {
                 const val = this.value.trim();
                 const hint = document.getElementById('usernameHint');
                 if (val.length < 3) {
                     hint.innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">✗</span> Terlalu pendek';
+                    this.dataset.checked = 'false';
                     return;
                 }
                 if (!/^[a-zA-Z0-9_]{3,20}$/.test(val)) {
                     hint.innerHTML =
                         'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">✗</span> Karakter tidak valid';
+                    this.dataset.checked = 'false';
                     return;
                 }
-                // Cek di allCreators
                 const exists = allCreators.some(c => (c.name || '').toLowerCase() === val.toLowerCase());
                 if (exists) {
                     hint.innerHTML =
                         'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">✗</span> Username sudah dipakai';
+                    this.dataset.checked = 'false';
                 } else {
                     hint.innerHTML =
                         'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="check">✓</span> Tersedia';
+                    this.dataset.checked = 'true';
                 }
             });
 
@@ -2979,11 +3233,13 @@
                 if (!currentUser || !db) { showToast('Firebase belum siap atau Anda belum login', 'error'); return; }
 
                 const name = document.getElementById('rUsername').value.trim();
+                const displayName = document.getElementById('rDisplayName').value.trim();
                 if (!name) { showToast('Username wajib diisi', 'error'); return; }
                 if (!/^[a-zA-Z0-9_]{3,20}$/.test(name)) {
                     showToast('Username hanya huruf/angka/garis bawah, min 3 karakter', 'error');
                     return;
                 }
+                if (!displayName) { showToast('Nama tampilan wajib diisi', 'error'); return; }
                 if (allCreators.some(c => (c.name || '').toLowerCase() === name.toLowerCase())) {
                     showToast('Username sudah terdaftar', 'error');
                     return;
@@ -2993,6 +3249,7 @@
 
                 const data = {
                     name,
+                    displayName,
                     bio: document.getElementById('rBio').value.trim(),
                     software,
                     wa: document.getElementById('rWa').value.trim(),
@@ -3009,7 +3266,7 @@
                         document.getElementById('registerCreatorModal').classList.remove('active');
                         isCreator = true;
                         currentUserCreator = data;
-                        currentUserCreator.id = 'temp';
+                        currentUserCreatorId = 'temp';
                         if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
                         else render();
                     })
@@ -3024,9 +3281,9 @@
             window.openRegisterModal = openRegisterModal;
 
             /* ============================================================
-               MISC — hapus notif yang tidak fungsi
+               MISC
                ============================================================ */
-            // Hapus tombol notif dari DOM karena tidak berfungsi
+            // Hapus notif button
             const notifBtn = document.getElementById('notifBtn');
             if (notifBtn) notifBtn.style.display = 'none';
 
@@ -3100,7 +3357,6 @@
 
           allow delete: if request.auth != null && request.auth.uid == resource.data.creatorUid;
 
-          // Subkoleksi untuk views dan likes
           match /views/{userId} {
             allow read: if true;
             allow write: if request.auth != null && request.auth.uid == userId;
@@ -3115,12 +3371,14 @@
           allow read: if true;
 
           allow create: if request.auth != null
-            && request.resource.data.keys().hasAll(['name', 'uid', 'registeredAt'])
+            && request.resource.data.keys().hasAll(['name', 'displayName', 'uid', 'registeredAt'])
             && request.resource.data.uid == request.auth.uid
             && request.resource.data.name is string && request.resource.data.name.size() >= 3
-            && request.resource.data.name.matches('^[a-zA-Z0-9_]{3,20}$');
+            && request.resource.data.name.matches('^[a-zA-Z0-9_]{3,20}$')
+            && request.resource.data.displayName is string && request.resource.data.displayName.size() > 0;
 
-          allow update: if request.auth != null && request.auth.uid == resource.data.uid;
+          allow update: if request.auth != null && request.auth.uid == resource.data.uid
+            && request.resource.data.diff(resource.data).affectedKeys.hasOnly(['name', 'displayName', 'bio', 'software', 'wa', 'email', 'portfolio']);
 
           allow delete: if request.auth != null && request.auth.uid == resource.data.uid;
         }
