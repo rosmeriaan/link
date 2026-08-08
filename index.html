@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 
-    <!-- Firebase v9 Modular SDK via compat -->
+    <!-- Firebase v9 Compat SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js">
@@ -1468,6 +1468,16 @@
             font-size: 0.78rem;
             padding: 0.4rem 0.9rem;
         }
+        .preset-owner-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .preset-owner-actions .btn {
+            font-size: 0.72rem;
+            padding: 0.3rem 0.7rem;
+        }
 
         /* ============================================================
            LOGIN MODAL
@@ -1591,20 +1601,6 @@
         .username-hint .cross {
             color: #a13d3d;
             font-weight: 600;
-        }
-        .profile-header .stats .edit-profile-btn {
-            font-size: 0.7rem;
-            padding: 0.2rem 0.6rem;
-        }
-        .preset-owner-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-            flex-wrap: wrap;
-        }
-        .preset-owner-actions .btn {
-            font-size: 0.72rem;
-            padding: 0.3rem 0.7rem;
         }
     </style>
 </head>
@@ -1898,6 +1894,64 @@
             </div>
         </div>
 
+        <!-- EDIT TEMPLATE MODAL -->
+        <div class="modal-overlay" id="editTemplateModal">
+            <div class="modal-sheet">
+                <div class="sheet-handle"></div>
+                <div class="modal-head">
+                    <h2>Edit Template</h2>
+                    <button class="modal-close" id="closeEditTemplateModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                </div>
+                <form id="editTemplateForm">
+                    <div class="form-section">
+                        <div class="section-label">Info Dasar</div>
+                        <div class="form-group"><label>Judul *</label><input type="text" id="eTJudul" required /></div>
+                        <div class="form-group"><label>Kategori *</label>
+                            <select id="eTKategori" required><option value="Preset">Preset</option><option value="Assets">Assets</option></select>
+                        </div>
+                        <div class="form-group"><label>Deskripsi</label><textarea id="eTDeskripsi" rows="2" placeholder="Ceritakan tentang karya ini..."></textarea></div>
+                    </div>
+                    <div class="form-section">
+                        <div class="section-label">Preview</div>
+                        <div class="form-group"><label>YouTube URL</label><input type="url" id="eTLinkYoutube" placeholder="https://youtube.com/watch?v=..." /></div>
+                        <div class="form-group"><label>Aspect Ratio *</label>
+                            <select id="eTAspect" required>
+                                <option value="9:16">9:16 — Vertical</option>
+                                <option value="16:9">16:9 — Landscape</option>
+                                <option value="1:1">1:1 — Square</option>
+                                <option value="4:3">4:3</option>
+                                <option value="3:4">3:4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <div class="section-label">Akses</div>
+                        <div class="form-group"><label>Tipe *</label>
+                            <select id="eTLicense" required><option value="free">Gratis</option><option value="paid">Berbayar</option></select>
+                        </div>
+                        <div class="price-wrap" id="eTPriceWrapper">
+                            <div class="form-group"><label>Harga (Rp)</label><input type="number" id="eTHarga" placeholder="10000" min="1000" step="1000" /></div>
+                        </div>
+                    </div>
+                    <div class="form-section" id="eTFileLinksSection">
+                        <div class="section-label">File &amp; Link <span style="font-weight:400;text-transform:none;font-family:var(--font);color:var(--text-muted);font-size:0.7rem;">(hanya untuk template gratis)</span></div>
+                        <div class="form-group"><label>Link Project</label><input type="url" id="eTLinkProject" placeholder="https://..." /></div>
+                        <div class="form-group"><label>Link Drive</label><input type="url" id="eTLinkDrive" placeholder="https://drive.google.com/..." /></div>
+                        <div class="form-row2">
+                            <div class="form-group"><label>Link Asset 1</label><input type="url" id="eTLinkAsset1" placeholder="https://..." /></div>
+                            <div class="form-group"><label>Link Asset 2</label><input type="url" id="eTLinkAsset2" placeholder="https://..." /></div>
+                        </div>
+                        <div class="form-hint" id="eTFileLinksHint">Untuk template <strong>gratis</strong>, sertakan link download atau project. Untuk template <strong>berbayar</strong>, link tidak akan ditampilkan.</div>
+                    </div>
+                    <input type="hidden" id="eTEditId" />
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <button type="button" class="btn btn-secondary" id="cancelEditTemplate">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div class="toast-container" id="toastContainer"></div>
     </div>
 
@@ -1906,7 +1960,7 @@
             'use strict';
 
             /* ============================================================
-               FIREBASE CONFIG — dari user
+               FIREBASE CONFIG
                ============================================================ */
             const firebaseConfig = {
                 apiKey: "AIzaSyDTqzvWQUcR4piWnprU7baAp-CRgbWRFxE",
@@ -1924,6 +1978,7 @@
             let firebaseInitialized = false;
             let db = null;
             let auth = null;
+            let dataLoaded = false;
 
             try {
                 firebase.initializeApp(firebaseConfig);
@@ -1937,7 +1992,7 @@
                         document.getElementById('setupGuideContainer').style.display = 'none';
                         subscribeTemplates();
                         subscribeCreators();
-                        handleHashChange();
+                        // Data will load, then handle hash
                     })
                     .catch(err => {
                         console.warn('Firestore connection error:', err.message);
@@ -1949,7 +2004,6 @@
                                     document.getElementById('setupGuideContainer').style.display = 'none';
                                     subscribeTemplates();
                                     subscribeCreators();
-                                    handleHashChange();
                                 })
                                 .catch(() => {});
                         }, 5000);
@@ -1998,11 +2052,12 @@
             let currentCreator = null;
             let currentUser = null;
             let currentUserCreator = null;
-            let currentUserCreatorId = null; // doc id di firestore
+            let currentUserCreatorId = null;
             let isCreator = false;
             let unsubscribeTemplates = null;
             let unsubscribeCreators = null;
             let viewedTemplates = {};
+            let pendingHash = null; // untuk menunggu data load
 
             const cardGrid = document.getElementById('cardGrid');
             const searchInput = document.getElementById('searchInput');
@@ -2244,7 +2299,15 @@
                             data.id = doc.id;
                             allTemplates.push(data);
                         });
+                        dataLoaded = true;
                         render();
+
+                        // Jika ada pending hash dari URL, proses sekarang
+                        if (pendingHash) {
+                            const hash = pendingHash;
+                            pendingHash = null;
+                            processHash(hash);
+                        }
                     }, err => {
                         console.warn('Templates subscription error:', err.message);
                         setTimeout(() => { if (db) subscribeTemplates(); }, 5000);
@@ -2263,7 +2326,6 @@
                             data.id = doc.id;
                             allCreators.push(data);
                         });
-                        // Update current user creator data jika ada
                         if (currentUser && currentUserCreatorId) {
                             const updated = allCreators.find(c => c.id === currentUserCreatorId);
                             if (updated) {
@@ -2513,7 +2575,7 @@
             }
 
             /* ============================================================
-               PROFILE HEADER — dengan edit profile untuk owner
+               PROFILE HEADER
                ============================================================ */
             function buildProfileHeader(name) {
                 const c = allCreators.find(cr => (cr.name || '').toLowerCase() === name.toLowerCase());
@@ -2564,7 +2626,7 @@
             }
 
             /* ============================================================
-               EDIT PROFILE MODAL
+               EDIT PROFILE
                ============================================================ */
             function openEditProfileModal() {
                 if (!currentUserCreator || !currentUserCreatorId) {
@@ -2583,7 +2645,6 @@
                 document.getElementById('editProfileModal').classList.add('active');
             }
 
-            // Cek username availability di edit profile
             document.getElementById('eUsername').addEventListener('input', function() {
                 const val = this.value.trim();
                 const hint = document.getElementById('eUsernameHint');
@@ -2596,7 +2657,6 @@
                         'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">✗</span> Karakter tidak valid';
                     return;
                 }
-                // Cek di allCreators, exclude diri sendiri
                 const exists = allCreators.some(c =>
                     (c.name || '').toLowerCase() === val.toLowerCase() &&
                     c.id !== currentUserCreatorId
@@ -2613,7 +2673,6 @@
             document.getElementById('editProfileForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 if (!db || !currentUserCreatorId) { showToast('Firebase belum siap', 'error'); return; }
-
                 const username = document.getElementById('eUsername').value.trim();
                 const displayName = document.getElementById('eDisplayName').value.trim();
                 const bio = document.getElementById('eBio').value.trim();
@@ -2621,15 +2680,12 @@
                 const wa = document.getElementById('eWa').value.trim();
                 const email = document.getElementById('eEmail').value.trim();
                 const portfolio = document.getElementById('ePortfolio').value.trim();
-
                 if (!username) { showToast('Username wajib diisi', 'error'); return; }
                 if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
                     showToast('Username hanya huruf/angka/garis bawah, min 3 karakter', 'error');
                     return;
                 }
                 if (!displayName) { showToast('Nama tampilan wajib diisi', 'error'); return; }
-
-                // Cek duplikat username
                 const exists = allCreators.some(c =>
                     (c.name || '').toLowerCase() === username.toLowerCase() &&
                     c.id !== currentUserCreatorId
@@ -2638,33 +2694,15 @@
                     showToast('Username sudah digunakan oleh kreator lain', 'error');
                     return;
                 }
-
-                const data = {
-                    name: username,
-                    displayName: displayName,
-                    bio: bio,
-                    software: software,
-                    wa: wa,
-                    email: email,
-                    portfolio: portfolio
-                };
-
+                const data = { name: username, displayName, bio, software, wa, email, portfolio };
                 updateCreator(currentUserCreatorId, data)
                     .then(() => {
                         showToast('Profil berhasil diperbarui!', 'success');
                         document.getElementById('editProfileModal').classList.remove('active');
-                        // Update local data
                         currentUserCreator = { ...currentUserCreator, ...data };
-                        // Refresh view
-                        if (currentView === 'creators' && currentCreator) {
-                            render();
-                        } else {
-                            render();
-                        }
+                        render();
                     })
-                    .catch(err => {
-                        showToast('Gagal update profil: ' + err.message, 'error');
-                    });
+                    .catch(err => { showToast('Gagal update profil: ' + err.message, 'error'); });
             });
 
             document.getElementById('closeEditProfileModal').addEventListener('click', () => document.getElementById(
@@ -2673,10 +2711,126 @@
                 'editProfileModal').classList.remove('active'));
 
             /* ============================================================
-               DETAIL — dengan view, like, dan delete untuk owner
+               EDIT TEMPLATE
+               ============================================================ */
+            function openEditTemplateModal(template) {
+                if (!template) return;
+                document.getElementById('eTEditId').value = template.id;
+                document.getElementById('eTJudul').value = template.judul || '';
+                document.getElementById('eTKategori').value = template.kategori || 'Preset';
+                document.getElementById('eTDeskripsi').value = template.deskripsi || '';
+                document.getElementById('eTLinkYoutube').value = template.linkYoutube || '';
+                document.getElementById('eTAspect').value = template.aspectRatio || '16:9';
+                document.getElementById('eTLicense').value = template.license || 'free';
+                document.getElementById('eTHarga').value = template.harga || '';
+                document.getElementById('eTLinkProject').value = template.linkProject || '';
+                document.getElementById('eTLinkDrive').value = template.linkDrive || '';
+                document.getElementById('eTLinkAsset1').value = template.linkAsset1 || '';
+                document.getElementById('eTLinkAsset2').value = template.linkAsset2 || '';
+
+                const isPaid = template.license === 'paid';
+                const wrap = document.getElementById('eTPriceWrapper');
+                if (isPaid) { wrap.classList.add('active'); } else { wrap.classList.remove('active'); }
+
+                const section = document.getElementById('eTFileLinksSection');
+                const hint = document.getElementById('eTFileLinksHint');
+                if (isPaid) {
+                    section.style.opacity = '0.4';
+                    section.style.pointerEvents = 'none';
+                    hint.innerHTML =
+                        'Untuk template <strong>berbayar</strong>, link tidak ditampilkan. Pembeli akan menghubungi kamu via WA/email.';
+                } else {
+                    section.style.opacity = '1';
+                    section.style.pointerEvents = 'auto';
+                    hint.innerHTML =
+                        'Untuk template <strong>gratis</strong>, sertakan link download atau project.';
+                }
+
+                document.getElementById('editTemplateModal').classList.add('active');
+            }
+
+            document.getElementById('eTLicense').addEventListener('change', function() {
+                const wrap = document.getElementById('eTPriceWrapper');
+                const section = document.getElementById('eTFileLinksSection');
+                const hint = document.getElementById('eTFileLinksHint');
+                if (this.value === 'paid') {
+                    wrap.classList.add('active');
+                    section.style.opacity = '0.4';
+                    section.style.pointerEvents = 'none';
+                    hint.innerHTML =
+                        'Untuk template <strong>berbayar</strong>, link tidak ditampilkan. Pembeli akan menghubungi kamu via WA/email.';
+                } else {
+                    wrap.classList.remove('active');
+                    section.style.opacity = '1';
+                    section.style.pointerEvents = 'auto';
+                    hint.innerHTML =
+                        'Untuk template <strong>gratis</strong>, sertakan link download atau project.';
+                }
+            });
+
+            document.getElementById('editTemplateForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (!db) { showToast('Firebase belum siap', 'error'); return; }
+                const id = document.getElementById('eTEditId').value;
+                if (!id) { showToast('ID template tidak ditemukan', 'error'); return; }
+
+                const judul = document.getElementById('eTJudul').value.trim();
+                const kategori = document.getElementById('eTKategori').value;
+                const deskripsi = document.getElementById('eTDeskripsi').value.trim();
+                const linkYoutube = document.getElementById('eTLinkYoutube').value.trim();
+                const aspect = document.getElementById('eTAspect').value;
+                const license = document.getElementById('eTLicense').value;
+                const harga = parseInt(document.getElementById('eTHarga').value, 10) || 0;
+                const linkProject = document.getElementById('eTLinkProject').value.trim();
+                const linkDrive = document.getElementById('eTLinkDrive').value.trim();
+                const linkAsset1 = document.getElementById('eTLinkAsset1').value.trim();
+                const linkAsset2 = document.getElementById('eTLinkAsset2').value.trim();
+
+                if (!judul || !kategori || !aspect) { showToast('Judul, kategori, dan aspect ratio wajib diisi',
+                        'error'); return; }
+                if (license === 'paid' && !harga) { showToast('Isi harga untuk template berbayar', 'error'); return; }
+
+                const data = {
+                    judul,
+                    kategori,
+                    deskripsi,
+                    linkYoutube,
+                    aspectRatio: aspect,
+                    license,
+                    harga,
+                    linkProject: license === 'free' ? linkProject : '',
+                    linkDrive: license === 'free' ? linkDrive : '',
+                    linkAsset1: license === 'free' ? linkAsset1 : '',
+                    linkAsset2: license === 'free' ? linkAsset2 : ''
+                };
+
+                updateTemplate(id, data)
+                    .then(() => {
+                        showToast('Template berhasil diperbarui!', 'success');
+                        document.getElementById('editTemplateModal').classList.remove('active');
+                        // Update local
+                        const idx = allTemplates.findIndex(t => t.id === id);
+                        if (idx !== -1) {
+                            allTemplates[idx] = { ...allTemplates[idx], ...data };
+                        }
+                        render();
+                    })
+                    .catch(err => { showToast('Gagal update: ' + err.message, 'error'); });
+            });
+
+            document.getElementById('closeEditTemplateModal').addEventListener('click', () => document.getElementById(
+                'editTemplateModal').classList.remove('active'));
+            document.getElementById('cancelEditTemplate').addEventListener('click', () => document.getElementById(
+                'editTemplateModal').classList.remove('active'));
+
+            /* ============================================================
+               DETAIL — dengan view, like, delete, dan edit untuk owner
                ============================================================ */
             function openDetail(template) {
-                if (!template || !template.id) return;
+                if (!template || !template.id) {
+                    showToast('Template tidak ditemukan', 'error');
+                    return;
+                }
                 const ytId = template.linkYoutube ? getYoutubeId(template.linkYoutube) : null;
                 const isFree = template.license === 'free';
                 const content = document.getElementById('detailContent');
@@ -2748,10 +2902,8 @@
               `;
                 }
 
-                // Cek apakah user adalah pemilik template
                 const isOwner = currentUser && template.creatorUid === currentUser.uid;
 
-                // Cek status like
                 let likedState = false;
                 const likeCheck = userId ? hasUserLiked(template.id, userId) : Promise.resolve(false);
                 likeCheck.then(liked => {
@@ -2763,11 +2915,11 @@
                     }
                 }).catch(() => {});
 
-                // Owner actions
                 let ownerActions = '';
                 if (isOwner) {
                     ownerActions = `
                 <div class="preset-owner-actions">
+                  <button class="btn btn-secondary" id="editPresetBtn" data-id="${template.id}">${ICON.edit} Edit Preset</button>
                   <button class="btn btn-danger" id="deletePresetBtn" data-id="${template.id}">${ICON.trash} Hapus Preset</button>
                 </div>
               `;
@@ -2812,10 +2964,8 @@
 
                 document.getElementById('detailModal').classList.add('active');
 
-                // Close
                 document.getElementById('closeDetailModal').addEventListener('click', closeDetail);
 
-                // Creator line
                 document.getElementById('detailCreatorLine').addEventListener('click', function() {
                     closeDetail();
                     currentCreator = this.dataset.creator;
@@ -2854,9 +3004,7 @@
                                     if (tpl) tpl.likes = Math.max(0, (tpl.likes || 0) - 1);
                                 }
                             })
-                            .catch(err => {
-                                showToast('Gagal: ' + err.message, 'error');
-                            });
+                            .catch(err => { showToast('Gagal: ' + err.message, 'error'); });
                     });
                 }
 
@@ -2879,7 +3027,7 @@
                     });
                 }
 
-                // Delete preset (owner only)
+                // Delete preset
                 const deleteBtn = document.getElementById('deletePresetBtn');
                 if (deleteBtn) {
                     deleteBtn.addEventListener('click', function() {
@@ -2891,15 +3039,24 @@
                             .then(() => {
                                 showToast('Preset berhasil dihapus', 'success');
                                 closeDetail();
-                                // Remove from local array
                                 const idx = allTemplates.findIndex(t => t.id === id);
                                 if (idx !== -1) allTemplates.splice(idx, 1);
                                 render();
                                 updateUrl();
                             })
-                            .catch(err => {
-                                showToast('Gagal hapus: ' + err.message, 'error');
-                            });
+                            .catch(err => { showToast('Gagal hapus: ' + err.message, 'error'); });
+                    });
+                }
+
+                // Edit preset
+                const editBtn = document.getElementById('editPresetBtn');
+                if (editBtn) {
+                    editBtn.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        const tpl = allTemplates.find(t => t.id === id);
+                        if (!tpl) return;
+                        closeDetail();
+                        openEditTemplateModal(tpl);
                     });
                 }
             }
@@ -2912,22 +3069,7 @@
             /* ============================================================
                URL ROUTING — /{username}/{kode}
                ============================================================ */
-            function updateUrl() {
-                let path;
-                if (currentView === 'creators' && currentCreator) {
-                    path = `/${encodeURIComponent(currentCreator)}`;
-                } else if (currentView === 'creators') {
-                    path = '/kreator';
-                } else {
-                    path = '/explore';
-                }
-                let query = (activeRatio) ? `?ratio=${encodeURIComponent(activeRatio)}` : '';
-                const newHash = '#' + path + query;
-                if (window.location.hash !== newHash) history.pushState(null, '', newHash);
-            }
-
-            function handleHashChange() {
-                const hash = window.location.hash.slice(1);
+            function processHash(hash) {
                 if (!hash || hash === '/') {
                     currentView = 'explore';
                     currentCreator = null;
@@ -2944,10 +3086,10 @@
                 applyRatioChipUI();
 
                 const parts = path.split('/').filter(Boolean);
-                // Cek pola /{username}/{kode}
                 if (parts.length === 2) {
                     const username = decodeURIComponent(parts[0]);
                     const kode = parts[1];
+                    // Cari template di allTemplates
                     const tmpl = allTemplates.find(t =>
                         (t.creator || '').toLowerCase() === username.toLowerCase() &&
                         (t.kode || '') === kode
@@ -2957,10 +3099,11 @@
                         currentCreator = null;
                         setActiveNav('explore');
                         render();
-                        // Buka detail otomatis
-                        setTimeout(() => openDetail(tmpl), 300);
+                        // Tunggu sejenak agar render selesai, lalu buka detail
+                        setTimeout(() => openDetail(tmpl), 100);
                         return;
                     } else {
+                        // Template tidak ditemukan, tetap di explore
                         currentView = 'explore';
                         currentCreator = null;
                         setActiveNav('explore');
@@ -2987,6 +3130,30 @@
                 currentCreator = null;
                 setActiveNav('explore');
                 render();
+            }
+
+            function updateUrl() {
+                let path;
+                if (currentView === 'creators' && currentCreator) {
+                    path = `/${encodeURIComponent(currentCreator)}`;
+                } else if (currentView === 'creators') {
+                    path = '/kreator';
+                } else {
+                    path = '/explore';
+                }
+                let query = (activeRatio) ? `?ratio=${encodeURIComponent(activeRatio)}` : '';
+                const newHash = '#' + path + query;
+                if (window.location.hash !== newHash) history.pushState(null, '', newHash);
+            }
+
+            function handleHashChange() {
+                const hash = window.location.hash.slice(1);
+                if (!dataLoaded) {
+                    // Data belum load, simpan hash untuk diproses nanti
+                    pendingHash = hash;
+                    return;
+                }
+                processHash(hash);
             }
 
             function setActiveNav(view) {
@@ -3283,7 +3450,6 @@
             /* ============================================================
                MISC
                ============================================================ */
-            // Hapus notif button
             const notifBtn = document.getElementById('notifBtn');
             if (notifBtn) notifBtn.style.display = 'none';
 
@@ -3303,22 +3469,21 @@
                     `<div class="grid is-loading">${Array(4).fill('<div><div class="thumb skel" style="aspect-ratio:4/5"></div><div class="skel-line skel w60"></div><div class="skel-line skel w40"></div></div>').join('')}</div>`;
                 setTimeout(() => {
                     if (firebaseInitialized) {
-                        handleHashChange();
+                        // Process hash after data loads
+                        const hash = window.location.hash.slice(1);
+                        if (hash) {
+                            if (dataLoaded) {
+                                processHash(hash);
+                            } else {
+                                pendingHash = hash;
+                            }
+                        } else {
+                            processHash('');
+                        }
                     } else {
                         document.getElementById('setupGuideContainer').style.display = 'block';
-                        if (db) {
-                            db.collection('templates').limit(1).get()
-                                .then(() => {
-                                    firebaseInitialized = true;
-                                    document.getElementById('setupGuideContainer').style.display = 'none';
-                                    subscribeTemplates();
-                                    subscribeCreators();
-                                    handleHashChange();
-                                })
-                                .catch(() => {});
-                        }
                     }
-                }, 500);
+                }, 300);
             }
 
             document.addEventListener('DOMContentLoaded', init);
