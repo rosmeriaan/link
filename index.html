@@ -3,206 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <meta name="theme-color" content="#14151c">
+    <meta name="theme-color" content="#f4f3ef">
     <title>PresetHub · Komunitas Kreator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #F0EFEA;
-            --surface: #ffffff;
-            --surface-card: #ffffff;
-            --border: #E4E1D8;
-            --border-light: #EDEBE3;
-            --text: #16171D;
-            --text-secondary: #63625B;
-            --text-muted: #9C9B92;
-            --accent: #5B4EFF;
-            --accent-hover: #4636E0;
-            --accent-light: #EEECFF;
-            --amber: #FFB800;
-            --amber-light: #FFF3D6;
-            --amber-ink: #8A5700;
-            --mint: #00B589;
-            --mint-light: #DEFBF3;
-            --mint-ink: #0B6B54;
-            --radius: 16px;
-            --radius-sm: 12px;
-            --radius-xs: 8px;
-            --shadow: 0 1px 3px rgba(20,21,28,0.05);
-            --shadow-md: 0 4px 20px rgba(20,21,28,0.08);
-            --shadow-lg: 0 8px 40px rgba(20,21,28,0.14);
-            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --font-display: 'Space Grotesk', var(--font);
-            --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
-            --safe-bottom: env(safe-area-inset-bottom, 0px);
-            --nav-height: 64px;
+        /* ===== RESET & VARIABEL ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+        :root {
+            --bg: #f4f3ef;
+            --surface: #ffffff;
+            --border: #e0ddd6;
+            --border-light: #efede8;
+            --text: #1c1b1a;
+            --text-secondary: #5f5c56;
+            --text-muted: #9c9991;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --accent-light: #eef0ff;
+            --mint: #0d9488;
+            --mint-light: #e6f7f5;
+            --amber: #d97706;
+            --amber-light: #fef3e2;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-display: 'Space Grotesk', var(--font);
+            --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+            --nav-height: 60px;
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        html, body {
+            height: 100%;
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #d1cdc4; border-radius: 10px; }
 
-        .app { display: flex; flex-direction: column; min-height: 100vh; padding-bottom: calc(var(--nav-height) + 16px + var(--safe-bottom)); }
+        /* ===== LAYOUT ===== */
+        .app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: calc(var(--nav-height) + 12px + var(--safe-bottom));
+        }
 
-        /* Header */
-        .header {
-            position: sticky; top: 0; z-index: 50;
-            background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        /* ===== SIDEBAR (DESKTOP) ===== */
+        .sidebar {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem 1rem;
+            flex-direction: column;
+            z-index: 10;
+            overflow-y: auto;
+        }
+        .sidebar .brand {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+            padding-bottom: 1.25rem;
             border-bottom: 1px solid var(--border);
-            padding: 0.75rem 1rem;
-            display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .sidebar .brand svg {
+            width: 26px; height: 26px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 2;
+        }
+        .sidebar .brand span { color: var(--accent); }
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            flex: 1;
+        }
+        .sidebar nav button {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            width: 100%;
+            text-align: left;
+        }
+        .sidebar nav button:hover { background: var(--bg); color: var(--text); }
+        .sidebar nav button.active {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+        .sidebar nav button svg {
+            width: 18px; height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+        .sidebar .footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(244, 243, 239, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
         .header-brand {
-            display: flex; align-items: center; gap: 0.5rem;
-            font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: -0.02em;
+            flex-shrink: 0;
         }
-        .header-brand svg { width: 28px; height: 28px; stroke: var(--accent); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .header-brand svg {
+            width: 24px; height: 24px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 2;
+        }
         .header-brand span { color: var(--accent); }
         .header-search {
-            flex: 1; max-width: 400px; display: flex; align-items: center; gap: 0.5rem;
-            background: var(--bg); border-radius: 100px; padding: 0.35rem 1rem; transition: var(--transition);
+            flex: 1;
+            max-width: 320px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 0.25rem 0.75rem;
+            transition: border 0.15s;
         }
-        .header-search:focus-within { background: var(--surface); box-shadow: 0 0 0 2px var(--accent); }
-        .header-search svg { width: 18px; height: 18px; stroke: var(--text-muted); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-        .header-search input { border: none; background: transparent; padding: 0.45rem 0; width: 100%; font-size: 0.9rem; outline: none; font-family: inherit; color: var(--text); }
+        .header-search:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-light);
+        }
+        .header-search svg {
+            width: 16px; height: 16px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+        .header-search input {
+            border: none;
+            background: transparent;
+            padding: 0.4rem 0;
+            width: 100%;
+            font-size: 0.85rem;
+            outline: none;
+            font-family: inherit;
+            color: var(--text);
+        }
         .header-search input::placeholder { color: var(--text-muted); }
-        .header-actions { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
-        .header-actions .btn-icon {
-            width: 40px; height: 40px; border: none; background: transparent; border-radius: 50%;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: var(--transition); color: var(--text-secondary); position: relative;
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            flex-shrink: 0;
         }
-        .header-actions .btn-icon:hover, .header-actions .btn-icon:active { background: var(--bg); }
-        .header-actions .btn-icon svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .header-actions .btn-icon .badge-dot { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; border: 2px solid var(--surface); }
+        .header-actions button {
+            width: 36px; height: 36px;
+            border: none;
+            background: transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: background 0.15s;
+        }
+        .header-actions button:hover { background: var(--bg); }
+        .header-actions button svg {
+            width: 20px; height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
 
-        /* Filter chips */
+        /* ===== FILTER CHIPS ===== */
         .filter-chips {
-            display: flex; gap: 0.5rem; padding: 0.75rem 1rem;
-            overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
-            background: var(--surface); border-bottom: 1px solid var(--border);
-            position: sticky; top: 60px; z-index: 40;
+            display: flex;
+            gap: 0.4rem;
+            padding: 0.6rem 1rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 52px;
+            z-index: 40;
         }
         .filter-chips::-webkit-scrollbar { display: none; }
         .filter-chips .chip {
-            flex-shrink: 0; padding: 0.4rem 1rem; border-radius: 100px; font-size: 0.8rem; font-weight: 500;
-            background: var(--bg); border: 1px solid var(--border); cursor: pointer;
-            transition: var(--transition); color: var(--text-secondary);
-            white-space: nowrap; display: flex; align-items: center; gap: 0.3rem;
-            -webkit-tap-highlight-color: transparent; user-select: none;
+            flex-shrink: 0;
+            padding: 0.25rem 0.8rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            user-select: none;
         }
         .filter-chips .chip:active { transform: scale(0.96); }
-        .filter-chips .chip.active { background: var(--accent); color: white; border-color: var(--accent); }
+        .filter-chips .chip.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .filter-chips .chip.ratio {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+        }
 
-        /* Bottom nav */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            height: calc(var(--nav-height) + var(--safe-bottom)); padding-bottom: var(--safe-bottom);
-            background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border-top: 1px solid var(--border);
-            display: flex; justify-content: space-around; align-items: center; z-index: 100;
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            max-width: 720px;
+            margin: 0 auto;
+            width: 100%;
         }
-        .bottom-nav .nav-btn {
-            display: flex; flex-direction: column; align-items: center; gap: 0.1rem;
-            border: none; background: none; color: var(--text-muted);
-            font-size: 0.6rem; font-weight: 500; cursor: pointer; transition: var(--transition);
-            padding: 0.3rem 0.8rem; -webkit-tap-highlight-color: transparent;
-            position: relative; min-height: 44px; min-width: 44px;
-        }
-        .bottom-nav .nav-btn:active { transform: scale(0.92); }
-        .bottom-nav .nav-btn svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .bottom-nav .nav-btn.active { color: var(--accent); }
-        .bottom-nav .nav-btn .nav-label { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.04em; }
 
-        .fab {
-            position: fixed; bottom: calc(var(--nav-height) + 20px + var(--safe-bottom)); right: 20px;
-            width: 56px; height: 56px; border-radius: 50%;
-            background: var(--accent); color: white; border: none;
-            box-shadow: 0 4px 20px rgba(91, 78, 255, 0.35);
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: var(--transition); z-index: 90; -webkit-tap-highlight-color: transparent;
+        /* ===== TEMPLATE GRID (MASONRY) ===== */
+        .template-grid {
+            columns: 2;
+            column-gap: 0.75rem;
+            margin-top: 0.5rem;
         }
-        .fab:active { transform: scale(0.92); }
-        .fab svg { width: 28px; height: 28px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        @media (min-width: 640px) {
+            .template-grid { columns: 2; column-gap: 1rem; }
+        }
+        @media (min-width: 1024px) {
+            .template-grid { columns: 3; column-gap: 1rem; }
+            .main { max-width: 960px; padding: 1.5rem 2rem; }
+        }
 
-        .sidebar-desktop {
-            display: none; position: fixed; left: 0; top: 0; bottom: 0;
-            width: 220px; background: var(--surface); border-right: 1px solid var(--border);
-            padding: 1.5rem 1rem; flex-direction: column; z-index: 10; overflow-y: auto;
+        .template-card {
+            break-inside: avoid;
+            margin-bottom: 0.75rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
         }
-        .sidebar-desktop .brand {
-            font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em;
-            padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem;
-            display: flex; align-items: center; gap: 0.5rem;
+        .template-card:active { transform: scale(0.98); }
+        @media (hover: hover) {
+            .template-card:hover {
+                box-shadow: var(--shadow-md);
+                transform: translateY(-2px);
+            }
         }
-        .sidebar-desktop .brand svg { width: 28px; height: 28px; stroke: var(--accent); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .sidebar-desktop .brand span { color: var(--accent); }
-        .sidebar-desktop nav { display: flex; flex-direction: column; gap: 0.25rem; flex: 1; }
-        .sidebar-desktop nav button {
-            display: flex; align-items: center; gap: 0.75rem;
-            padding: 0.6rem 1rem; border: none; background: transparent; border-radius: var(--radius-xs);
-            font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);
-            cursor: pointer; transition: var(--transition); width: 100%; text-align: left;
-        }
-        .sidebar-desktop nav button:hover { background: var(--bg); color: var(--text); }
-        .sidebar-desktop nav button.active { background: var(--accent-light); color: var(--accent); }
-        .sidebar-desktop nav button svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-        .sidebar-desktop .footer { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--text-muted); }
 
-        .main { flex: 1; padding: 0.75rem 1rem; max-width: 600px; margin: 0 auto; width: 100%; }
-
-        /* Video container dengan aspect ratio */
+        /* ===== VIDEO CONTAINER ===== */
         .video-container {
             width: 100%;
             overflow: hidden;
-            background: #0f172a;
-            border-radius: var(--radius-sm);
+            background: #0f0f0f;
             position: relative;
         }
-        .video-container iframe {
+        .video-container iframe,
+        .video-container .video-thumb {
             width: 100%;
             height: 100%;
             border: 0;
             display: block;
         }
-        .video-thumb {
-            width: 100%;
-            height: 100%;
+        .video-container .video-thumb {
             object-fit: cover;
-            background: #0f172a;
-            cursor: pointer;
+            background: #0f0f0f;
         }
 
-        /* Template card */
-        .template-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 0.5rem;
+        /* ===== CARD BODY ===== */
+        .card-body {
+            padding: 0.5rem 0.65rem 0.65rem;
         }
-        @media (min-width: 640px) {
-            .template-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (min-width: 1024px) {
-            .template-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        .template-card {
-            background: var(--surface-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-        }
-        .template-card:active { transform: scale(0.98); }
-        .template-card .card-body { padding: 0.6rem 0.75rem 0.75rem; }
-        .template-card .card-title {
+        .card-title {
             font-family: var(--font-display);
             font-size: 0.85rem;
             font-weight: 600;
@@ -212,12 +342,12 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        .template-card .card-creator {
+        .card-creator {
             font-size: 0.7rem;
             color: var(--text-muted);
             margin-top: 0.1rem;
         }
-        .template-card .card-meta {
+        .card-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -225,125 +355,417 @@
             font-size: 0.7rem;
             color: var(--text-muted);
         }
-        .template-card .card-meta .badge {
+        .card-meta .badge {
             font-size: 0.6rem;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.03em;
+            padding: 0.05rem 0.5rem;
+            border-radius: 100px;
+            background: var(--bg);
+            color: var(--text-secondary);
+        }
+        .card-meta .badge.free { background: var(--mint-light); color: var(--mint); }
+        .card-meta .badge.paid { background: var(--amber-light); color: var(--amber); }
+        .card-meta .uses { font-family: var(--font-mono); font-size: 0.65rem; }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+        .empty-state svg {
+            width: 48px; height: 48px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: calc(var(--nav-height) + var(--safe-bottom));
+            padding-bottom: var(--safe-bottom);
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+        .bottom-nav .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.05rem;
+            border: none;
+            background: none;
+            color: var(--text-muted);
+            font-size: 0.55rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0.2rem 0.6rem;
+            min-height: 44px;
+            min-width: 44px;
+            transition: color 0.15s;
+        }
+        .bottom-nav .nav-btn:active { transform: scale(0.92); }
+        .bottom-nav .nav-btn svg {
+            width: 22px; height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .bottom-nav .nav-btn.active { color: var(--accent); }
+        .bottom-nav .nav-btn .nav-label {
+            font-size: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* ===== FAB ===== */
+        .fab {
+            position: fixed;
+            bottom: calc(var(--nav-height) + 16px + var(--safe-bottom));
+            right: 16px;
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s, box-shadow 0.15s;
+            z-index: 90;
+        }
+        .fab:active { transform: scale(0.92); }
+        .fab svg {
+            width: 26px; height: 26px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 200;
+            padding: 1.5rem 1rem calc(var(--safe-bottom) + 1rem);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-sheet {
+            background: var(--surface);
+            border-radius: var(--radius) var(--radius) 0 0;
+            max-width: 600px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 1.25rem 1.25rem 1.5rem;
+            border: 1px solid var(--border);
+            border-bottom: none;
+            animation: slideUp 0.25s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-sheet .handle {
+            width: 36px; height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            margin: 0 auto 1rem;
+            flex-shrink: 0;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .modal-header h2 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            padding: 0.25rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-close:active { transform: scale(0.92); }
+        .modal-close svg {
+            width: 22px; height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* ===== FORM ===== */
+        .form-group { margin-bottom: 0.6rem; }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.15rem;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.45rem 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-family: inherit;
+            background: var(--surface);
+            transition: border 0.15s;
+            color: var(--text);
+            -webkit-appearance: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-light);
+        }
+        .form-group textarea { resize: vertical; min-height: 50px; }
+        .form-hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.1rem; }
+        .price-input-wrapper { display: none; margin-top: 0.3rem; }
+        .price-input-wrapper.active { display: block; }
+        .form-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .form-actions .btn {
+            padding: 0.4rem 1rem;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .form-actions .btn:active { transform: scale(0.96); }
+        .form-actions .btn-primary { background: var(--accent); color: #fff; }
+        .form-actions .btn-primary:hover { background: var(--accent-hover); }
+        .form-actions .btn-secondary { background: var(--bg); color: var(--text-secondary); }
+        .form-actions .btn-secondary:hover { background: var(--border); }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            bottom: calc(var(--nav-height) + 16px + var(--safe-bottom));
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 300;
+            max-width: 400px;
+            width: 90%;
+            pointer-events: none;
+        }
+        .toast {
+            background: var(--text);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            box-shadow: var(--shadow-md);
+            animation: toastIn 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            pointer-events: auto;
+            margin-bottom: 0.4rem;
+        }
+        .toast svg {
+            width: 16px; height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+        .toast.success { background: #0d9488; }
+        .toast.error { background: #dc2626; }
+        .toast.info { background: var(--accent); }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(8px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== DETAIL MODAL ===== */
+        .detail-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin: 0.5rem 0;
+        }
+        .detail-meta .badge {
+            font-size: 0.7rem;
+            font-weight: 600;
             padding: 0.1rem 0.5rem;
             border-radius: 100px;
             background: var(--bg);
             color: var(--text-secondary);
         }
-        .template-card .card-meta .badge.free { background: var(--mint-light); color: var(--mint-ink); }
-        .template-card .card-meta .badge.paid { background: var(--amber-light); color: var(--amber-ink); }
-        .template-card .card-meta .uses { font-family: var(--font-mono); }
-
-        /* Empty state */
-        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
-        .empty-state svg { width: 56px; height: 56px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 0.75rem; }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-            display: none; align-items: flex-end; justify-content: center;
-            z-index: 200; padding: 1.5rem 1rem calc(var(--safe-bottom) + 1rem);
-            animation: fadeIn 0.2s ease;
+        .detail-meta .badge.free { background: var(--mint-light); color: var(--mint); }
+        .detail-meta .badge.paid { background: var(--amber-light); color: var(--amber); }
+        .detail-stats {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin: 0.25rem 0;
         }
-        .modal-overlay.active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .detail-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+        .detail-contact {
+            margin-top: 0.75rem;
+            padding: 0.6rem 0.75rem;
+            background: var(--amber-light);
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+        }
+        .detail-contact a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .detail-contact a:hover { text-decoration: underline; }
+        .detail-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+        }
+        .detail-links a {
+            background: var(--bg);
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: background 0.15s;
+        }
+        .detail-links a:hover { background: var(--border); }
 
-        .modal-sheet {
+        /* ===== CREATOR DIRECTORY ===== */
+        .creator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        .creator-card {
             background: var(--surface);
-            border-radius: var(--radius) var(--radius) 0 0;
-            max-width: 600px; width: 100%; max-height: 92vh;
-            overflow-y: auto; padding: 1.5rem 1.25rem 2rem;
-            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid var(--border); border-bottom: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
         }
-        @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .modal-sheet .handle { width: 40px; height: 4px; background: var(--border); border-radius: 4px; margin: 0 auto 1.25rem; flex-shrink: 0; }
-        .modal-sheet .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .modal-sheet .modal-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; }
-        .modal-sheet .modal-close { background: none; border: none; padding: 0.25rem; cursor: pointer; color: var(--text-muted); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition); -webkit-tap-highlight-color: transparent; }
-        .modal-sheet .modal-close:active { transform: scale(0.92); }
-        .modal-sheet .modal-close svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .creator-card:active { transform: scale(0.96); }
+        .creator-card .avatar {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.4rem;
+        }
+        .creator-card .name {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .creator-card .sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .creator-card .count {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
 
-        .form-group { margin-bottom: 0.75rem; }
-        .form-group label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 0.2rem; }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%; padding: 0.6rem 0.75rem;
-            border: 1px solid var(--border); border-radius: var(--radius-xs);
-            font-size: 0.9rem; font-family: inherit; background: var(--surface);
-            transition: var(--transition); color: var(--text); -webkit-appearance: none;
-        }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent;
-        }
-        .form-group textarea { resize: vertical; min-height: 60px; }
-        .form-actions { display: flex; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); flex-wrap: wrap; }
-        .form-actions .btn { padding: 0.6rem 1.5rem; border: none; border-radius: var(--radius-xs); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 0.4rem; -webkit-tap-highlight-color: transparent; }
-        .form-actions .btn:active { transform: scale(0.96); }
-        .form-actions .btn-primary { background: var(--accent); color: white; }
-        .form-actions .btn-secondary { background: var(--bg); color: var(--text-secondary); }
-        .form-actions .btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .form-hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; }
-        .price-input-wrapper { display: none; margin-top: 0.5rem; }
-        .price-input-wrapper.active { display: block; }
-
-        .toast-container {
-            position: fixed; bottom: calc(var(--nav-height) + 20px + var(--safe-bottom));
-            left: 50%; transform: translateX(-50%);
-            z-index: 300; max-width: 400px; width: 90%; pointer-events: none;
-        }
-        .toast {
-            background: var(--text); color: white; padding: 0.6rem 1.2rem;
-            border-radius: var(--radius-sm); font-size: 0.85rem;
-            box-shadow: var(--shadow-lg); animation: toastIn 0.2s ease;
-            display: flex; align-items: center; gap: 0.5rem;
-            pointer-events: auto; margin-bottom: 0.5rem;
-        }
-        .toast svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-        .toast.success { background: #16a34a; }
-        .toast.error { background: #dc2626; }
-        .toast.info { background: var(--accent); }
-        @keyframes toastIn { from { opacity: 0; transform: translateY(10px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
-        @media (min-width: 640px) {
-            .main { padding: 1rem 1.5rem; max-width: 720px; }
-        }
+        /* ===== RESPONSIVE ===== */
         @media (min-width: 1024px) {
-            .main { max-width: 960px; padding: 1.5rem 2rem; }
+            .sidebar { display: flex !important; }
             .bottom-nav { display: none; }
             .fab { display: none; }
-            .app { padding-bottom: 0; }
-            .sidebar-desktop { display: flex !important; }
-            .header { padding: 0.75rem 2rem; }
-            .app { padding-left: 220px; }
+            .app { padding-bottom: 0; padding-left: 200px; }
+            .header { padding: 0.5rem 2rem; }
+            .filter-chips { top: 52px; padding: 0.6rem 2rem; }
+            .main { padding: 1.5rem 2rem; max-width: 960px; }
         }
-        @media (hover: hover) and (pointer: fine) {
-            .template-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        @media (max-width: 480px) {
+            .template-grid { columns: 2; column-gap: 0.5rem; }
+            .template-card { margin-bottom: 0.5rem; }
+            .card-body { padding: 0.4rem 0.5rem 0.5rem; }
+            .card-title { font-size: 0.75rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
         }
     </style>
 </head>
 <body>
+
 <div class="app">
-    <aside class="sidebar-desktop" id="sidebarDesktop">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
         <div class="brand">
-            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
             <span>Preset</span>Hub
         </div>
         <nav>
             <button class="active" data-view="explore"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Explore</button>
             <button data-view="creators"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Kreator</button>
         </nav>
-        <div class="footer">v2.3 · <span id="totalDesktop">0</span> template</div>
+        <div class="footer"><span id="totalDesktop">0</span> template</div>
     </aside>
 
+    <!-- HEADER -->
     <header class="header">
         <div class="header-brand">
-            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
             <span>Preset</span>Hub
         </div>
         <div class="header-search">
@@ -351,49 +773,53 @@
             <input type="text" id="searchInput" placeholder="Cari template, kreator..." />
         </div>
         <div class="header-actions">
-            <button class="btn-icon" id="notifBtn"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="badge-dot"></span></button>
+            <button id="notifBtn"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
         </div>
     </header>
 
-    <!-- Filter chips -->
+    <!-- FILTER CHIPS -->
     <div class="filter-chips" id="filterChips">
         <span class="chip active" data-filter="all">Semua</span>
         <span class="chip" data-filter="preset">Preset</span>
         <span class="chip" data-filter="assets">Assets</span>
         <span class="chip" data-filter="free">Gratis</span>
         <span class="chip" data-filter="paid">Berbayar</span>
-        <span class="chip" data-filter="9:16">9:16</span>
-        <span class="chip" data-filter="16:9">16:9</span>
-        <span class="chip" data-filter="1:1">1:1</span>
-        <span class="chip" data-filter="4:3">4:3</span>
-        <span class="chip" data-filter="3:4">3:4</span>
+        <span class="chip ratio" data-filter="9:16">9:16</span>
+        <span class="chip ratio" data-filter="16:9">16:9</span>
+        <span class="chip ratio" data-filter="1:1">1:1</span>
+        <span class="chip ratio" data-filter="4:3">4:3</span>
+        <span class="chip ratio" data-filter="3:4">3:4</span>
     </div>
 
+    <!-- MAIN -->
     <main class="main" id="mainContent">
         <div id="cardGrid"></div>
     </main>
 
+    <!-- FAB UPLOAD -->
     <button class="fab" id="fabUpload"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
 
+    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <button class="nav-btn active" data-nav="explore"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nav-label">Explore</span></button>
         <button class="nav-btn" data-nav="creators"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">Kreator</span></button>
     </nav>
 
-    <!-- Modals -->
+    <!-- MODALS -->
     <div class="modal-overlay" id="uploadModal">
         <div class="modal-sheet">
             <div class="handle"></div>
             <div class="modal-header"><h2 id="modalTitle">Upload Template</h2><button class="modal-close" id="closeUploadModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
             <form id="uploadForm">
-                <div class="form-group"><label>Judul *</label><input type="text" id="fJudul" placeholder="Nama template" required /></div>
+                <div class="form-group"><label>Judul *</label><input type="text" id="fJudul" required /></div>
                 <div class="form-group"><label>Kategori *</label><select id="fKategori" required><option value="">Pilih</option><option value="Preset">Preset</option><option value="Assets">Assets</option></select></div>
-                <div class="form-group"><label>Deskripsi</label><textarea id="fDeskripsi" rows="3"></textarea></div>
+                <div class="form-group"><label>Deskripsi</label><textarea id="fDeskripsi" rows="2"></textarea></div>
                 <div class="form-group"><label>YouTube URL</label><input type="url" id="fLinkYoutube" placeholder="https://youtube.com/watch?v=..." /></div>
                 <div class="form-group"><label>Aspect Ratio *</label><select id="fAspect" required><option value="">Pilih</option><option value="9:16">9:16 (Vertical)</option><option value="16:9">16:9 (Landscape)</option><option value="1:1">1:1 (Square)</option><option value="4:3">4:3</option><option value="3:4">3:4</option></select></div>
-                <div class="form-group"><label>Harga *</label><select id="fLicense" required><option value="free">Gratis</option><option value="paid">Berbayar</option></select></div>
+                <div class="form-group"><label>Tipe *</label><select id="fLicense" required><option value="free">Gratis</option><option value="paid">Berbayar</option></select></div>
                 <div class="price-input-wrapper" id="priceWrapper"><div class="form-group"><label>Harga (Rp)</label><input type="number" id="fHarga" placeholder="10000" min="1000" step="1000" /></div></div>
-                <div class="form-group"><label>Link Drive / Project</label><input type="url" id="fLinkDrive" placeholder="https://drive.google.com/..." /></div>
+                <div class="form-group"><label>Link Project</label><input type="url" id="fLinkProject" placeholder="https://..." /></div>
+                <div class="form-group"><label>Link Drive</label><input type="url" id="fLinkDrive" placeholder="https://drive.google.com/..." /></div>
                 <div class="form-group"><label>Link Asset 1</label><input type="url" id="fLinkAsset1" placeholder="https://..." /></div>
                 <div class="form-group"><label>Link Asset 2</label><input type="url" id="fLinkAsset2" placeholder="https://..." /></div>
                 <div class="form-actions"><button type="submit" class="btn btn-primary">Publikasikan</button><button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button></div>
@@ -412,14 +838,14 @@
     <div class="modal-overlay" id="registerCreatorModal">
         <div class="modal-sheet">
             <div class="handle"></div>
-            <div class="modal-header"><h2>Daftar Sebagai Kreator</h2><button class="modal-close" id="closeRegisterModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+            <div class="modal-header"><h2>Daftar Kreator</h2><button class="modal-close" id="closeRegisterModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
             <form id="registerCreatorForm">
-                <div class="form-group"><label>Nama Kreator *</label><input type="text" id="rNama" required /></div>
-                <div class="form-group"><label>Bio</label><textarea id="rBio" rows="3"></textarea></div>
-                <div class="form-group"><label>Software Utama</label><select id="rSoftware"><option value="">Pilih</option><option>After Effects</option><option>Premiere Pro</option><option>CapCut</option><option>DaVinci Resolve</option></select></div>
+                <div class="form-group"><label>Nama *</label><input type="text" id="rNama" required /></div>
+                <div class="form-group"><label>Bio</label><textarea id="rBio" rows="2"></textarea></div>
+                <div class="form-group"><label>Software</label><select id="rSoftware"><option value="">Pilih</option><option>After Effects</option><option>Premiere Pro</option><option>CapCut</option><option>DaVinci Resolve</option></select></div>
                 <div class="form-group"><label>No. WhatsApp (wajib jika berbayar)</label><input type="text" id="rWa" placeholder="628xxxxxxxx" /></div>
                 <div class="form-group"><label>Email (wajib jika berbayar)</label><input type="email" id="rEmail" placeholder="kreator@email.com" /></div>
-                <div class="form-group"><label>Link Portfolio</label><input type="url" id="rPortfolio" placeholder="https://instagram.com/..." /></div>
+                <div class="form-group"><label>Portfolio</label><input type="url" id="rPortfolio" placeholder="https://..." /></div>
                 <div class="form-actions"><button type="submit" class="btn btn-primary">Daftar</button><button type="reset" class="btn btn-secondary" id="cancelRegister">Batal</button></div>
             </form>
         </div>
@@ -429,16 +855,16 @@
 </div>
 
 <script>
-(function() {
+(function(){
     'use strict';
 
     // ===== DATA =====
     let templates = [];
     let currentView = 'explore';
     let activeFilter = 'all';
-    let activeRatio = null; // untuk filter aspect ratio
-    let currentCreator = null; // untuk view kreator
-    let isCreator = false; // simulasi login kreator
+    let activeRatio = null;
+    let currentCreator = null;
+    let isCreator = false;
     let editIndex = null;
 
     // DOM refs
@@ -448,9 +874,9 @@
 
     // ===== HELPERS =====
     function generateKode() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let k = '';
-        for (let i=0;i<4;i++) k += chars.charAt(Math.floor(Math.random()*chars.length));
+        for (let i=0;i<6;i++) k += chars.charAt(Math.floor(Math.random()*chars.length));
         return k;
     }
 
@@ -490,7 +916,7 @@
                    '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
         t.innerHTML = icon + ' ' + msg;
         c.appendChild(t);
-        setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(10px)'; t.style.transition='0.3s'; setTimeout(()=>t.remove(),400); }, 3000);
+        setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(8px)'; t.style.transition='0.2s'; setTimeout(()=>t.remove(),300); }, 3000);
     }
 
     function save() { localStorage.setItem('presethub_templates', JSON.stringify(templates)); }
@@ -503,7 +929,7 @@
         const c = loadCreators();
         if (c.length === 0) {
             saveCreators([
-                { name: 'ctfy', bio: 'Motion designer & preset creator', software: 'After Effects', wa: '628123456789', email: 'ctfy@email.com', portfolio: 'https://instagram.com/ctfy' },
+                { name: 'ctfy', bio: 'Motion designer', software: 'After Effects', wa: '628123456789', email: 'ctfy@email.com', portfolio: 'https://instagram.com/ctfy' },
                 { name: 'myxrin', bio: 'Color grading specialist', software: 'Premiere Pro', wa: '628987654321', email: 'myxrin@email.com', portfolio: 'https://instagram.com/myxrin' }
             ]);
         }
@@ -523,19 +949,21 @@
                         if (!t.license) t.license = 'free';
                         if (!t.harga) t.harga = 0;
                         if (!t.uses) t.uses = 0;
+                        if (!t.views) t.views = 0;
+                        if (!t.likes) t.likes = 0;
                         if (!t.creator) t.creator = 'Anonim';
                     });
                     return;
                 }
             } catch(e) {}
         }
-        // Dummy data
+        // Dummy
         templates = [
-            { id: 't1', kode: 'A3B7', judul: 'Cinematic Transition Pack', kategori: 'Preset', deskripsi: '50 cinematic transitions', creator: 'ctfy', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '16:9', license: 'paid', harga: 25000, linkDrive: 'https://drive.google.com/', likes: 234, uses: 1240, views: 4300, createdAt: Date.now()-100000 },
-            { id: 't2', kode: 'M4N8', judul: 'Color Grade LUT Pack', kategori: 'Assets', deskripsi: '20 cinematic LUTs', creator: 'myxrin', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '9:16', license: 'free', harga: 0, linkDrive: 'https://drive.google.com/', likes: 156, uses: 3400, views: 8900, createdAt: Date.now()-200000 },
-            { id: 't3', kode: 'B8N2', judul: 'Velocity Text Preset', kategori: 'Preset', deskripsi: 'Dynamic velocity text', creator: 'ctfy', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '1:1', license: 'free', harga: 0, linkDrive: 'https://drive.google.com/', likes: 89, uses: 560, views: 1200, createdAt: Date.now()-300000 },
-            { id: 't4', kode: 'C9R7', judul: 'Glitch Effect Pack', kategori: 'Assets', deskripsi: 'Glitch effects', creator: 'myxrin', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '4:3', license: 'paid', harga: 15000, linkDrive: 'https://drive.google.com/', likes: 210, uses: 980, views: 3100, createdAt: Date.now()-400000 },
-            { id: 't5', kode: '0987', judul: 'Myxrin Signature LUT', kategori: 'Assets', deskripsi: 'Special LUT from Myxrin', creator: 'myxrin', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '16:9', license: 'paid', harga: 35000, linkDrive: 'https://drive.google.com/', likes: 320, uses: 2100, views: 5500, createdAt: Date.now()-500000 }
+            { id: 't1', kode: 'a3B7', judul: 'Cinematic Transition Pack', kategori: 'Preset', deskripsi: '50 cinematic transitions', creator: 'ctfy', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '16:9', license: 'paid', harga: 25000, linkProject: '', linkDrive: 'https://drive.google.com/', linkAsset1: '', linkAsset2: '', likes: 234, uses: 1240, views: 4300, createdAt: Date.now()-100000 },
+            { id: 't2', kode: 'm4N8', judul: 'Color Grade LUT Pack', kategori: 'Assets', deskripsi: '20 cinematic LUTs', creator: 'myxrin', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '9:16', license: 'free', harga: 0, linkProject: '', linkDrive: 'https://drive.google.com/', linkAsset1: '', linkAsset2: '', likes: 156, uses: 3400, views: 8900, createdAt: Date.now()-200000 },
+            { id: 't3', kode: 'b8N2', judul: 'Velocity Text Preset', kategori: 'Preset', deskripsi: 'Dynamic velocity text', creator: 'ctfy', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '1:1', license: 'free', harga: 0, linkProject: '', linkDrive: 'https://drive.google.com/', linkAsset1: '', linkAsset2: '', likes: 89, uses: 560, views: 1200, createdAt: Date.now()-300000 },
+            { id: 't4', kode: 'c9R7', judul: 'Glitch Effect Pack', kategori: 'Assets', deskripsi: 'Glitch effects', creator: 'myxrin', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '4:3', license: 'paid', harga: 15000, linkProject: '', linkDrive: 'https://drive.google.com/', linkAsset1: '', linkAsset2: '', likes: 210, uses: 980, views: 3100, createdAt: Date.now()-400000 },
+            { id: 't5', kode: '0987', judul: 'Myxrin Signature LUT', kategori: 'Assets', deskripsi: 'Special LUT from Myxrin', creator: 'myxrin', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '16:9', license: 'paid', harga: 35000, linkProject: '', linkDrive: 'https://drive.google.com/', linkAsset1: '', linkAsset2: '', likes: 320, uses: 2100, views: 5500, createdAt: Date.now()-500000 }
         ];
         save();
     }
@@ -553,16 +981,13 @@
                 (t.deskripsi && t.deskripsi.toLowerCase().includes(q))
             );
         }
-        // Filter kategori / license
         if (activeFilter === 'preset') result = result.filter(t => t.kategori === 'Preset');
         else if (activeFilter === 'assets') result = result.filter(t => t.kategori === 'Assets');
         else if (activeFilter === 'free') result = result.filter(t => t.license === 'free');
         else if (activeFilter === 'paid') result = result.filter(t => t.license === 'paid');
-        // Aspect ratio filter
         if (activeRatio && activeRatio !== 'all') {
             result = result.filter(t => t.aspectRatio === activeRatio);
         }
-        // Jika view creators
         if (currentView === 'creators' && currentCreator) {
             result = result.filter(t => t.creator.toLowerCase() === currentCreator.toLowerCase());
         }
@@ -580,11 +1005,8 @@
         return `
             <div class="template-card" data-id="${t.id}" data-creator="${t.creator}" data-kode="${t.kode}">
                 <div class="video-container" style="aspect-ratio: ${ratio};">
-                    ${embedUrl ? `
-                        <iframe src="${embedUrl}" loading="lazy" allowfullscreen style="width:100%;height:100%;border:0;"></iframe>
-                    ` : `
-                        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0f172a;color:#52525b;font-size:0.8rem;">No video</div>
-                    `}
+                    ${embedUrl ? `<iframe src="${embedUrl}" loading="lazy" allowfullscreen style="width:100%;height:100%;border:0;"></iframe>` :
+                    `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0f0f0f;color:#666;font-size:0.75rem;">No video</div>`}
                 </div>
                 <div class="card-body">
                     <div class="card-title">${escapeHtml(t.judul)}</div>
@@ -609,9 +1031,9 @@
 
         let html = '';
         if (currentView === 'creators' && currentCreator) {
-            html = `<div style="margin-bottom:0.75rem;font-weight:600;">👤 ${escapeHtml(currentCreator)} — ${filtered.length} template</div>`;
+            html = `<div style="margin-bottom:0.5rem;font-weight:500;font-size:0.9rem;">👤 ${escapeHtml(currentCreator)} — ${filtered.length} template</div>`;
         } else {
-            html = `<div style="margin-bottom:0.75rem;font-weight:600;color:var(--text-secondary);">${filtered.length} template</div>`;
+            html = `<div style="margin-bottom:0.5rem;font-weight:500;font-size:0.85rem;color:var(--text-secondary);">${filtered.length} template</div>`;
         }
         html += `<div class="template-grid">`;
         filtered.forEach(t => { html += renderTemplateCard(t); });
@@ -626,32 +1048,30 @@
             cardGrid.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><p>Belum ada kreator terdaftar</p></div>`;
             return;
         }
-        let html = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:0.5rem;">`;
+        let html = `<div class="creator-grid">`;
         creators.forEach(c => {
             const count = templates.filter(t => t.creator.toLowerCase() === c.name.toLowerCase()).length;
             html += `
-                <div class="creator-profile-card" style="background:var(--surface-card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;text-align:center;cursor:pointer;transition:var(--transition);" data-creator="${escapeHtml(c.name)}">
-                    <div style="width:56px;height:56px;border-radius:50%;background:var(--accent-light);color:var(--accent);font-weight:700;font-size:1.3rem;display:flex;align-items:center;justify-content:center;margin:0 auto 0.5rem;">${getInitials(c.name)}</div>
-                    <div style="font-weight:600;">${escapeHtml(c.name)}</div>
-                    <div style="font-size:0.75rem;color:var(--text-muted);">${escapeHtml(c.software || '')}</div>
-                    <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:0.3rem;">${count} template</div>
+                <div class="creator-card" data-creator="${escapeHtml(c.name)}">
+                    <div class="avatar">${getInitials(c.name)}</div>
+                    <div class="name">${escapeHtml(c.name)}</div>
+                    <div class="sub">${escapeHtml(c.software || '')}</div>
+                    <div class="count">${count} template</div>
                 </div>
             `;
         });
         html += `</div>`;
         cardGrid.innerHTML = html;
 
-        // Klik kreator -> tampilkan template mereka
-        cardGrid.querySelectorAll('.creator-profile-card').forEach(el => {
+        cardGrid.querySelectorAll('.creator-card').forEach(el => {
             el.addEventListener('click', function() {
                 const name = this.dataset.creator;
                 currentCreator = name;
                 currentView = 'creators';
-                document.querySelectorAll('.sidebar-desktop nav button, .bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.sidebar nav button, .bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
                 document.querySelector('[data-view="creators"]')?.classList.add('active');
                 document.querySelector('[data-nav="creators"]')?.classList.add('active');
                 render();
-                // update URL
                 updateUrl();
             });
         });
@@ -662,24 +1082,24 @@
         let path = '';
         if (currentView === 'creators' && currentCreator) {
             path = `/${encodeURIComponent(currentCreator)}`;
-        } else if (currentView === 'explore') {
+        } else {
             path = '/explore';
         }
         let query = '';
         if (activeRatio && activeRatio !== 'all') query = `?ratio=${encodeURIComponent(activeRatio)}`;
-        // Simpan di hash agar tidak reload
         const newHash = '#' + path + query;
         if (window.location.hash !== newHash) {
             history.pushState(null, '', newHash);
         }
     }
 
-    function parseUrl() {
-        const hash = window.location.hash.slice(1); // tanpa #
+    function handleHashChange() {
+        const hash = window.location.hash.slice(1);
         if (!hash || hash === '/') {
             currentView = 'explore';
             currentCreator = null;
             activeRatio = null;
+            render();
             return;
         }
         const [path, query] = hash.split('?');
@@ -687,19 +1107,29 @@
         const ratio = params.get('ratio');
         if (ratio) activeRatio = ratio;
 
-        // path: /creator atau /explore
         const parts = path.split('/').filter(Boolean);
+        if (parts.length === 2) {
+            // /creator/kode -> buka detail
+            const creator = decodeURIComponent(parts[0]);
+            const kode = parts[1];
+            const template = templates.find(t => t.creator.toLowerCase() === creator.toLowerCase() && t.kode === kode);
+            if (template) {
+                currentView = 'explore';
+                currentCreator = null;
+                openDetail(template);
+                render();
+                return;
+            }
+        }
         if (parts.length === 1 && parts[0] !== 'explore') {
-            // /creator
             currentView = 'creators';
             currentCreator = decodeURIComponent(parts[0]);
-            // cek apakah ada kode template? misal /myxrin/0987
-            // kita tangani di card click, tapi untuk direct url kita bisa buka detail
-            // kita handle di bawah
-        } else {
-            currentView = 'explore';
-            currentCreator = null;
+            render();
+            return;
         }
+        currentView = 'explore';
+        currentCreator = null;
+        render();
     }
 
     // ===== DETAIL MODAL =====
@@ -710,27 +1140,35 @@
         const isFree = template.license === 'free';
 
         const content = document.getElementById('detailContent');
-        let linksHtml = '';
-        if (template.linkDrive) linksHtml += `<a href="${template.linkDrive}" target="_blank">📥 Google Drive</a>`;
-        if (template.linkAsset1) linksHtml += `<a href="${template.linkAsset1}" target="_blank">🎨 Asset 1</a>`;
-        if (template.linkAsset2) linksHtml += `<a href="${template.linkAsset2}" target="_blank">🎨 Asset 2</a>`;
 
-        // Jika berbayar, tampilkan kontak kreator
+        // Kumpulkan link
+        let links = [];
+        if (template.linkProject) links.push({ label: '📁 Project', url: template.linkProject });
+        if (template.linkDrive) links.push({ label: '📥 Drive', url: template.linkDrive });
+        if (template.linkAsset1) links.push({ label: '🎨 Asset 1', url: template.linkAsset1 });
+        if (template.linkAsset2) links.push({ label: '🎨 Asset 2', url: template.linkAsset2 });
+
+        let linksHtml = '';
+        if (links.length) {
+            linksHtml = `<div class="detail-links">${links.map(l => `<a href="${l.url}" target="_blank">${l.label}</a>`).join('')}</div>`;
+        }
+
+        // Kontak jika paid
         let contactHtml = '';
         if (!isFree) {
             const creators = loadCreators();
             const creator = creators.find(c => c.name.toLowerCase() === template.creator.toLowerCase());
             if (creator) {
                 contactHtml = `
-                    <div style="margin-top:0.75rem;padding:0.75rem;background:var(--amber-light);border-radius:var(--radius-xs);">
+                    <div class="detail-contact">
                         <div style="font-weight:600;font-size:0.85rem;">💳 Template Berbayar</div>
-                        <div style="font-size:0.85rem;margin-top:0.3rem;">Hubungi kreator untuk membeli:</div>
-                        ${creator.wa ? `<div style="margin-top:0.2rem;">📱 <a href="https://wa.me/${creator.wa}" target="_blank" style="color:var(--accent);">${creator.wa}</a></div>` : ''}
-                        ${creator.email ? `<div>📧 <a href="mailto:${creator.email}" style="color:var(--accent);">${creator.email}</a></div>` : ''}
+                        <div style="font-size:0.8rem;margin-top:0.2rem;">Hubungi kreator untuk membeli:</div>
+                        ${creator.wa ? `<div style="margin-top:0.1rem;">📱 <a href="https://wa.me/${creator.wa}" target="_blank">${creator.wa}</a></div>` : ''}
+                        ${creator.email ? `<div>📧 <a href="mailto:${creator.email}">${creator.email}</a></div>` : ''}
                     </div>
                 `;
             } else {
-                contactHtml = `<div style="margin-top:0.75rem;padding:0.75rem;background:var(--amber-light);border-radius:var(--radius-xs);font-size:0.85rem;">💳 Template Berbayar. Hubungi kreator ${escapeHtml(template.creator)} untuk pembelian.</div>`;
+                contactHtml = `<div class="detail-contact" style="background:var(--bg);">💳 Template Berbayar. Hubungi <strong>${escapeHtml(template.creator)}</strong> untuk pembelian.</div>`;
             }
         }
 
@@ -740,23 +1178,24 @@
                 <button class="modal-close" id="closeDetailModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
             <div class="video-container" style="aspect-ratio: ${ratio};">
-                ${embedUrl ? `<iframe src="${embedUrl}" allowfullscreen style="width:100%;height:100%;border:0;"></iframe>` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0f172a;color:#52525b;">No video</div>`}
+                ${embedUrl ? `<iframe src="${embedUrl}" allowfullscreen style="width:100%;height:100%;border:0;"></iframe>` :
+                `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0f0f0f;color:#666;font-size:0.85rem;">No video</div>`}
             </div>
-            <div style="margin-top:0.75rem;">
-                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                    <span class="badge ${isFree?'free':'paid'}" style="padding:0.2rem 0.6rem;border-radius:100px;font-size:0.75rem;font-weight:600;background:${isFree?'var(--mint-light)':'var(--amber-light)'};color:${isFree?'var(--mint-ink)':'var(--amber-ink)'};">${isFree ? 'Gratis' : `Rp ${formatNumber(template.harga)}`}</span>
-                    <span style="background:var(--bg);padding:0.2rem 0.6rem;border-radius:100px;font-size:0.75rem;">${escapeHtml(template.kategori)}</span>
+            <div style="margin-top:0.5rem;">
+                <div class="detail-meta">
+                    <span class="badge ${isFree?'free':'paid'}">${isFree ? 'Gratis' : `Rp ${formatNumber(template.harga)}`}</span>
+                    <span class="badge">${escapeHtml(template.kategori)}</span>
                     <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);">${template.kode}</span>
                 </div>
-                <div style="margin-top:0.4rem;font-size:0.8rem;color:var(--text-secondary);">Kreator: <strong>${escapeHtml(template.creator)}</strong></div>
-                ${template.deskripsi ? `<div style="margin-top:0.4rem;font-size:0.85rem;color:var(--text-secondary);">${escapeHtml(template.deskripsi)}</div>` : ''}
-                <div style="margin-top:0.4rem;display:flex;gap:0.75rem;font-size:0.75rem;color:var(--text-muted);">
-                    <span>⬇ ${formatNumber(template.uses)} downloads</span>
-                    <span>👁 ${formatNumber(template.views)} views</span>
+                <div style="font-size:0.8rem;color:var(--text-secondary);">Kreator: <strong>${escapeHtml(template.creator)}</strong></div>
+                ${template.deskripsi ? `<div class="detail-desc">${escapeHtml(template.deskripsi)}</div>` : ''}
+                <div class="detail-stats">
+                    <span>⬇ ${formatNumber(template.uses)}</span>
+                    <span>👁 ${formatNumber(template.views)}</span>
                     <span>❤️ ${template.likes}</span>
                 </div>
                 ${contactHtml}
-                ${linksHtml ? `<div style="margin-top:0.5rem;display:flex;flex-direction:column;gap:0.3rem;">${linksHtml}</div>` : ''}
+                ${linksHtml}
             </div>
         `;
         document.getElementById('detailModal').classList.add('active');
@@ -769,16 +1208,13 @@
     }
 
     // ===== EVENT LISTENERS =====
-    // Card click
     cardGrid.addEventListener('click', function(e) {
         const card = e.target.closest('.template-card');
         if (card) {
             const id = card.dataset.id;
             const t = templates.find(tm => tm.id === id);
             if (t) {
-                // Jika berbayar dan bukan kreator, tampilkan kontak di detail
                 openDetail(t);
-                // update URL dengan /creator/kode
                 if (t.creator && t.kode) {
                     const newHash = `#/${encodeURIComponent(t.creator)}/${t.kode}`;
                     history.pushState(null, '', newHash);
@@ -791,34 +1227,22 @@
     document.querySelectorAll('.filter-chips .chip').forEach(chip => {
         chip.addEventListener('click', function() {
             const val = this.dataset.filter;
-            // Jika val adalah aspect ratio (9:16, 16:9, 1:1, 4:3, 3:4)
-            if (['9:16','16:9','1:1','4:3','3:4'].includes(val)) {
+            const ratioValues = ['9:16','16:9','1:1','4:3','3:4'];
+            if (ratioValues.includes(val)) {
                 activeRatio = (activeRatio === val) ? null : val;
-                // update active class
-                document.querySelectorAll('.filter-chips .chip').forEach(c => {
-                    if (['9:16','16:9','1:1','4:3','3:4'].includes(c.dataset.filter)) {
-                        c.classList.toggle('active', c.dataset.filter === activeRatio);
-                    } else {
-                        c.classList.remove('active');
-                    }
+                document.querySelectorAll('.filter-chips .chip.ratio').forEach(c => {
+                    c.classList.toggle('active', c.dataset.filter === activeRatio);
                 });
-                // reset other filters
+                // nonaktifkan filter lain
+                document.querySelectorAll('.filter-chips .chip:not(.ratio)').forEach(c => c.classList.remove('active'));
                 activeFilter = 'all';
-                document.querySelectorAll('.filter-chips .chip').forEach(c => {
-                    if (!['9:16','16:9','1:1','4:3','3:4'].includes(c.dataset.filter)) {
-                        c.classList.toggle('active', c.dataset.filter === 'all');
-                    }
-                });
             } else {
                 activeFilter = val;
                 activeRatio = null;
-                document.querySelectorAll('.filter-chips .chip').forEach(c => {
-                    if (['9:16','16:9','1:1','4:3','3:4'].includes(c.dataset.filter)) {
-                        c.classList.remove('active');
-                    } else {
-                        c.classList.toggle('active', c.dataset.filter === val);
-                    }
+                document.querySelectorAll('.filter-chips .chip:not(.ratio)').forEach(c => {
+                    c.classList.toggle('active', c.dataset.filter === val);
                 });
+                document.querySelectorAll('.filter-chips .chip.ratio').forEach(c => c.classList.remove('active'));
             }
             render();
             updateUrl();
@@ -829,20 +1253,20 @@
     searchInput.addEventListener('input', render);
 
     // Sidebar & bottom nav
-    document.querySelectorAll('.sidebar-desktop nav button, .bottom-nav .nav-btn').forEach(btn => {
+    document.querySelectorAll('.sidebar nav button, .bottom-nav .nav-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const view = this.dataset.view || this.dataset.nav;
             if (view === 'creators') {
                 currentView = 'creators';
                 currentCreator = null;
-                document.querySelectorAll('.sidebar-desktop nav button, .bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.sidebar nav button, .bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 renderCreatorDirectory();
                 updateUrl();
             } else {
                 currentView = 'explore';
                 currentCreator = null;
-                document.querySelectorAll('.sidebar-desktop nav button, .bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.sidebar nav button, .bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 render();
                 updateUrl();
@@ -850,10 +1274,10 @@
         });
     });
 
-    // Upload (hanya untuk kreator)
+    // Fab upload
     document.getElementById('fabUpload').addEventListener('click', function() {
         if (!isCreator) {
-            showToast('Silakan daftar sebagai kreator terlebih dahulu', 'info');
+            showToast('Daftar sebagai kreator dulu', 'info');
             document.getElementById('registerCreatorModal').classList.add('active');
             return;
         }
@@ -875,7 +1299,6 @@
         const wa = document.getElementById('rWa').value.trim();
         const email = document.getElementById('rEmail').value.trim();
         if (!name) { showToast('Nama wajib diisi', 'error'); return; }
-        // Cek apakah sudah ada
         const creators = loadCreators();
         if (creators.some(c => c.name.toLowerCase() === name.toLowerCase())) {
             showToast('Kreator sudah terdaftar', 'error');
@@ -892,7 +1315,7 @@
         });
         saveCreators(creators);
         isCreator = true;
-        showToast('✅ Selamat! Anda sekarang kreator verified!', 'success');
+        showToast('✅ Selamat! Anda sekarang kreator!', 'success');
         document.getElementById('registerCreatorForm').reset();
         document.getElementById('registerCreatorModal').classList.remove('active');
         if (currentView === 'creators') renderCreatorDirectory();
@@ -901,7 +1324,7 @@
     document.getElementById('cancelRegister').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('registerCreatorModal').classList.remove('active'); });
     document.getElementById('closeRegisterModal').addEventListener('click', () => { document.getElementById('registerCreatorModal').classList.remove('active'); });
 
-    // Upload form submit
+    // Upload form
     document.getElementById('uploadForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const judul = document.getElementById('fJudul').value.trim();
@@ -911,19 +1334,19 @@
         const aspect = document.getElementById('fAspect').value;
         const license = document.getElementById('fLicense').value;
         const harga = parseInt(document.getElementById('fHarga').value) || 0;
+        const linkProject = document.getElementById('fLinkProject').value.trim();
         const linkDrive = document.getElementById('fLinkDrive').value.trim();
         const linkAsset1 = document.getElementById('fLinkAsset1').value.trim();
         const linkAsset2 = document.getElementById('fLinkAsset2').value.trim();
 
         if (!judul || !kategori || !aspect) {
-            showToast('Judul, Kategori, dan Aspect Ratio wajib diisi', 'error');
+            showToast('Judul, Kategori, dan Aspect Ratio wajib', 'error');
             return;
         }
         if (license === 'paid' && !harga) {
-            showToast('Harga wajib diisi untuk template berbayar', 'error');
+            showToast('Harga wajib untuk berbayar', 'error');
             return;
         }
-        // Ambil nama kreator dari session (simulasi)
         const creatorName = isCreator ? (loadCreators()[0]?.name || 'Anonim') : 'Anonim';
 
         const newTemplate = {
@@ -936,6 +1359,7 @@
             aspectRatio: aspect,
             license,
             harga,
+            linkProject,
             linkDrive,
             linkAsset1,
             linkAsset2,
@@ -966,17 +1390,14 @@
         }
     });
 
-    // Reset button
     document.getElementById('resetBtn').addEventListener('click', function(e) {
         e.preventDefault();
         document.getElementById('uploadForm').reset();
         document.getElementById('priceWrapper').classList.remove('active');
     });
 
-    // Notif
     document.getElementById('notifBtn').addEventListener('click', () => showToast('🔔 Belum ada notifikasi', 'info'));
 
-    // Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
@@ -984,62 +1405,20 @@
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); searchInput.focus(); }
     });
 
-    // ===== HASH ROUTING =====
-    function handleHashChange() {
-        const hash = window.location.hash.slice(1);
-        if (!hash || hash === '/') {
-            currentView = 'explore';
-            currentCreator = null;
-            activeRatio = null;
-            render();
-            return;
-        }
-        const [path, query] = hash.split('?');
-        const params = new URLSearchParams(query || '');
-        const ratio = params.get('ratio');
-        if (ratio) activeRatio = ratio;
-
-        const parts = path.split('/').filter(Boolean);
-        if (parts.length === 2) {
-            // /creator/kode
-            const creator = decodeURIComponent(parts[0]);
-            const kode = parts[1];
-            const template = templates.find(t => t.creator.toLowerCase() === creator.toLowerCase() && t.kode === kode);
-            if (template) {
-                currentView = 'explore';
-                currentCreator = null;
-                // Buka detail
-                openDetail(template);
-                render();
-                return;
-            }
-        }
-        if (parts.length === 1 && parts[0] !== 'explore') {
-            currentView = 'creators';
-            currentCreator = decodeURIComponent(parts[0]);
-            render();
-            return;
-        }
-        currentView = 'explore';
-        currentCreator = null;
-        render();
-    }
-
+    // Hash routing
     window.addEventListener('hashchange', handleHashChange);
 
     // ===== INIT =====
     function init() {
         initDefaultCreators();
         load();
-        // Cek apakah ada session kreator (simulasi, misal dari localStorage)
+        // Simulasi login kreator (demo)
         const creators = loadCreators();
-        if (creators.length > 0) isCreator = true; // untuk demo, asumsikan user sudah login sebagai kreator pertama
-        // Parse URL
+        if (creators.length > 0) isCreator = true;
         handleHashChange();
-        // Set active nav
         document.querySelector('[data-view="explore"]')?.classList.add('active');
         document.querySelector('[data-nav="explore"]')?.classList.add('active');
-        showToast('🎬 PresetHub siap digunakan', 'info');
+        showToast('🎬 PresetHub siap', 'info');
     }
 
     document.addEventListener('DOMContentLoaded', init);
