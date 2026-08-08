@@ -1,1427 +1,1362 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <meta name="theme-color" content="#f4f3ef">
-    <title>PresetHub · Komunitas Kreator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-    <style>
-        /* ===== RESET & VARIABEL ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        :root {
-            --bg: #f4f3ef;
-            --surface: #ffffff;
-            --border: #e0ddd6;
-            --border-light: #efede8;
-            --text: #1c1b1a;
-            --text-secondary: #5f5c56;
-            --text-muted: #9c9991;
-            --accent: #4f46e5;
-            --accent-hover: #4338ca;
-            --accent-light: #eef0ff;
-            --mint: #0d9488;
-            --mint-light: #e6f7f5;
-            --amber: #d97706;
-            --amber-light: #fef3e2;
-            --radius: 12px;
-            --radius-sm: 8px;
-            --shadow: 0 1px 3px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
-            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            --font-display: 'Space Grotesk', var(--font);
-            --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-            --nav-height: 60px;
-            --safe-bottom: env(safe-area-inset-bottom, 0px);
-        }
-        html, body {
-            height: 100%;
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #d1cdc4; border-radius: 10px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<meta name="theme-color" content="#f2f0ea">
+<title>PresetHub — Komunitas Kreator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET
+   ============================================================ */
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { height:100%; }
+img { max-width:100%; display:block; }
+button, input, textarea, select { font-family:inherit; color:inherit; }
+a { color:inherit; }
 
-        /* ===== LAYOUT ===== */
-        .app {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            padding-bottom: calc(var(--nav-height) + 12px + var(--safe-bottom));
-        }
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --bg:            #f2f0ea;
+  --surface:       #ffffff;
+  --surface-sunk:  #ebe9e2;
+  --border:        #e2ded3;
+  --border-soft:   #ebe8df;
+  --text:          #181712;
+  --text-secondary:#6d6a60;
+  --text-muted:    #a29d8f;
 
-        /* ===== SIDEBAR (DESKTOP) ===== */
-        .sidebar {
-            display: none;
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 200px;
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            padding: 1.5rem 1rem;
-            flex-direction: column;
-            z-index: 10;
-            overflow-y: auto;
-        }
-        .sidebar .brand {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1.1rem;
-            letter-spacing: -0.02em;
-            padding-bottom: 1.25rem;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .sidebar .brand svg {
-            width: 26px; height: 26px;
-            stroke: var(--accent);
-            fill: none;
-            stroke-width: 2;
-        }
-        .sidebar .brand span { color: var(--accent); }
-        .sidebar nav {
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-            flex: 1;
-        }
-        .sidebar nav button {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 0.75rem;
-            border: none;
-            background: transparent;
-            border-radius: var(--radius-sm);
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: background 0.15s, color 0.15s;
-            width: 100%;
-            text-align: left;
-        }
-        .sidebar nav button:hover { background: var(--bg); color: var(--text); }
-        .sidebar nav button.active {
-            background: var(--accent-light);
-            color: var(--accent);
-        }
-        .sidebar nav button svg {
-            width: 18px; height: 18px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-            flex-shrink: 0;
-        }
-        .sidebar .footer {
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
+  --accent:        #a8672b;
+  --accent-dark:   #8a5321;
+  --accent-soft:   #f3e6d4;
 
-        /* ===== HEADER ===== */
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(244, 243, 239, 0.92);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border);
-            padding: 0.5rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .header-brand {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: -0.02em;
-            flex-shrink: 0;
-        }
-        .header-brand svg {
-            width: 24px; height: 24px;
-            stroke: var(--accent);
-            fill: none;
-            stroke-width: 2;
-        }
-        .header-brand span { color: var(--accent); }
-        .header-search {
-            flex: 1;
-            max-width: 320px;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            padding: 0.25rem 0.75rem;
-            transition: border 0.15s;
-        }
-        .header-search:focus-within {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px var(--accent-light);
-        }
-        .header-search svg {
-            width: 16px; height: 16px;
-            stroke: var(--text-muted);
-            fill: none;
-            stroke-width: 2;
-            flex-shrink: 0;
-        }
-        .header-search input {
-            border: none;
-            background: transparent;
-            padding: 0.4rem 0;
-            width: 100%;
-            font-size: 0.85rem;
-            outline: none;
-            font-family: inherit;
-            color: var(--text);
-        }
-        .header-search input::placeholder { color: var(--text-muted); }
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            flex-shrink: 0;
-        }
-        .header-actions button {
-            width: 36px; height: 36px;
-            border: none;
-            background: transparent;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            transition: background 0.15s;
-        }
-        .header-actions button:hover { background: var(--bg); }
-        .header-actions button svg {
-            width: 20px; height: 20px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-        }
+  --green:         #3f6b4f;
+  --green-soft:    #e5efe8;
 
-        /* ===== FILTER CHIPS ===== */
-        .filter-chips {
-            display: flex;
-            gap: 0.4rem;
-            padding: 0.6rem 1rem;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 52px;
-            z-index: 40;
-        }
-        .filter-chips::-webkit-scrollbar { display: none; }
-        .filter-chips .chip {
-            flex-shrink: 0;
-            padding: 0.25rem 0.8rem;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: background 0.15s, color 0.15s, border-color 0.15s;
-            color: var(--text-secondary);
-            white-space: nowrap;
-            user-select: none;
-        }
-        .filter-chips .chip:active { transform: scale(0.96); }
-        .filter-chips .chip.active {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-        .filter-chips .chip.ratio {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-        }
+  --radius:        7px;
+  --radius-sm:     4px;
+  --radius-pill:   100px;
 
-        /* ===== MAIN CONTENT ===== */
-        .main {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            max-width: 720px;
-            margin: 0 auto;
-            width: 100%;
-        }
+  --font-display:  'Fraunces', Georgia, serif;
+  --font:          'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:     'IBM Plex Mono', ui-monospace, monospace;
 
-        /* ===== TEMPLATE GRID (MASONRY) ===== */
-        .template-grid {
-            columns: 2;
-            column-gap: 0.75rem;
-            margin-top: 0.5rem;
-        }
-        @media (min-width: 640px) {
-            .template-grid { columns: 2; column-gap: 1rem; }
-        }
-        @media (min-width: 1024px) {
-            .template-grid { columns: 3; column-gap: 1rem; }
-            .main { max-width: 960px; padding: 1.5rem 2rem; }
-        }
+  --header-h:      58px;
+  --safe-bottom:   env(safe-area-inset-bottom, 0px);
+}
 
-        .template-card {
-            break-inside: avoid;
-            margin-bottom: 0.75rem;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.15s;
-        }
-        .template-card:active { transform: scale(0.98); }
-        @media (hover: hover) {
-            .template-card:hover {
-                box-shadow: var(--shadow-md);
-                transform: translateY(-2px);
-            }
-        }
+html,body {
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#d4cfc0;border-radius:10px;}
 
-        /* ===== VIDEO CONTAINER ===== */
-        .video-container {
-            width: 100%;
-            overflow: hidden;
-            background: #0f0f0f;
-            position: relative;
-        }
-        .video-container iframe,
-        .video-container .video-thumb {
-            width: 100%;
-            height: 100%;
-            border: 0;
-            display: block;
-        }
-        .video-container .video-thumb {
-            object-fit: cover;
-            background: #0f0f0f;
-        }
+.app { min-height:100vh; padding-bottom:calc(64px + var(--safe-bottom)); }
+@media (min-width:1024px){ .app{ padding-bottom:0; } }
 
-        /* ===== CARD BODY ===== */
-        .card-body {
-            padding: 0.5rem 0.65rem 0.65rem;
-        }
-        .card-title {
-            font-family: var(--font-display);
-            font-size: 0.85rem;
-            font-weight: 600;
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .card-creator {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 0.1rem;
-        }
-        .card-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 0.3rem;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
-        .card-meta .badge {
-            font-size: 0.6rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            padding: 0.05rem 0.5rem;
-            border-radius: 100px;
-            background: var(--bg);
-            color: var(--text-secondary);
-        }
-        .card-meta .badge.free { background: var(--mint-light); color: var(--mint); }
-        .card-meta .badge.paid { background: var(--amber-light); color: var(--amber); }
-        .card-meta .uses { font-family: var(--font-mono); font-size: 0.65rem; }
+.visually-hidden{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
-        /* ===== EMPTY STATE ===== */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-muted);
-        }
-        .empty-state svg {
-            width: 48px; height: 48px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.5;
-            margin-bottom: 0.5rem;
-        }
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header{
+  position:sticky; top:0; z-index:60;
+  background:rgba(242,240,234,0.9);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.header-inner{
+  height:var(--header-h);
+  display:flex; align-items:center; gap:0.9rem;
+  padding:0 1rem;
+  max-width:1360px; margin:0 auto;
+}
+.logo{
+  display:flex; align-items:center; gap:0.45rem;
+  font-family:var(--font-display); font-weight:600; font-size:1.15rem;
+  letter-spacing:-0.01em; text-decoration:none; color:var(--text);
+  flex-shrink:0;
+}
+.logo svg{ width:22px; height:22px; stroke:var(--accent); fill:none; stroke-width:1.6; }
+.logo .dim{ color:var(--text-muted); font-weight:500; }
 
-        /* ===== BOTTOM NAV ===== */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: calc(var(--nav-height) + var(--safe-bottom));
-            padding-bottom: var(--safe-bottom);
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 100;
-        }
-        .bottom-nav .nav-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.05rem;
-            border: none;
-            background: none;
-            color: var(--text-muted);
-            font-size: 0.55rem;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 0.2rem 0.6rem;
-            min-height: 44px;
-            min-width: 44px;
-            transition: color 0.15s;
-        }
-        .bottom-nav .nav-btn:active { transform: scale(0.92); }
-        .bottom-nav .nav-btn svg {
-            width: 22px; height: 22px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-        }
-        .bottom-nav .nav-btn.active { color: var(--accent); }
-        .bottom-nav .nav-btn .nav-label {
-            font-size: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
+.desktop-search{
+  display:none;
+  flex:1; max-width:380px;
+  align-items:center; gap:0.5rem;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:0.4rem 0.7rem;
+  transition:border-color .15s, box-shadow .15s;
+}
+.desktop-search:focus-within{ border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+.desktop-search svg{ width:16px; height:16px; stroke:var(--text-muted); fill:none; stroke-width:1.8; flex-shrink:0; }
+.desktop-search input{ border:none; background:none; outline:none; width:100%; font-size:0.87rem; }
+.desktop-search input::placeholder{ color:var(--text-muted); }
 
-        /* ===== FAB ===== */
-        .fab {
-            position: fixed;
-            bottom: calc(var(--nav-height) + 16px + var(--safe-bottom));
-            right: 16px;
-            width: 52px; height: 52px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.15s, box-shadow 0.15s;
-            z-index: 90;
-        }
-        .fab:active { transform: scale(0.92); }
-        .fab svg {
-            width: 26px; height: 26px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-        }
+.main-nav{ display:none; gap:0.25rem; }
+.main-nav button{
+  border:none; background:none; cursor:pointer;
+  font-size:0.87rem; font-weight:500; color:var(--text-secondary);
+  padding:0.4rem 0.6rem; border-radius:var(--radius-sm);
+  transition:color .15s, background .15s;
+}
+.main-nav button:hover{ color:var(--text); background:var(--surface-sunk); }
+.main-nav button.active{ color:var(--text); font-weight:600; }
 
-        /* ===== MODAL ===== */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.35);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-            z-index: 200;
-            padding: 1.5rem 1rem calc(var(--safe-bottom) + 1rem);
-        }
-        .modal-overlay.active { display: flex; }
-        .modal-sheet {
-            background: var(--surface);
-            border-radius: var(--radius) var(--radius) 0 0;
-            max-width: 600px;
-            width: 100%;
-            max-height: 92vh;
-            overflow-y: auto;
-            padding: 1.25rem 1.25rem 1.5rem;
-            border: 1px solid var(--border);
-            border-bottom: none;
-            animation: slideUp 0.25s ease;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .modal-sheet .handle {
-            width: 36px; height: 4px;
-            background: var(--border);
-            border-radius: 4px;
-            margin: 0 auto 1rem;
-            flex-shrink: 0;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-        .modal-header h2 {
-            font-family: var(--font-display);
-            font-size: 1rem;
-            font-weight: 600;
-        }
-        .modal-close {
-            background: none;
-            border: none;
-            padding: 0.25rem;
-            cursor: pointer;
-            color: var(--text-muted);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-close:active { transform: scale(0.92); }
-        .modal-close svg {
-            width: 22px; height: 22px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-        }
+.header-actions{ display:flex; align-items:center; gap:0.35rem; margin-left:auto; }
+.icon-btn{
+  width:36px; height:36px; border:none; background:none; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  color:var(--text-secondary); transition:background .15s;
+}
+.icon-btn:hover{ background:var(--surface-sunk); }
+.icon-btn svg{ width:19px; height:19px; stroke:currentColor; fill:none; stroke-width:1.8; }
+.btn-upload{
+  display:none; align-items:center; gap:0.35rem;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--text); font-weight:600; font-size:0.83rem;
+  padding:0.42rem 0.85rem; border-radius:var(--radius); cursor:pointer;
+  transition:border-color .15s, background .15s;
+}
+.btn-upload:hover{ border-color:var(--accent); background:var(--accent-soft); }
+.btn-upload svg{ width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; }
 
-        /* ===== FORM ===== */
-        .form-group { margin-bottom: 0.6rem; }
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 0.15rem;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.45rem 0.6rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 0.85rem;
-            font-family: inherit;
-            background: var(--surface);
-            transition: border 0.15s;
-            color: var(--text);
-            -webkit-appearance: none;
-        }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px var(--accent-light);
-        }
-        .form-group textarea { resize: vertical; min-height: 50px; }
-        .form-hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.1rem; }
-        .price-input-wrapper { display: none; margin-top: 0.3rem; }
-        .price-input-wrapper.active { display: block; }
-        .form-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.75rem;
-            padding-top: 0.75rem;
-            border-top: 1px solid var(--border);
-            flex-wrap: wrap;
-        }
-        .form-actions .btn {
-            padding: 0.4rem 1rem;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: background 0.15s, transform 0.1s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        .form-actions .btn:active { transform: scale(0.96); }
-        .form-actions .btn-primary { background: var(--accent); color: #fff; }
-        .form-actions .btn-primary:hover { background: var(--accent-hover); }
-        .form-actions .btn-secondary { background: var(--bg); color: var(--text-secondary); }
-        .form-actions .btn-secondary:hover { background: var(--border); }
+.mobile-search-bar{
+  display:block; overflow:hidden; max-height:0;
+  transition:max-height .2s ease, padding .2s ease;
+  padding:0 1rem;
+}
+.mobile-search-bar.open{ max-height:56px; padding:0.5rem 1rem 0.6rem; }
+.mobile-search-bar .search-wrap{
+  display:flex; align-items:center; gap:0.5rem;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:0.45rem 0.7rem;
+}
+.mobile-search-bar svg{ width:16px; height:16px; stroke:var(--text-muted); fill:none; stroke-width:1.8; flex-shrink:0; }
+.mobile-search-bar input{ border:none; background:none; outline:none; width:100%; font-size:0.87rem; }
 
-        /* ===== TOAST ===== */
-        .toast-container {
-            position: fixed;
-            bottom: calc(var(--nav-height) + 16px + var(--safe-bottom));
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 300;
-            max-width: 400px;
-            width: 90%;
-            pointer-events: none;
-        }
-        .toast {
-            background: var(--text);
-            color: #fff;
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.8rem;
-            box-shadow: var(--shadow-md);
-            animation: toastIn 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            pointer-events: auto;
-            margin-bottom: 0.4rem;
-        }
-        .toast svg {
-            width: 16px; height: 16px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-            flex-shrink: 0;
-        }
-        .toast.success { background: #0d9488; }
-        .toast.error { background: #dc2626; }
-        .toast.info { background: var(--accent); }
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateY(8px) scale(0.96); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+@media (min-width:1024px){
+  .desktop-search{ display:flex; }
+  .main-nav{ display:flex; }
+  .btn-upload{ display:inline-flex; }
+  .mobile-search-toggle, .mobile-search-bar{ display:none; }
+}
 
-        /* ===== DETAIL MODAL ===== */
-        .detail-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin: 0.5rem 0;
-        }
-        .detail-meta .badge {
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 0.1rem 0.5rem;
-            border-radius: 100px;
-            background: var(--bg);
-            color: var(--text-secondary);
-        }
-        .detail-meta .badge.free { background: var(--mint-light); color: var(--mint); }
-        .detail-meta .badge.paid { background: var(--amber-light); color: var(--amber); }
-        .detail-stats {
-            display: flex;
-            gap: 0.75rem;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin: 0.25rem 0;
-        }
-        .detail-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin: 0.5rem 0;
-            line-height: 1.6;
-        }
-        .detail-contact {
-            margin-top: 0.75rem;
-            padding: 0.6rem 0.75rem;
-            background: var(--amber-light);
-            border-radius: var(--radius-sm);
-            font-size: 0.85rem;
-        }
-        .detail-contact a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        .detail-contact a:hover { text-decoration: underline; }
-        .detail-links {
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-            margin-top: 0.5rem;
-        }
-        .detail-links a {
-            background: var(--bg);
-            padding: 0.3rem 0.6rem;
-            border-radius: var(--radius-sm);
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: background 0.15s;
-        }
-        .detail-links a:hover { background: var(--border); }
+/* ============================================================
+   CONTEXT LINE
+   ============================================================ */
+.context-bar{
+  max-width:1360px; margin:0 auto;
+  padding:0.95rem 1rem 0.15rem;
+}
+.context-bar p{
+  font-size:0.82rem; color:var(--text-muted);
+}
+.context-bar strong{ color:var(--text-secondary); font-weight:600; }
+@media (min-width:1024px){ .context-bar{ padding:1.3rem 2rem 0.2rem; } }
 
-        /* ===== CREATOR DIRECTORY ===== */
-        .creator-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 0.75rem;
-            margin-top: 0.5rem;
-        }
-        .creator-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 0.75rem;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.15s;
-        }
-        .creator-card:active { transform: scale(0.96); }
-        .creator-card .avatar {
-            width: 48px; height: 48px;
-            border-radius: 50%;
-            background: var(--accent-light);
-            color: var(--accent);
-            font-weight: 700;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 0.4rem;
-        }
-        .creator-card .name {
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-        .creator-card .sub {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
-        .creator-card .count {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-top: 0.2rem;
-        }
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+.filter-bar{ max-width:1360px; margin:0 auto; padding:0.6rem 0 0.2rem; }
+.filter-row{
+  display:flex; gap:0.35rem;
+  overflow-x:auto; scrollbar-width:none;
+  padding:0.2rem 1rem;
+  -webkit-overflow-scrolling:touch;
+}
+.filter-row::-webkit-scrollbar{ display:none; }
+@media (min-width:1024px){ .filter-row{ padding:0.2rem 2rem; } }
 
-        /* ===== RESPONSIVE ===== */
-        @media (min-width: 1024px) {
-            .sidebar { display: flex !important; }
-            .bottom-nav { display: none; }
-            .fab { display: none; }
-            .app { padding-bottom: 0; padding-left: 200px; }
-            .header { padding: 0.5rem 2rem; }
-            .filter-chips { top: 52px; padding: 0.6rem 2rem; }
-            .main { padding: 1.5rem 2rem; max-width: 960px; }
-        }
-        @media (max-width: 480px) {
-            .template-grid { columns: 2; column-gap: 0.5rem; }
-            .template-card { margin-bottom: 0.5rem; }
-            .card-body { padding: 0.4rem 0.5rem 0.5rem; }
-            .card-title { font-size: 0.75rem; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-        }
-    </style>
+.cat-chip{
+  flex-shrink:0; border:none; background:none; cursor:pointer;
+  font-size:0.83rem; font-weight:500; color:var(--text-secondary);
+  padding:0.3rem 0.15rem; white-space:nowrap;
+  border-bottom:2px solid transparent;
+  transition:color .15s, border-color .15s;
+}
+.cat-chip + .cat-chip{ margin-left:0.7rem; }
+.cat-chip:hover{ color:var(--text); }
+.cat-chip.active{ color:var(--text); border-color:var(--accent); font-weight:600; }
+
+.ratio-row{ margin-top:0.1rem; }
+.ratio-chip{
+  flex-shrink:0; border:1px solid var(--border); background:var(--surface);
+  cursor:pointer; font-family:var(--font-mono); font-size:0.7rem; font-weight:500;
+  color:var(--text-secondary); padding:0.22rem 0.65rem; border-radius:var(--radius-pill);
+  white-space:nowrap; transition:all .15s;
+}
+.ratio-chip:hover{ border-color:var(--text-muted); }
+.ratio-chip.active{ background:var(--text); border-color:var(--text); color:#fff; }
+
+/* ============================================================
+   MAIN / GRID
+   ============================================================ */
+.main{ max-width:1360px; margin:0 auto; padding:0.9rem 1rem 2.5rem; }
+@media (min-width:1024px){ .main{ padding:1.2rem 2rem 3rem; } }
+
+.result-line{
+  font-size:0.8rem; color:var(--text-muted); margin-bottom:0.8rem;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:0.85rem;
+}
+@media (min-width:520px){ .grid{ grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:1rem; } }
+@media (min-width:1024px){ .grid{ grid-template-columns:repeat(auto-fill, minmax(230px,1fr)); gap:1.4rem; } }
+@media (min-width:1440px){ .grid{ grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); } }
+
+.card{
+  cursor:pointer; display:flex; flex-direction:column;
+  border-radius:var(--radius); overflow:hidden;
+  background:transparent;
+}
+.card .thumb{
+  position:relative; width:100%; border-radius:var(--radius);
+  overflow:hidden; background:var(--surface-sunk);
+}
+.thumb-fallback{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(135deg,#e9e6dc,#ddd8c9); color:var(--text-muted);
+}
+.thumb-fallback svg{ width:26px; height:26px; stroke:currentColor; fill:none; stroke-width:1.4; }
+.thumb-img{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  transition:transform .35s ease;
+}
+@media (hover:hover){ .card:hover .thumb-img{ transform:scale(1.035); } }
+.play-badge{
+  position:absolute; left:0.5rem; bottom:0.5rem;
+  width:28px; height:28px; border-radius:50%;
+  background:rgba(20,18,14,0.55); backdrop-filter:blur(2px);
+  display:flex; align-items:center; justify-content:center;
+}
+.play-badge svg{ width:11px; height:11px; fill:#fff; stroke:none; margin-left:1px; }
+.ratio-tag{
+  position:absolute; top:0.5rem; right:0.5rem;
+  font-family:var(--font-mono); font-size:0.62rem; font-weight:500;
+  color:#fff; background:rgba(20,18,14,0.5); backdrop-filter:blur(2px);
+  padding:0.1rem 0.4rem; border-radius:var(--radius-sm); letter-spacing:0.01em;
+}
+
+.card-info{ padding:0.55rem 0.1rem 0; }
+.card-title{
+  font-family:var(--font-display); font-weight:600; font-size:0.92rem;
+  line-height:1.3; color:var(--text);
+  display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;
+}
+.card-creator{
+  font-size:0.76rem; color:var(--text-secondary); margin-top:0.15rem;
+}
+.card-foot{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top:0.35rem; font-size:0.72rem; color:var(--text-muted);
+}
+.card-foot .price{ font-weight:600; }
+.card-foot .price.free{ color:var(--green); }
+.card-foot .price.paid{ color:var(--accent-dark); }
+.card-foot .uses{ display:flex; align-items:center; gap:0.25rem; font-family:var(--font-mono); font-size:0.68rem; }
+.card-foot .uses svg{ width:11px; height:11px; stroke:currentColor; fill:none; stroke-width:2; }
+
+/* ============================================================
+   SKELETON / LOADING
+   ============================================================ */
+.grid.is-loading .card{ pointer-events:none; }
+.skel{ background:var(--surface-sunk); border-radius:var(--radius); position:relative; overflow:hidden; }
+.skel::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+  animation:shimmer 1.2s infinite;
+}
+@keyframes shimmer{ from{ transform:translateX(-100%);} to{ transform:translateX(100%);} }
+.skel-line{ height:10px; border-radius:3px; margin-top:0.5rem; }
+.skel-line.w60{ width:60%; }
+.skel-line.w40{ width:40%; }
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state{ text-align:center; padding:3.5rem 1rem; color:var(--text-muted); }
+.empty-state svg{ width:34px; height:34px; stroke:currentColor; fill:none; stroke-width:1.3; margin-bottom:0.7rem; }
+.empty-state .title{ font-family:var(--font-display); font-size:1rem; color:var(--text-secondary); font-weight:600; margin-bottom:0.2rem; }
+.empty-state .sub{ font-size:0.82rem; }
+
+/* ============================================================
+   CREATOR DIRECTORY
+   ============================================================ */
+.creator-grid{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr));
+  gap:0.85rem;
+}
+.creator-card{
+  background:var(--surface); border:1px solid var(--border-soft);
+  border-radius:var(--radius); padding:1.1rem 0.8rem; text-align:center;
+  cursor:pointer; transition:border-color .15s, transform .15s;
+}
+.creator-card:hover{ border-color:var(--border); }
+.creator-card:active{ transform:scale(0.98); }
+.avatar{
+  width:46px; height:46px; border-radius:50%; margin:0 auto 0.55rem;
+  background:var(--accent-soft); color:var(--accent-dark);
+  font-family:var(--font-display); font-weight:600; font-size:1.05rem;
+  display:flex; align-items:center; justify-content:center;
+}
+.creator-card .name{ font-weight:600; font-size:0.86rem; }
+.creator-card .sub{ font-size:0.72rem; color:var(--text-muted); margin-top:0.1rem; }
+.creator-card .count{ font-size:0.72rem; color:var(--text-secondary); margin-top:0.3rem; }
+
+/* ============================================================
+   CREATOR PROFILE HEADER
+   ============================================================ */
+.profile-header{
+  display:flex; align-items:center; gap:1rem;
+  padding:0.4rem 0 1.4rem;
+  border-bottom:1px solid var(--border-soft);
+  margin-bottom:1.2rem;
+  flex-wrap:wrap;
+}
+.profile-header .avatar{ width:60px; height:60px; font-size:1.4rem; margin:0; flex-shrink:0; }
+.profile-header .info{ flex:1; min-width:180px; }
+.profile-header .info h1{ font-family:var(--font-display); font-size:1.25rem; font-weight:600; }
+.profile-header .info .role{ font-size:0.8rem; color:var(--text-muted); margin-top:0.1rem; }
+.profile-header .info .bio{ font-size:0.85rem; color:var(--text-secondary); margin-top:0.4rem; max-width:44ch; }
+.profile-header .stats{ display:flex; gap:1.1rem; margin-top:0.55rem; }
+.profile-header .stats span{ font-size:0.76rem; color:var(--text-muted); }
+.profile-header .stats strong{ color:var(--text); font-weight:600; }
+.profile-header .portfolio-link{
+  display:inline-flex; align-items:center; gap:0.3rem;
+  font-size:0.78rem; font-weight:600; color:var(--accent-dark);
+  text-decoration:none; margin-top:0.5rem;
+}
+.profile-header .portfolio-link svg{ width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; }
+.back-link{
+  display:inline-flex; align-items:center; gap:0.3rem;
+  font-size:0.8rem; color:var(--text-secondary); text-decoration:none;
+  margin-bottom:0.7rem; cursor:pointer; border:none; background:none; padding:0;
+}
+.back-link svg{ width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; }
+.back-link:hover{ color:var(--text); }
+
+/* ============================================================
+   MOBILE BOTTOM NAV
+   ============================================================ */
+.mobile-nav{
+  position:fixed; bottom:0; left:0; right:0; z-index:70;
+  height:calc(60px + var(--safe-bottom)); padding-bottom:var(--safe-bottom);
+  background:rgba(255,255,255,0.94);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  border-top:1px solid var(--border);
+  display:flex; justify-content:space-around; align-items:center;
+}
+.mobile-nav button{
+  display:flex; flex-direction:column; align-items:center; gap:0.15rem;
+  border:none; background:none; color:var(--text-muted);
+  font-size:0.62rem; font-weight:500; cursor:pointer;
+  padding:0.3rem 0.9rem; min-height:44px; min-width:44px;
+}
+.mobile-nav button svg{ width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.8; }
+.mobile-nav button.active{ color:var(--accent-dark); }
+@media (min-width:1024px){ .mobile-nav{ display:none; } }
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal-overlay{
+  position:fixed; inset:0; z-index:200;
+  background:rgba(20,18,14,0.4);
+  display:none; align-items:flex-end; justify-content:center;
+  padding:0;
+}
+.modal-overlay.active{ display:flex; }
+.modal-sheet{
+  background:var(--surface);
+  border-radius:14px 14px 0 0;
+  max-width:640px; width:100%; max-height:92vh; overflow-y:auto;
+  padding:0.85rem 1.2rem calc(1.5rem + var(--safe-bottom));
+  animation:sheetUp .22s ease;
+}
+@keyframes sheetUp{ from{ transform:translateY(16px); opacity:0;} to{ transform:translateY(0); opacity:1;} }
+.sheet-handle{ width:34px; height:4px; background:var(--border); border-radius:4px; margin:0 auto 0.9rem; }
+
+@media (min-width:768px){
+  .modal-overlay{ align-items:center; padding:2rem; }
+  .modal-sheet{ border-radius:14px; max-height:88vh; animation:modalIn .18s ease; }
+  .sheet-handle{ display:none; }
+  @keyframes modalIn{ from{ transform:translateY(8px) scale(0.985); opacity:0;} to{ transform:none; opacity:1;} }
+}
+
+.modal-head{
+  display:flex; justify-content:space-between; align-items:flex-start;
+  gap:0.8rem; margin-bottom:0.7rem;
+}
+.modal-head h2{ font-family:var(--font-display); font-size:1.05rem; font-weight:600; line-height:1.35; }
+.modal-close{
+  border:none; background:none; cursor:pointer; color:var(--text-muted);
+  width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.modal-close:hover{ background:var(--surface-sunk); color:var(--text); }
+.modal-close svg{ width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.8; }
+
+/* ============================================================
+   FORM
+   ============================================================ */
+.form-section{ margin-bottom:1.1rem; }
+.form-section .section-label{
+  font-family:var(--font-mono); font-size:0.66rem; font-weight:500;
+  letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted);
+  margin-bottom:0.55rem;
+}
+.form-group{ margin-bottom:0.65rem; }
+.form-group label{
+  display:block; font-size:0.78rem; font-weight:500; color:var(--text-secondary);
+  margin-bottom:0.22rem;
+}
+.form-group input, .form-group select, .form-group textarea{
+  width:100%; padding:0.5rem 0.65rem; border:1px solid var(--border);
+  border-radius:var(--radius-sm); font-size:0.87rem; background:var(--surface);
+  outline:none; transition:border-color .15s, box-shadow .15s;
+  -webkit-appearance:none;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus{
+  border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);
+}
+.form-group textarea{ resize:vertical; min-height:56px; }
+.form-hint{ font-size:0.72rem; color:var(--text-muted); margin-top:0.15rem; }
+.form-row2{ display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; }
+.price-wrap{ display:none; margin-top:0.5rem; }
+.price-wrap.active{ display:block; }
+
+.form-actions{
+  display:flex; gap:0.55rem; margin-top:0.9rem; padding-top:0.9rem;
+  border-top:1px solid var(--border-soft);
+}
+.btn{
+  padding:0.55rem 1.1rem; border-radius:var(--radius-sm); font-weight:600;
+  font-size:0.85rem; cursor:pointer; border:none; transition:opacity .15s, background .15s;
+  display:inline-flex; align-items:center; gap:0.4rem;
+}
+.btn:active{ opacity:0.85; }
+.btn-primary{ background:var(--text); color:#fff; }
+.btn-primary:hover{ background:#000; }
+.btn-secondary{ background:none; color:var(--text-secondary); border:1px solid var(--border); }
+.btn-secondary:hover{ background:var(--surface-sunk); }
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast-container{
+  position:fixed; bottom:calc(74px + var(--safe-bottom)); left:50%;
+  transform:translateX(-50%); z-index:300; width:90%; max-width:380px; pointer-events:none;
+}
+@media (min-width:1024px){ .toast-container{ bottom:24px; } }
+.toast{
+  background:var(--text); color:#fff; padding:0.55rem 0.9rem; border-radius:var(--radius-sm);
+  font-size:0.8rem; box-shadow:0 6px 18px rgba(0,0,0,0.14);
+  display:flex; align-items:center; gap:0.5rem; margin-bottom:0.4rem;
+  animation:toastIn .18s ease; pointer-events:auto;
+}
+.toast svg{ width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; flex-shrink:0; }
+.toast.success{ background:var(--green); }
+.toast.error{ background:#a13d3d; }
+@keyframes toastIn{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:none;} }
+
+/* ============================================================
+   DETAIL VIEW
+   ============================================================ */
+.detail-preview{ width:100%; border-radius:var(--radius); overflow:hidden; background:#151310; position:relative; }
+.detail-preview iframe{ width:100%; height:100%; border:0; display:block; }
+.detail-meta-row{ display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; margin:0.85rem 0 0.2rem; }
+.tag{
+  font-size:0.72rem; font-weight:500; color:var(--text-secondary);
+  background:var(--surface-sunk); padding:0.18rem 0.55rem; border-radius:var(--radius-sm);
+}
+.tag.free{ background:var(--green-soft); color:var(--green); }
+.tag.paid{ background:var(--accent-soft); color:var(--accent-dark); }
+.tag.mono{ font-family:var(--font-mono); font-size:0.68rem; }
+.detail-creator-line{
+  display:flex; align-items:center; gap:0.5rem; margin-top:0.6rem; cursor:pointer;
+}
+.detail-creator-line .avatar{ width:30px; height:30px; font-size:0.75rem; }
+.detail-creator-line .name{ font-size:0.85rem; font-weight:600; }
+.detail-creator-line .role{ font-size:0.72rem; color:var(--text-muted); }
+.detail-desc{ font-size:0.87rem; color:var(--text-secondary); margin:0.85rem 0; line-height:1.65; }
+.detail-stats{ display:flex; gap:1.1rem; margin:0.6rem 0 0.9rem; padding-top:0.8rem; border-top:1px solid var(--border-soft); }
+.stat{ display:flex; align-items:center; gap:0.32rem; font-size:0.78rem; color:var(--text-secondary); }
+.stat svg{ width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.8; }
+.detail-contact{
+  margin:0.9rem 0; padding:0.75rem 0.9rem; background:var(--surface-sunk);
+  border-radius:var(--radius); font-size:0.85rem;
+}
+.detail-contact .label{ font-weight:600; font-size:0.8rem; margin-bottom:0.4rem; }
+.contact-row{ display:flex; align-items:center; gap:0.45rem; margin-top:0.35rem; font-size:0.83rem; }
+.contact-row svg{ width:15px; height:15px; stroke:var(--text-secondary); fill:none; stroke-width:1.8; flex-shrink:0; }
+.contact-row a{ text-decoration:none; color:var(--text); font-weight:500; }
+.contact-row a:hover{ color:var(--accent-dark); }
+.detail-links{ display:flex; flex-direction:column; gap:0.4rem; margin-top:0.9rem; }
+.detail-links a{
+  display:flex; align-items:center; gap:0.55rem;
+  padding:0.55rem 0.7rem; border-radius:var(--radius-sm); border:1px solid var(--border-soft);
+  text-decoration:none; color:var(--text); font-size:0.83rem; font-weight:500;
+  transition:border-color .15s, background .15s;
+}
+.detail-links a:hover{ border-color:var(--border); background:var(--surface-sunk); }
+.detail-links a svg{ width:16px; height:16px; stroke:var(--text-secondary); fill:none; stroke-width:1.8; flex-shrink:0; }
+
+/* ============================================================
+   RESPONSIVE FIXES
+   ============================================================ */
+@media (max-width:380px){
+  .creator-grid{ grid-template-columns:repeat(auto-fill, minmax(130px,1fr)); }
+}
+@media (prefers-reduced-motion:reduce){
+  *{ animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+}
+</style>
 </head>
 <body>
 
 <div class="app">
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-        <div class="brand">
-            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
-            <span>Preset</span>Hub
-        </div>
-        <nav>
-            <button class="active" data-view="explore"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Explore</button>
-            <button data-view="creators"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Kreator</button>
-        </nav>
-        <div class="footer"><span id="totalDesktop">0</span> template</div>
-    </aside>
 
-    <!-- HEADER -->
-    <header class="header">
-        <div class="header-brand">
-            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
-            <span>Preset</span>Hub
-        </div>
-        <div class="header-search">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="searchInput" placeholder="Cari template, kreator..." />
-        </div>
-        <div class="header-actions">
-            <button id="notifBtn"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
-        </div>
-    </header>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#/explore" class="logo" id="logoLink">
+        <svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="1.5"/><circle cx="9" cy="12" r="2.6"/><line x1="16" y1="9.5" x2="18.5" y2="9.5"/><line x1="16" y1="12.5" x2="18.5" y2="12.5"/></svg>
+        Preset<span class="dim">Hub</span>
+      </a>
 
-    <!-- FILTER CHIPS -->
-    <div class="filter-chips" id="filterChips">
-        <span class="chip active" data-filter="all">Semua</span>
-        <span class="chip" data-filter="preset">Preset</span>
-        <span class="chip" data-filter="assets">Assets</span>
-        <span class="chip" data-filter="free">Gratis</span>
-        <span class="chip" data-filter="paid">Berbayar</span>
-        <span class="chip ratio" data-filter="9:16">9:16</span>
-        <span class="chip ratio" data-filter="16:9">16:9</span>
-        <span class="chip ratio" data-filter="1:1">1:1</span>
-        <span class="chip ratio" data-filter="4:3">4:3</span>
-        <span class="chip ratio" data-filter="3:4">3:4</span>
+      <div class="desktop-search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>
+        <input type="text" id="searchInput" placeholder="Cari preset, template, kreator..." />
+      </div>
+
+      <nav class="main-nav" id="mainNav">
+        <button class="active" data-view="explore">Explore</button>
+        <button data-view="creators">Kreator</button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn mobile-search-toggle" id="mobileSearchToggle" aria-label="Cari">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>
+        </button>
+        <button class="icon-btn" id="notifBtn" aria-label="Notifikasi">
+          <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 6.2-2.5 8-2.5 8h17s-2.5-1.8-2.5-8"/><path d="M13.7 19.5a2 2 0 0 1-3.4 0"/></svg>
+        </button>
+        <button class="btn-upload" id="uploadBtn">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Upload
+        </button>
+      </div>
     </div>
+    <div class="mobile-search-bar" id="mobileSearchBar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>
+        <input type="text" id="searchInputMobile" placeholder="Cari preset, template, kreator..." />
+      </div>
+    </div>
+  </header>
 
-    <!-- MAIN -->
-    <main class="main" id="mainContent">
-        <div id="cardGrid"></div>
-    </main>
+  <!-- CONTEXT -->
+  <div class="context-bar">
+    <p id="contextLine">Memuat…</p>
+  </div>
 
-    <!-- FAB UPLOAD -->
-    <button class="fab" id="fabUpload"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+  <!-- FILTERS -->
+  <div class="filter-bar">
+    <div class="filter-row" id="categoryFilters">
+      <button class="cat-chip active" data-filter="all">Semua</button>
+      <button class="cat-chip" data-filter="preset">Preset</button>
+      <button class="cat-chip" data-filter="assets">Assets</button>
+      <button class="cat-chip" data-filter="free">Gratis</button>
+      <button class="cat-chip" data-filter="paid">Berbayar</button>
+    </div>
+    <div class="filter-row ratio-row" id="ratioFilters">
+      <button class="ratio-chip" data-ratio="9:16">9:16</button>
+      <button class="ratio-chip" data-ratio="16:9">16:9</button>
+      <button class="ratio-chip" data-ratio="1:1">1:1</button>
+      <button class="ratio-chip" data-ratio="4:3">4:3</button>
+      <button class="ratio-chip" data-ratio="3:4">3:4</button>
+    </div>
+  </div>
 
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
-        <button class="nav-btn active" data-nav="explore"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nav-label">Explore</span></button>
-        <button class="nav-btn" data-nav="creators"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-label">Kreator</span></button>
-    </nav>
+  <!-- MAIN -->
+  <main class="main">
+    <div id="cardGrid"></div>
+  </main>
 
-    <!-- MODALS -->
-    <div class="modal-overlay" id="uploadModal">
-        <div class="modal-sheet">
-            <div class="handle"></div>
-            <div class="modal-header"><h2 id="modalTitle">Upload Template</h2><button class="modal-close" id="closeUploadModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-            <form id="uploadForm">
-                <div class="form-group"><label>Judul *</label><input type="text" id="fJudul" required /></div>
-                <div class="form-group"><label>Kategori *</label><select id="fKategori" required><option value="">Pilih</option><option value="Preset">Preset</option><option value="Assets">Assets</option></select></div>
-                <div class="form-group"><label>Deskripsi</label><textarea id="fDeskripsi" rows="2"></textarea></div>
-                <div class="form-group"><label>YouTube URL</label><input type="url" id="fLinkYoutube" placeholder="https://youtube.com/watch?v=..." /></div>
-                <div class="form-group"><label>Aspect Ratio *</label><select id="fAspect" required><option value="">Pilih</option><option value="9:16">9:16 (Vertical)</option><option value="16:9">16:9 (Landscape)</option><option value="1:1">1:1 (Square)</option><option value="4:3">4:3</option><option value="3:4">3:4</option></select></div>
-                <div class="form-group"><label>Tipe *</label><select id="fLicense" required><option value="free">Gratis</option><option value="paid">Berbayar</option></select></div>
-                <div class="price-input-wrapper" id="priceWrapper"><div class="form-group"><label>Harga (Rp)</label><input type="number" id="fHarga" placeholder="10000" min="1000" step="1000" /></div></div>
-                <div class="form-group"><label>Link Project</label><input type="url" id="fLinkProject" placeholder="https://..." /></div>
-                <div class="form-group"><label>Link Drive</label><input type="url" id="fLinkDrive" placeholder="https://drive.google.com/..." /></div>
-                <div class="form-group"><label>Link Asset 1</label><input type="url" id="fLinkAsset1" placeholder="https://..." /></div>
-                <div class="form-group"><label>Link Asset 2</label><input type="url" id="fLinkAsset2" placeholder="https://..." /></div>
-                <div class="form-actions"><button type="submit" class="btn btn-primary">Publikasikan</button><button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button></div>
-            </form>
+  <!-- MOBILE NAV -->
+  <nav class="mobile-nav">
+    <button class="active" data-nav="explore">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Explore
+    </button>
+    <button data-nav="creators">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Kreator
+    </button>
+    <button id="mobileUploadBtn">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Upload
+    </button>
+  </nav>
+
+  <!-- UPLOAD MODAL -->
+  <div class="modal-overlay" id="uploadModal">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div class="modal-head">
+        <h2 id="modalTitle">Upload Template</h2>
+        <button class="modal-close" id="closeUploadModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <form id="uploadForm">
+        <div class="form-section">
+          <div class="section-label">Info Dasar</div>
+          <div class="form-group"><label>Judul *</label><input type="text" id="fJudul" required /></div>
+          <div class="form-group"><label>Kategori *</label>
+            <select id="fKategori" required><option value="">Pilih kategori</option><option value="Preset">Preset</option><option value="Assets">Assets</option></select>
+          </div>
+          <div class="form-group"><label>Deskripsi</label><textarea id="fDeskripsi" rows="2" placeholder="Ceritakan tentang karya ini..."></textarea></div>
         </div>
-    </div>
 
-    <div class="modal-overlay" id="detailModal">
-        <div class="modal-sheet"><div class="handle"></div><div id="detailContent"></div></div>
-    </div>
-
-    <div class="modal-overlay" id="creatorProfileModal">
-        <div class="modal-sheet"><div class="handle"></div><div id="creatorProfileContent"></div></div>
-    </div>
-
-    <div class="modal-overlay" id="registerCreatorModal">
-        <div class="modal-sheet">
-            <div class="handle"></div>
-            <div class="modal-header"><h2>Daftar Kreator</h2><button class="modal-close" id="closeRegisterModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-            <form id="registerCreatorForm">
-                <div class="form-group"><label>Nama *</label><input type="text" id="rNama" required /></div>
-                <div class="form-group"><label>Bio</label><textarea id="rBio" rows="2"></textarea></div>
-                <div class="form-group"><label>Software</label><select id="rSoftware"><option value="">Pilih</option><option>After Effects</option><option>Premiere Pro</option><option>CapCut</option><option>DaVinci Resolve</option></select></div>
-                <div class="form-group"><label>No. WhatsApp (wajib jika berbayar)</label><input type="text" id="rWa" placeholder="628xxxxxxxx" /></div>
-                <div class="form-group"><label>Email (wajib jika berbayar)</label><input type="email" id="rEmail" placeholder="kreator@email.com" /></div>
-                <div class="form-group"><label>Portfolio</label><input type="url" id="rPortfolio" placeholder="https://..." /></div>
-                <div class="form-actions"><button type="submit" class="btn btn-primary">Daftar</button><button type="reset" class="btn btn-secondary" id="cancelRegister">Batal</button></div>
-            </form>
+        <div class="form-section">
+          <div class="section-label">Preview</div>
+          <div class="form-group"><label>YouTube URL</label><input type="url" id="fLinkYoutube" placeholder="https://youtube.com/watch?v=..." /></div>
+          <div class="form-group"><label>Aspect Ratio *</label>
+            <select id="fAspect" required>
+              <option value="">Pilih rasio</option>
+              <option value="9:16">9:16 — Vertical</option>
+              <option value="16:9">16:9 — Landscape</option>
+              <option value="1:1">1:1 — Square</option>
+              <option value="4:3">4:3</option>
+              <option value="3:4">3:4</option>
+            </select>
+          </div>
         </div>
-    </div>
 
-    <div class="toast-container" id="toastContainer"></div>
+        <div class="form-section">
+          <div class="section-label">Akses</div>
+          <div class="form-group"><label>Tipe *</label>
+            <select id="fLicense" required><option value="free">Gratis</option><option value="paid">Berbayar</option></select>
+          </div>
+          <div class="price-wrap" id="priceWrapper">
+            <div class="form-group"><label>Harga (Rp)</label><input type="number" id="fHarga" placeholder="10000" min="1000" step="1000" /></div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-label">File &amp; Link</div>
+          <div class="form-group"><label>Link Project</label><input type="url" id="fLinkProject" placeholder="https://..." /></div>
+          <div class="form-group"><label>Link Drive</label><input type="url" id="fLinkDrive" placeholder="https://drive.google.com/..." /></div>
+          <div class="form-row2">
+            <div class="form-group"><label>Link Asset 1</label><input type="url" id="fLinkAsset1" placeholder="https://..." /></div>
+            <div class="form-group"><label>Link Asset 2</label><input type="url" id="fLinkAsset2" placeholder="https://..." /></div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Publikasikan</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DETAIL MODAL -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-sheet"><div class="sheet-handle"></div><div id="detailContent"></div></div>
+  </div>
+
+  <!-- REGISTER CREATOR MODAL -->
+  <div class="modal-overlay" id="registerCreatorModal">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div class="modal-head">
+        <h2>Daftar sebagai Kreator</h2>
+        <button class="modal-close" id="closeRegisterModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <form id="registerCreatorForm">
+        <div class="form-section">
+          <div class="section-label">Profil</div>
+          <div class="form-group"><label>Nama *</label><input type="text" id="rNama" required /></div>
+          <div class="form-group"><label>Bio</label><textarea id="rBio" rows="2" placeholder="Sedikit tentang kamu sebagai kreator"></textarea></div>
+          <div class="form-group"><label>Software</label>
+            <select id="rSoftware"><option value="">Pilih</option><option>After Effects</option><option>Premiere Pro</option><option>CapCut</option><option>DaVinci Resolve</option></select>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="section-label">Kontak &amp; Portfolio</div>
+          <div class="form-group"><label>No. WhatsApp (wajib jika berbayar)</label><input type="text" id="rWa" placeholder="628xxxxxxxx" /></div>
+          <div class="form-group"><label>Email (wajib jika berbayar)</label><input type="email" id="rEmail" placeholder="kreator@email.com" /></div>
+          <div class="form-group"><label>Portfolio</label><input type="url" id="rPortfolio" placeholder="https://..." /></div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Daftar</button>
+          <button type="button" class="btn btn-secondary" id="cancelRegister">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
 </div>
 
 <script>
 (function(){
-    'use strict';
+  'use strict';
 
-    // ===== DATA =====
-    let templates = [];
-    let currentView = 'explore';
-    let activeFilter = 'all';
-    let activeRatio = null;
-    let currentCreator = null;
-    let isCreator = false;
-    let editIndex = null;
+  /* ============================================================
+     ICONS
+     ============================================================ */
+  const ICON = {
+    play: '<svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg>',
+    download: '<svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>',
+    eye: '<svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
+    heart: '<svg viewBox="0 0 24 24"><path d="M20.8 8.6c0 4.4-8.8 10.4-8.8 10.4S3.2 13 3.2 8.6a4.8 4.8 0 0 1 8.8-2.7 4.8 4.8 0 0 1 8.8 2.7z"/></svg>',
+    wa: '<svg viewBox="0 0 24 24"><path d="M4 20l1.4-4.1A8 8 0 1 1 8.8 19L4 20z"/></svg>',
+    mail: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
+    folder: '<svg viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6z"/></svg>',
+    link: '<svg viewBox="0 0 24 24"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg>',
+    film: '<svg viewBox="0 0 24 24"><path d="M4 4l16 16"/></svg>',
+    noVideo: '<svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="1.5"/><circle cx="9" cy="12" r="2.6"/><line x1="16" y1="9.5" x2="18.5" y2="9.5"/><line x1="16" y1="12.5" x2="18.5" y2="12.5"/></svg>',
+    search: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>',
+    arrowLeft: '<svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>',
+    ext: '<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
+    check: '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',
+    alert: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16" r="0.6"/></svg>'
+  };
 
-    // DOM refs
-    const cardGrid = document.getElementById('cardGrid');
-    const searchInput = document.getElementById('searchInput');
-    const totalDesktop = document.getElementById('totalDesktop');
+  /* ============================================================
+     STATE
+     ============================================================ */
+  let templates = [];
+  let currentView = 'explore';
+  let activeFilter = 'all';
+  let activeRatio = null;
+  let currentCreator = null;
+  let isCreator = false;
 
-    // ===== HELPERS =====
-    function generateKode() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let k = '';
-        for (let i=0;i<6;i++) k += chars.charAt(Math.floor(Math.random()*chars.length));
-        return k;
+  const cardGrid = document.getElementById('cardGrid');
+  const searchInput = document.getElementById('searchInput');
+  const searchInputMobile = document.getElementById('searchInputMobile');
+  const contextLine = document.getElementById('contextLine');
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  function generateKode(){
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let k = '';
+    for (let i=0;i<6;i++) k += chars.charAt(Math.floor(Math.random()*chars.length));
+    return k;
+  }
+
+  function getYoutubeId(url){
+    if (!url) return null;
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?/]+)/,
+      /youtube\.com\/shorts\/([^&\s?/]+)/
+    ];
+    for (const p of patterns){ const m = url.match(p); if (m) return m[1]; }
+    return null;
+  }
+  function embedYoutube(id){ return `https://www.youtube.com/embed/${id}?rel=0&autoplay=1`; }
+  function thumbYoutube(id){ return `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }
+
+  function formatNumber(n){
+    n = n || 0;
+    if (n >= 1e6) return (n/1e6).toFixed(1)+'M';
+    if (n >= 1e3) return (n/1e3).toFixed(1)+'K';
+    return n.toString();
+  }
+  function formatRupiah(n){ return 'Rp' + formatNumber(n); }
+
+  function escapeHtml(t){
+    if (!t) return '';
+    const map = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'};
+    return String(t).replace(/[&<>"']/g, m => map[m]);
+  }
+  function getInitials(name){
+    if (!name) return '?';
+    return name.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  }
+  function randomId(){ return Math.random().toString(36).substring(2,9); }
+  function ratioCss(r){ return (r || '16:9').replace(':','/'); }
+
+  function showToast(msg, type){
+    type = type || 'info';
+    const c = document.getElementById('toastContainer');
+    const t = document.createElement('div');
+    t.className = 'toast ' + type;
+    const icon = type==='success' ? ICON.check : type==='error' ? ICON.alert : ICON.check;
+    t.innerHTML = icon + '<span>' + msg + '</span>';
+    c.appendChild(t);
+    setTimeout(() => {
+      t.style.opacity = '0'; t.style.transform = 'translateY(6px)'; t.style.transition = '0.2s';
+      setTimeout(() => t.remove(), 220);
+    }, 2600);
+  }
+
+  function safeGetJSON(key, fallback){
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return fallback;
+      const parsed = JSON.parse(raw);
+      return parsed == null ? fallback : parsed;
+    } catch(e){ return fallback; }
+  }
+  function safeSetJSON(key, val){
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){ /* storage unavailable — app still works in-memory */ }
+  }
+
+  function save(){ safeSetJSON('presethub_templates', templates); }
+  function loadCreators(){ return safeGetJSON('presethub_creators', []); }
+  function saveCreators(list){ safeSetJSON('presethub_creators', list); }
+
+  /* ============================================================
+     SEED DATA
+     ============================================================ */
+  function initDefaultCreators(){
+    const c = loadCreators();
+    if (c.length === 0){
+      saveCreators([
+        { name:'ctfy', bio:'Motion designer yang suka bikin transisi cepat dan cinematic.', software:'After Effects', wa:'628123456789', email:'ctfy@email.com', portfolio:'https://instagram.com/ctfy' },
+        { name:'myxrin', bio:'Color grading specialist. Fokus di look film analog.', software:'Premiere Pro', wa:'628987654321', email:'myxrin@email.com', portfolio:'https://instagram.com/myxrin' }
+      ]);
     }
+  }
 
-    function getYoutubeId(url) {
-        if (!url) return null;
-        const patterns = [
-            /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?/]+)/,
-            /youtube\.com\/shorts\/([^&\s?/]+)/
-        ];
-        for (const p of patterns) {
-            const m = url.match(p);
-            if (m) return m[1];
-        }
-        return null;
+  function load(){
+    const stored = safeGetJSON('presethub_templates', null);
+    if (Array.isArray(stored) && stored.length){
+      templates = stored;
+      templates.forEach(t => {
+        if (!t.id) t.id = randomId();
+        if (!t.kode) t.kode = generateKode();
+        if (!t.aspectRatio) t.aspectRatio = '16:9';
+        if (!t.license) t.license = 'free';
+        if (!t.harga) t.harga = 0;
+        if (!t.uses) t.uses = 0;
+        if (!t.views) t.views = 0;
+        if (!t.likes) t.likes = 0;
+        if (!t.kategori) t.kategori = 'Preset';
+        if (!t.creator) t.creator = 'Anonim';
+      });
+      return;
     }
+    templates = [
+      { id:'t1', kode:'a3B7', judul:'Cinematic Transition Pack', kategori:'Preset', deskripsi:'50 transisi cinematic siap pakai untuk kebutuhan video shortform maupun landscape.', creator:'ctfy', linkYoutube:'https://youtu.be/dQw4w9WgXcQ', aspectRatio:'16:9', license:'paid', harga:25000, linkProject:'', linkDrive:'https://drive.google.com/', linkAsset1:'', linkAsset2:'', likes:234, uses:1240, views:4300, createdAt:Date.now()-100000 },
+      { id:'t2', kode:'m4N8', judul:'Color Grade LUT Pack', kategori:'Assets', deskripsi:'20 LUT cinematic terinspirasi film 35mm.', creator:'myxrin', linkYoutube:'https://youtu.be/dQw4w9WgXcQ', aspectRatio:'9:16', license:'free', harga:0, linkProject:'', linkDrive:'https://drive.google.com/', linkAsset1:'', linkAsset2:'', likes:156, uses:3400, views:8900, createdAt:Date.now()-200000 },
+      { id:'t3', kode:'b8N2', judul:'Velocity Text Preset', kategori:'Preset', deskripsi:'Preset teks dengan efek velocity yang dinamis.', creator:'ctfy', linkYoutube:'https://youtu.be/dQw4w9WgXcQ', aspectRatio:'1:1', license:'free', harga:0, linkProject:'', linkDrive:'https://drive.google.com/', linkAsset1:'', linkAsset2:'', likes:89, uses:560, views:1200, createdAt:Date.now()-300000 },
+      { id:'t4', kode:'c9R7', judul:'Glitch Effect Pack', kategori:'Assets', deskripsi:'Kumpulan efek glitch untuk transisi maupun aksen visual.', creator:'myxrin', linkYoutube:'https://youtu.be/dQw4w9WgXcQ', aspectRatio:'4:3', license:'paid', harga:15000, linkProject:'', linkDrive:'https://drive.google.com/', linkAsset1:'', linkAsset2:'', likes:210, uses:980, views:3100, createdAt:Date.now()-400000 },
+      { id:'t5', kode:'o987', judul:'Myxrin Signature LUT', kategori:'Assets', deskripsi:'LUT signature dari Myxrin, dipakai di sebagian besar karyanya.', creator:'myxrin', linkYoutube:'https://youtu.be/dQw4w9WgXcQ', aspectRatio:'3:4', license:'paid', harga:35000, linkProject:'', linkDrive:'https://drive.google.com/', linkAsset1:'', linkAsset2:'', likes:320, uses:2100, views:5500, createdAt:Date.now()-500000 }
+    ];
+    save();
+  }
 
-    function embedYoutube(id) { return `https://www.youtube.com/embed/${id}?rel=0`; }
-
-    function formatNumber(n) {
-        if (n >= 1e6) return (n/1e6).toFixed(1)+'M';
-        if (n >= 1e3) return (n/1e3).toFixed(1)+'K';
-        return n.toString();
+  /* ============================================================
+     FILTER
+     ============================================================ */
+  function getFiltered(){
+    let result = templates.slice();
+    const q = (searchInput.value || '').toLowerCase().trim();
+    if (q){
+      result = result.filter(t =>
+        t.judul.toLowerCase().includes(q) ||
+        t.kode.toLowerCase().includes(q) ||
+        t.kategori.toLowerCase().includes(q) ||
+        t.creator.toLowerCase().includes(q) ||
+        (t.deskripsi && t.deskripsi.toLowerCase().includes(q))
+      );
     }
-
-    function escapeHtml(t) { if (!t) return ''; const map={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}; return t.replace(/[&<>"']/g, m=>map[m]); }
-
-    function getInitials(name) { if (!name) return '?'; return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
-
-    function randomId() { return Math.random().toString(36).substring(2,9); }
-
-    function showToast(msg, type='info') {
-        const c = document.getElementById('toastContainer');
-        const t = document.createElement('div');
-        t.className = `toast ${type}`;
-        let icon = type==='success' ? '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' :
-                   type==='error' ? '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' :
-                   '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
-        t.innerHTML = icon + ' ' + msg;
-        c.appendChild(t);
-        setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(8px)'; t.style.transition='0.2s'; setTimeout(()=>t.remove(),300); }, 3000);
+    if (activeFilter === 'preset') result = result.filter(t => t.kategori === 'Preset');
+    else if (activeFilter === 'assets') result = result.filter(t => t.kategori === 'Assets');
+    else if (activeFilter === 'free') result = result.filter(t => t.license === 'free');
+    else if (activeFilter === 'paid') result = result.filter(t => t.license === 'paid');
+    if (activeRatio) result = result.filter(t => t.aspectRatio === activeRatio);
+    if (currentView === 'creators' && currentCreator){
+      result = result.filter(t => t.creator.toLowerCase() === currentCreator.toLowerCase());
     }
+    return result;
+  }
 
-    function save() { localStorage.setItem('presethub_templates', JSON.stringify(templates)); }
+  /* ============================================================
+     CARD RENDER
+     ============================================================ */
+  function renderCard(t){
+    const ytId = t.linkYoutube ? getYoutubeId(t.linkYoutube) : null;
+    const isFree = t.license === 'free';
+    const priceLabel = isFree ? 'Gratis' : formatRupiah(t.harga);
 
-    function loadCreators() { try { return JSON.parse(localStorage.getItem('presethub_creators')) || []; } catch(e){ return []; } }
-    function saveCreators(list) { localStorage.setItem('presethub_creators', JSON.stringify(list)); }
+    return `
+      <article class="card" data-id="${t.id}" tabindex="0" role="button" aria-label="${escapeHtml(t.judul)}">
+        <div class="thumb" style="aspect-ratio:${ratioCss(t.aspectRatio)}">
+          <div class="thumb-fallback">${ICON.noVideo}</div>
+          ${ytId ? `<img class="thumb-img" src="${thumbYoutube(ytId)}" alt="" loading="lazy" onerror="this.remove()">
+          <span class="play-badge">${ICON.play}</span>` : ''}
+          <span class="ratio-tag">${t.aspectRatio}</span>
+        </div>
+        <div class="card-info">
+          <h3 class="card-title">${escapeHtml(t.judul)}</h3>
+          <div class="card-creator">${escapeHtml(t.creator)}</div>
+          <div class="card-foot">
+            <span class="price ${isFree ? 'free' : 'paid'}">${priceLabel}</span>
+            <span class="uses">${ICON.download}${formatNumber(t.uses)}</span>
+          </div>
+        </div>
+      </article>
+    `;
+  }
 
-    // ===== INIT DATA =====
-    function initDefaultCreators() {
-        const c = loadCreators();
-        if (c.length === 0) {
-            saveCreators([
-                { name: 'ctfy', bio: 'Motion designer', software: 'After Effects', wa: '628123456789', email: 'ctfy@email.com', portfolio: 'https://instagram.com/ctfy' },
-                { name: 'myxrin', bio: 'Color grading specialist', software: 'Premiere Pro', wa: '628987654321', email: 'myxrin@email.com', portfolio: 'https://instagram.com/myxrin' }
-            ]);
-        }
+  function emptyStateHtml(kind){
+    if (kind === 'creators'){
+      return `<div class="empty-state">${ICON.noVideo}<div class="title">Belum ada kreator</div><div class="sub">Jadilah kreator pertama yang bergabung.</div></div>`;
     }
-
-    function load() {
-        const stored = localStorage.getItem('presethub_templates');
-        if (stored) {
-            try {
-                const parsed = JSON.parse(stored);
-                if (Array.isArray(parsed) && parsed.length) {
-                    templates = parsed;
-                    templates.forEach(t => {
-                        if (!t.id) t.id = randomId();
-                        if (!t.kode) t.kode = generateKode();
-                        if (!t.aspectRatio) t.aspectRatio = '16:9';
-                        if (!t.license) t.license = 'free';
-                        if (!t.harga) t.harga = 0;
-                        if (!t.uses) t.uses = 0;
-                        if (!t.views) t.views = 0;
-                        if (!t.likes) t.likes = 0;
-                        if (!t.creator) t.creator = 'Anonim';
-                    });
-                    return;
-                }
-            } catch(e) {}
-        }
-        // Dummy
-        templates = [
-            { id: 't1', kode: 'a3B7', judul: 'Cinematic Transition Pack', kategori: 'Preset', deskripsi: '50 cinematic transitions', creator: 'ctfy', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '16:9', license: 'paid', harga: 25000, linkProject: '', linkDrive: 'https://drive.google.com/', linkAsset1: '', linkAsset2: '', likes: 234, uses: 1240, views: 4300, createdAt: Date.now()-100000 },
-            { id: 't2', kode: 'm4N8', judul: 'Color Grade LUT Pack', kategori: 'Assets', deskripsi: '20 cinematic LUTs', creator: 'myxrin', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '9:16', license: 'free', harga: 0, linkProject: '', linkDrive: 'https://drive.google.com/', linkAsset1: '', linkAsset2: '', likes: 156, uses: 3400, views: 8900, createdAt: Date.now()-200000 },
-            { id: 't3', kode: 'b8N2', judul: 'Velocity Text Preset', kategori: 'Preset', deskripsi: 'Dynamic velocity text', creator: 'ctfy', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '1:1', license: 'free', harga: 0, linkProject: '', linkDrive: 'https://drive.google.com/', linkAsset1: '', linkAsset2: '', likes: 89, uses: 560, views: 1200, createdAt: Date.now()-300000 },
-            { id: 't4', kode: 'c9R7', judul: 'Glitch Effect Pack', kategori: 'Assets', deskripsi: 'Glitch effects', creator: 'myxrin', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '4:3', license: 'paid', harga: 15000, linkProject: '', linkDrive: 'https://drive.google.com/', linkAsset1: '', linkAsset2: '', likes: 210, uses: 980, views: 3100, createdAt: Date.now()-400000 },
-            { id: 't5', kode: '0987', judul: 'Myxrin Signature LUT', kategori: 'Assets', deskripsi: 'Special LUT from Myxrin', creator: 'myxrin', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ', aspectRatio: '16:9', license: 'paid', harga: 35000, linkProject: '', linkDrive: 'https://drive.google.com/', linkAsset1: '', linkAsset2: '', likes: 320, uses: 2100, views: 5500, createdAt: Date.now()-500000 }
-        ];
-        save();
+    if (kind === 'creator-profile'){
+      return `<div class="empty-state">${ICON.noVideo}<div class="title">Belum ada karya</div><div class="sub">Kreator ini belum membagikan template apapun.</div></div>`;
     }
+    return `<div class="empty-state">${ICON.search}<div class="title">Tidak menemukan yang kamu cari</div><div class="sub">Coba kata kunci lain atau ubah filter.</div></div>`;
+  }
 
-    // ===== FILTER & RENDER =====
-    function getFiltered() {
-        let result = [...templates];
-        const q = searchInput.value.toLowerCase().trim();
-        if (q) {
-            result = result.filter(t =>
-                t.judul.toLowerCase().includes(q) ||
-                t.kode.toLowerCase().includes(q) ||
-                t.kategori.toLowerCase().includes(q) ||
-                t.creator.toLowerCase().includes(q) ||
-                (t.deskripsi && t.deskripsi.toLowerCase().includes(q))
-            );
-        }
-        if (activeFilter === 'preset') result = result.filter(t => t.kategori === 'Preset');
-        else if (activeFilter === 'assets') result = result.filter(t => t.kategori === 'Assets');
-        else if (activeFilter === 'free') result = result.filter(t => t.license === 'free');
-        else if (activeFilter === 'paid') result = result.filter(t => t.license === 'paid');
-        if (activeRatio && activeRatio !== 'all') {
-            result = result.filter(t => t.aspectRatio === activeRatio);
-        }
-        if (currentView === 'creators' && currentCreator) {
-            result = result.filter(t => t.creator.toLowerCase() === currentCreator.toLowerCase());
-        }
-        return result;
+  function updateContextLine(){
+    const total = templates.length;
+    const creators = loadCreators().length;
+    if (currentView === 'creators' && !currentCreator){
+      contextLine.innerHTML = `<strong>${creators}</strong> kreator sudah membagikan karyanya di sini.`;
+    } else if (currentView === 'creators' && currentCreator){
+      contextLine.innerHTML = `Karya dari <strong>${escapeHtml(currentCreator)}</strong>`;
+    } else {
+      contextLine.innerHTML = `<strong>${total}</strong> template dari <strong>${creators}</strong> kreator Indonesia.`;
     }
+  }
 
-    function renderTemplateCard(t) {
-        const ytId = t.linkYoutube ? getYoutubeId(t.linkYoutube) : null;
-        const embedUrl = ytId ? embedYoutube(ytId) : null;
-        const ratio = t.aspectRatio || '16:9';
-        const isFree = t.license === 'free';
-        const badgeCls = isFree ? 'free' : 'paid';
-        const badgeText = isFree ? 'Gratis' : `Rp ${formatNumber(t.harga)}`;
+  function render(){
+    updateContextLine();
+    const filtered = getFiltered();
 
-        return `
-            <div class="template-card" data-id="${t.id}" data-creator="${t.creator}" data-kode="${t.kode}">
-                <div class="video-container" style="aspect-ratio: ${ratio};">
-                    ${embedUrl ? `<iframe src="${embedUrl}" loading="lazy" allowfullscreen style="width:100%;height:100%;border:0;"></iframe>` :
-                    `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0f0f0f;color:#666;font-size:0.75rem;">No video</div>`}
-                </div>
-                <div class="card-body">
-                    <div class="card-title">${escapeHtml(t.judul)}</div>
-                    <div class="card-creator">${escapeHtml(t.creator)}</div>
-                    <div class="card-meta">
-                        <span class="badge ${badgeCls}">${badgeText}</span>
-                        <span class="uses">⬇ ${formatNumber(t.uses || 0)}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    function render() {
-        const filtered = getFiltered();
-        totalDesktop.textContent = templates.length;
-
-        if (filtered.length === 0) {
-            cardGrid.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/></svg><p>Tidak ada template ditemukan</p></div>`;
-            return;
-        }
-
-        let html = '';
-        if (currentView === 'creators' && currentCreator) {
-            html = `<div style="margin-bottom:0.5rem;font-weight:500;font-size:0.9rem;">👤 ${escapeHtml(currentCreator)} — ${filtered.length} template</div>`;
-        } else {
-            html = `<div style="margin-bottom:0.5rem;font-weight:500;font-size:0.85rem;color:var(--text-secondary);">${filtered.length} template</div>`;
-        }
-        html += `<div class="template-grid">`;
-        filtered.forEach(t => { html += renderTemplateCard(t); });
-        html += `</div>`;
+    let html = '';
+    if (currentView === 'creators' && currentCreator){
+      html += buildProfileHeader(currentCreator);
+      if (filtered.length === 0){
+        html += emptyStateHtml('creator-profile');
         cardGrid.innerHTML = html;
+        bindProfileHeaderEvents();
+        return;
+      }
     }
 
-    // ===== RENDER CREATOR DIRECTORY =====
-    function renderCreatorDirectory() {
-        const creators = loadCreators();
-        if (creators.length === 0) {
-            cardGrid.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><p>Belum ada kreator terdaftar</p></div>`;
-            return;
-        }
-        let html = `<div class="creator-grid">`;
-        creators.forEach(c => {
-            const count = templates.filter(t => t.creator.toLowerCase() === c.name.toLowerCase()).length;
-            html += `
-                <div class="creator-card" data-creator="${escapeHtml(c.name)}">
-                    <div class="avatar">${getInitials(c.name)}</div>
-                    <div class="name">${escapeHtml(c.name)}</div>
-                    <div class="sub">${escapeHtml(c.software || '')}</div>
-                    <div class="count">${count} template</div>
-                </div>
-            `;
-        });
-        html += `</div>`;
-        cardGrid.innerHTML = html;
-
-        cardGrid.querySelectorAll('.creator-card').forEach(el => {
-            el.addEventListener('click', function() {
-                const name = this.dataset.creator;
-                currentCreator = name;
-                currentView = 'creators';
-                document.querySelectorAll('.sidebar nav button, .bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
-                document.querySelector('[data-view="creators"]')?.classList.add('active');
-                document.querySelector('[data-nav="creators"]')?.classList.add('active');
-                render();
-                updateUrl();
-            });
-        });
+    if (filtered.length === 0 && !(currentView === 'creators' && currentCreator)){
+      cardGrid.innerHTML = html + emptyStateHtml('search');
+      return;
     }
 
-    // ===== URL ROUTING =====
-    function updateUrl() {
-        let path = '';
-        if (currentView === 'creators' && currentCreator) {
-            path = `/${encodeURIComponent(currentCreator)}`;
-        } else {
-            path = '/explore';
-        }
-        let query = '';
-        if (activeRatio && activeRatio !== 'all') query = `?ratio=${encodeURIComponent(activeRatio)}`;
-        const newHash = '#' + path + query;
-        if (window.location.hash !== newHash) {
-            history.pushState(null, '', newHash);
-        }
+    html += `<div class="result-line">${filtered.length} template</div>`;
+    html += `<div class="grid">${filtered.map(renderCard).join('')}</div>`;
+    cardGrid.innerHTML = html;
+    if (currentView === 'creators' && currentCreator) bindProfileHeaderEvents();
+  }
+
+  function buildProfileHeader(name){
+    const creators = loadCreators();
+    const c = creators.find(cr => cr.name.toLowerCase() === name.toLowerCase());
+    const count = templates.filter(t => t.creator.toLowerCase() === name.toLowerCase()).length;
+    const bio = c && c.bio ? escapeHtml(c.bio) : 'Belum menambahkan bio.';
+    const software = c && c.software ? escapeHtml(c.software) : '';
+    const portfolio = c && c.portfolio ? c.portfolio : '';
+    return `
+      <button class="back-link" id="backToCreators">${ICON.arrowLeft} Semua kreator</button>
+      <div class="profile-header">
+        <div class="avatar">${getInitials(name)}</div>
+        <div class="info">
+          <h1>${escapeHtml(name)}</h1>
+          ${software ? `<div class="role">${software}</div>` : ''}
+          <div class="bio">${bio}</div>
+          <div class="stats"><span><strong>${count}</strong> template</span></div>
+          ${portfolio ? `<a class="portfolio-link" href="${portfolio}" target="_blank" rel="noopener">${ICON.ext} Lihat portfolio</a>` : ''}
+        </div>
+      </div>
+    `;
+  }
+  function bindProfileHeaderEvents(){
+    const back = document.getElementById('backToCreators');
+    if (back) back.addEventListener('click', () => {
+      currentCreator = null;
+      render();
+      updateUrl();
+    });
+  }
+
+  function renderCreatorDirectory(){
+    updateContextLine();
+    const creators = loadCreators();
+    if (creators.length === 0){
+      cardGrid.innerHTML = emptyStateHtml('creators');
+      return;
     }
-
-    function handleHashChange() {
-        const hash = window.location.hash.slice(1);
-        if (!hash || hash === '/') {
-            currentView = 'explore';
-            currentCreator = null;
-            activeRatio = null;
-            render();
-            return;
-        }
-        const [path, query] = hash.split('?');
-        const params = new URLSearchParams(query || '');
-        const ratio = params.get('ratio');
-        if (ratio) activeRatio = ratio;
-
-        const parts = path.split('/').filter(Boolean);
-        if (parts.length === 2) {
-            // /creator/kode -> buka detail
-            const creator = decodeURIComponent(parts[0]);
-            const kode = parts[1];
-            const template = templates.find(t => t.creator.toLowerCase() === creator.toLowerCase() && t.kode === kode);
-            if (template) {
-                currentView = 'explore';
-                currentCreator = null;
-                openDetail(template);
-                render();
-                return;
-            }
-        }
-        if (parts.length === 1 && parts[0] !== 'explore') {
-            currentView = 'creators';
-            currentCreator = decodeURIComponent(parts[0]);
-            render();
-            return;
-        }
-        currentView = 'explore';
-        currentCreator = null;
-        render();
-    }
-
-    // ===== DETAIL MODAL =====
-    function openDetail(template) {
-        const ytId = template.linkYoutube ? getYoutubeId(template.linkYoutube) : null;
-        const embedUrl = ytId ? embedYoutube(ytId) : null;
-        const ratio = template.aspectRatio || '16:9';
-        const isFree = template.license === 'free';
-
-        const content = document.getElementById('detailContent');
-
-        // Kumpulkan link
-        let links = [];
-        if (template.linkProject) links.push({ label: '📁 Project', url: template.linkProject });
-        if (template.linkDrive) links.push({ label: '📥 Drive', url: template.linkDrive });
-        if (template.linkAsset1) links.push({ label: '🎨 Asset 1', url: template.linkAsset1 });
-        if (template.linkAsset2) links.push({ label: '🎨 Asset 2', url: template.linkAsset2 });
-
-        let linksHtml = '';
-        if (links.length) {
-            linksHtml = `<div class="detail-links">${links.map(l => `<a href="${l.url}" target="_blank">${l.label}</a>`).join('')}</div>`;
-        }
-
-        // Kontak jika paid
-        let contactHtml = '';
-        if (!isFree) {
-            const creators = loadCreators();
-            const creator = creators.find(c => c.name.toLowerCase() === template.creator.toLowerCase());
-            if (creator) {
-                contactHtml = `
-                    <div class="detail-contact">
-                        <div style="font-weight:600;font-size:0.85rem;">💳 Template Berbayar</div>
-                        <div style="font-size:0.8rem;margin-top:0.2rem;">Hubungi kreator untuk membeli:</div>
-                        ${creator.wa ? `<div style="margin-top:0.1rem;">📱 <a href="https://wa.me/${creator.wa}" target="_blank">${creator.wa}</a></div>` : ''}
-                        ${creator.email ? `<div>📧 <a href="mailto:${creator.email}">${creator.email}</a></div>` : ''}
-                    </div>
-                `;
-            } else {
-                contactHtml = `<div class="detail-contact" style="background:var(--bg);">💳 Template Berbayar. Hubungi <strong>${escapeHtml(template.creator)}</strong> untuk pembelian.</div>`;
-            }
-        }
-
-        content.innerHTML = `
-            <div class="modal-header">
-                <h2>${escapeHtml(template.judul)}</h2>
-                <button class="modal-close" id="closeDetailModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-            </div>
-            <div class="video-container" style="aspect-ratio: ${ratio};">
-                ${embedUrl ? `<iframe src="${embedUrl}" allowfullscreen style="width:100%;height:100%;border:0;"></iframe>` :
-                `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0f0f0f;color:#666;font-size:0.85rem;">No video</div>`}
-            </div>
-            <div style="margin-top:0.5rem;">
-                <div class="detail-meta">
-                    <span class="badge ${isFree?'free':'paid'}">${isFree ? 'Gratis' : `Rp ${formatNumber(template.harga)}`}</span>
-                    <span class="badge">${escapeHtml(template.kategori)}</span>
-                    <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);">${template.kode}</span>
-                </div>
-                <div style="font-size:0.8rem;color:var(--text-secondary);">Kreator: <strong>${escapeHtml(template.creator)}</strong></div>
-                ${template.deskripsi ? `<div class="detail-desc">${escapeHtml(template.deskripsi)}</div>` : ''}
-                <div class="detail-stats">
-                    <span>⬇ ${formatNumber(template.uses)}</span>
-                    <span>👁 ${formatNumber(template.views)}</span>
-                    <span>❤️ ${template.likes}</span>
-                </div>
-                ${contactHtml}
-                ${linksHtml}
-            </div>
-        `;
-        document.getElementById('detailModal').classList.add('active');
-        document.getElementById('closeDetailModal').addEventListener('click', () => {
-            document.getElementById('detailModal').classList.remove('active');
-        });
-        // Increment views
-        const idx = templates.findIndex(t => t.id === template.id);
-        if (idx !== -1) { templates[idx].views = (templates[idx].views || 0) + 1; save(); }
-    }
-
-    // ===== EVENT LISTENERS =====
-    cardGrid.addEventListener('click', function(e) {
-        const card = e.target.closest('.template-card');
-        if (card) {
-            const id = card.dataset.id;
-            const t = templates.find(tm => tm.id === id);
-            if (t) {
-                openDetail(t);
-                if (t.creator && t.kode) {
-                    const newHash = `#/${encodeURIComponent(t.creator)}/${t.kode}`;
-                    history.pushState(null, '', newHash);
-                }
-            }
-        }
+    let html = `<div class="creator-grid">`;
+    creators.forEach(c => {
+      const count = templates.filter(t => t.creator.toLowerCase() === c.name.toLowerCase()).length;
+      html += `
+        <div class="creator-card" data-creator="${escapeHtml(c.name)}">
+          <div class="avatar">${getInitials(c.name)}</div>
+          <div class="name">${escapeHtml(c.name)}</div>
+          <div class="sub">${escapeHtml(c.software || '')}</div>
+          <div class="count">${count} template</div>
+        </div>
+      `;
     });
-
-    // Filter chips
-    document.querySelectorAll('.filter-chips .chip').forEach(chip => {
-        chip.addEventListener('click', function() {
-            const val = this.dataset.filter;
-            const ratioValues = ['9:16','16:9','1:1','4:3','3:4'];
-            if (ratioValues.includes(val)) {
-                activeRatio = (activeRatio === val) ? null : val;
-                document.querySelectorAll('.filter-chips .chip.ratio').forEach(c => {
-                    c.classList.toggle('active', c.dataset.filter === activeRatio);
-                });
-                // nonaktifkan filter lain
-                document.querySelectorAll('.filter-chips .chip:not(.ratio)').forEach(c => c.classList.remove('active'));
-                activeFilter = 'all';
-            } else {
-                activeFilter = val;
-                activeRatio = null;
-                document.querySelectorAll('.filter-chips .chip:not(.ratio)').forEach(c => {
-                    c.classList.toggle('active', c.dataset.filter === val);
-                });
-                document.querySelectorAll('.filter-chips .chip.ratio').forEach(c => c.classList.remove('active'));
-            }
-            render();
-            updateUrl();
-        });
-    });
-
-    // Search
-    searchInput.addEventListener('input', render);
-
-    // Sidebar & bottom nav
-    document.querySelectorAll('.sidebar nav button, .bottom-nav .nav-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const view = this.dataset.view || this.dataset.nav;
-            if (view === 'creators') {
-                currentView = 'creators';
-                currentCreator = null;
-                document.querySelectorAll('.sidebar nav button, .bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                renderCreatorDirectory();
-                updateUrl();
-            } else {
-                currentView = 'explore';
-                currentCreator = null;
-                document.querySelectorAll('.sidebar nav button, .bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                render();
-                updateUrl();
-            }
-        });
-    });
-
-    // Fab upload
-    document.getElementById('fabUpload').addEventListener('click', function() {
-        if (!isCreator) {
-            showToast('Daftar sebagai kreator dulu', 'info');
-            document.getElementById('registerCreatorModal').classList.add('active');
-            return;
-        }
-        editIndex = null;
-        document.getElementById('modalTitle').textContent = 'Upload Template';
-        document.getElementById('uploadForm').reset();
-        document.getElementById('priceWrapper').classList.remove('active');
-        document.getElementById('uploadModal').classList.add('active');
-    });
-
-    document.getElementById('closeUploadModal').addEventListener('click', () => {
-        document.getElementById('uploadModal').classList.remove('active');
-    });
-
-    // Register creator
-    document.getElementById('registerCreatorForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const name = document.getElementById('rNama').value.trim();
-        const wa = document.getElementById('rWa').value.trim();
-        const email = document.getElementById('rEmail').value.trim();
-        if (!name) { showToast('Nama wajib diisi', 'error'); return; }
-        const creators = loadCreators();
-        if (creators.some(c => c.name.toLowerCase() === name.toLowerCase())) {
-            showToast('Kreator sudah terdaftar', 'error');
-            return;
-        }
-        creators.push({
-            name,
-            bio: document.getElementById('rBio').value.trim(),
-            software: document.getElementById('rSoftware').value,
-            wa,
-            email,
-            portfolio: document.getElementById('rPortfolio').value.trim(),
-            registeredAt: Date.now()
-        });
-        saveCreators(creators);
-        isCreator = true;
-        showToast('✅ Selamat! Anda sekarang kreator!', 'success');
-        document.getElementById('registerCreatorForm').reset();
-        document.getElementById('registerCreatorModal').classList.remove('active');
-        if (currentView === 'creators') renderCreatorDirectory();
-    });
-
-    document.getElementById('cancelRegister').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('registerCreatorModal').classList.remove('active'); });
-    document.getElementById('closeRegisterModal').addEventListener('click', () => { document.getElementById('registerCreatorModal').classList.remove('active'); });
-
-    // Upload form
-    document.getElementById('uploadForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const judul = document.getElementById('fJudul').value.trim();
-        const kategori = document.getElementById('fKategori').value;
-        const deskripsi = document.getElementById('fDeskripsi').value.trim();
-        const linkYoutube = document.getElementById('fLinkYoutube').value.trim();
-        const aspect = document.getElementById('fAspect').value;
-        const license = document.getElementById('fLicense').value;
-        const harga = parseInt(document.getElementById('fHarga').value) || 0;
-        const linkProject = document.getElementById('fLinkProject').value.trim();
-        const linkDrive = document.getElementById('fLinkDrive').value.trim();
-        const linkAsset1 = document.getElementById('fLinkAsset1').value.trim();
-        const linkAsset2 = document.getElementById('fLinkAsset2').value.trim();
-
-        if (!judul || !kategori || !aspect) {
-            showToast('Judul, Kategori, dan Aspect Ratio wajib', 'error');
-            return;
-        }
-        if (license === 'paid' && !harga) {
-            showToast('Harga wajib untuk berbayar', 'error');
-            return;
-        }
-        const creatorName = isCreator ? (loadCreators()[0]?.name || 'Anonim') : 'Anonim';
-
-        const newTemplate = {
-            id: randomId(),
-            kode: generateKode(),
-            judul,
-            kategori,
-            deskripsi,
-            linkYoutube,
-            aspectRatio: aspect,
-            license,
-            harga,
-            linkProject,
-            linkDrive,
-            linkAsset1,
-            linkAsset2,
-            creator: creatorName,
-            likes: 0,
-            uses: 0,
-            views: 0,
-            createdAt: Date.now()
-        };
-        templates.push(newTemplate);
-        save();
-        showToast('✅ Template berhasil diupload!', 'success');
-        document.getElementById('uploadModal').classList.remove('active');
+    html += `</div>`;
+    cardGrid.innerHTML = html;
+    cardGrid.querySelectorAll('.creator-card').forEach(el => {
+      el.addEventListener('click', function(){
+        currentCreator = this.dataset.creator;
+        currentView = 'creators';
+        setActiveNav('creators');
         render();
         updateUrl();
+      });
     });
+  }
 
-    // Price toggle
-    document.getElementById('fLicense').addEventListener('change', function() {
-        const wrapper = document.getElementById('priceWrapper');
-        if (this.value === 'paid') {
-            wrapper.classList.add('active');
-            document.getElementById('fHarga').setAttribute('required', 'required');
-        } else {
-            wrapper.classList.remove('active');
-            document.getElementById('fHarga').removeAttribute('required');
-            document.getElementById('fHarga').value = '';
-        }
+  /* ============================================================
+     URL ROUTING
+     ============================================================ */
+  function updateUrl(){
+    let path;
+    if (currentView === 'creators' && currentCreator) path = `/${encodeURIComponent(currentCreator)}`;
+    else if (currentView === 'creators') path = '/kreator';
+    else path = '/explore';
+    let query = (activeRatio) ? `?ratio=${encodeURIComponent(activeRatio)}` : '';
+    const newHash = '#' + path + query;
+    if (window.location.hash !== newHash) history.pushState(null, '', newHash);
+  }
+
+  function handleHashChange(){
+    const hash = window.location.hash.slice(1);
+    if (!hash || hash === '/'){
+      currentView = 'explore'; currentCreator = null; activeRatio = null;
+      setActiveNav('explore'); applyRatioChipUI(); render();
+      return;
+    }
+    const [path, query] = hash.split('?');
+    const params = new URLSearchParams(query || '');
+    const ratio = params.get('ratio');
+    activeRatio = ratio || null;
+    applyRatioChipUI();
+
+    const parts = path.split('/').filter(Boolean);
+    if (parts.length === 2){
+      const creator = decodeURIComponent(parts[0]);
+      const kode = parts[1];
+      const tmpl = templates.find(t => t.creator.toLowerCase() === creator.toLowerCase() && t.kode === kode);
+      if (tmpl){
+        currentView = 'explore'; currentCreator = null;
+        setActiveNav('explore'); render();
+        openDetail(tmpl);
+        return;
+      }
+    }
+    if (parts.length === 1 && parts[0] === 'kreator'){
+      currentView = 'creators'; currentCreator = null;
+      setActiveNav('creators'); renderCreatorDirectory();
+      return;
+    }
+    if (parts.length === 1 && parts[0] !== 'explore'){
+      currentView = 'creators'; currentCreator = decodeURIComponent(parts[0]);
+      setActiveNav('creators'); render();
+      return;
+    }
+    currentView = 'explore'; currentCreator = null;
+    setActiveNav('explore'); render();
+  }
+
+  function setActiveNav(view){
+    document.querySelectorAll('#mainNav button, .mobile-nav button[data-nav]').forEach(b => {
+      b.classList.toggle('active', (b.dataset.view || b.dataset.nav) === view);
     });
+  }
+  function applyRatioChipUI(){
+    document.querySelectorAll('.ratio-chip').forEach(c => c.classList.toggle('active', c.dataset.ratio === activeRatio));
+  }
 
-    document.getElementById('resetBtn').addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('uploadForm').reset();
-        document.getElementById('priceWrapper').classList.remove('active');
-    });
+  /* ============================================================
+     DETAIL
+     ============================================================ */
+  function openDetail(template){
+    const ytId = template.linkYoutube ? getYoutubeId(template.linkYoutube) : null;
+    const isFree = template.license === 'free';
+    const content = document.getElementById('detailContent');
 
-    document.getElementById('notifBtn').addEventListener('click', () => showToast('🔔 Belum ada notifikasi', 'info'));
+    let links = [];
+    if (template.linkProject) links.push({label:'Buka Project', url:template.linkProject, icon:ICON.folder});
+    if (template.linkDrive) links.push({label:'Unduh dari Drive', url:template.linkDrive, icon:ICON.download});
+    if (template.linkAsset1) links.push({label:'Asset tambahan 1', url:template.linkAsset1, icon:ICON.link});
+    if (template.linkAsset2) links.push({label:'Asset tambahan 2', url:template.linkAsset2, icon:ICON.link});
+    const linksHtml = links.length ? `<div class="detail-links">${links.map(l => `<a href="${l.url}" target="_blank" rel="noopener">${l.icon}${l.label}</a>`).join('')}</div>` : '';
 
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
-        }
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); searchInput.focus(); }
-    });
-
-    // Hash routing
-    window.addEventListener('hashchange', handleHashChange);
-
-    // ===== INIT =====
-    function init() {
-        initDefaultCreators();
-        load();
-        // Simulasi login kreator (demo)
-        const creators = loadCreators();
-        if (creators.length > 0) isCreator = true;
-        handleHashChange();
-        document.querySelector('[data-view="explore"]')?.classList.add('active');
-        document.querySelector('[data-nav="explore"]')?.classList.add('active');
-        showToast('🎬 PresetHub siap', 'info');
+    let contactHtml = '';
+    if (!isFree){
+      const creators = loadCreators();
+      const c = creators.find(cr => cr.name.toLowerCase() === template.creator.toLowerCase());
+      contactHtml = `
+        <div class="detail-contact">
+          <div class="label">Template berbayar — ${formatRupiah(template.harga)}</div>
+          ${c && c.wa ? `<div class="contact-row">${ICON.wa}<a href="https://wa.me/${c.wa}" target="_blank" rel="noopener">${c.wa}</a></div>` : ''}
+          ${c && c.email ? `<div class="contact-row">${ICON.mail}<a href="mailto:${c.email}">${c.email}</a></div>` : ''}
+          ${!c ? `<div class="contact-row">Hubungi <strong>&nbsp;${escapeHtml(template.creator)}</strong>&nbsp;untuk pembelian.</div>` : ''}
+        </div>
+      `;
     }
 
-    document.addEventListener('DOMContentLoaded', init);
+    content.innerHTML = `
+      <div class="modal-head">
+        <h2>${escapeHtml(template.judul)}</h2>
+        <button class="modal-close" id="closeDetailModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="detail-preview" style="aspect-ratio:${ratioCss(template.aspectRatio)}">
+        ${ytId ? `<iframe src="${embedYoutube(ytId)}" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>`
+        : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#8a8578;">${ICON.noVideo}</div>`}
+      </div>
+      <div class="detail-meta-row">
+        <span class="tag ${isFree?'free':'paid'}">${isFree ? 'Gratis' : formatRupiah(template.harga)}</span>
+        <span class="tag">${escapeHtml(template.kategori)}</span>
+        <span class="tag mono">${template.kode}</span>
+      </div>
+      <div class="detail-creator-line" id="detailCreatorLine" data-creator="${escapeHtml(template.creator)}">
+        <div class="avatar">${getInitials(template.creator)}</div>
+        <div><div class="name">${escapeHtml(template.creator)}</div><div class="role">Kreator</div></div>
+      </div>
+      ${template.deskripsi ? `<p class="detail-desc">${escapeHtml(template.deskripsi)}</p>` : ''}
+      <div class="detail-stats">
+        <span class="stat">${ICON.download}${formatNumber(template.uses)} unduhan</span>
+        <span class="stat">${ICON.eye}${formatNumber(template.views)} dilihat</span>
+        <span class="stat">${ICON.heart}${formatNumber(template.likes)}</span>
+      </div>
+      ${contactHtml}
+      ${linksHtml}
+    `;
+    document.getElementById('detailModal').classList.add('active');
+    document.getElementById('closeDetailModal').addEventListener('click', closeDetail);
+    document.getElementById('detailCreatorLine').addEventListener('click', function(){
+      closeDetail();
+      currentCreator = this.dataset.creator;
+      currentView = 'creators';
+      setActiveNav('creators');
+      render();
+      updateUrl();
+    });
+
+    const idx = templates.findIndex(t => t.id === template.id);
+    if (idx !== -1){ templates[idx].views = (templates[idx].views || 0) + 1; save(); }
+  }
+
+  function closeDetail(){
+    document.getElementById('detailModal').classList.remove('active');
+    document.getElementById('detailContent').innerHTML = '';
+  }
+
+  /* ============================================================
+     EVENTS — GRID
+     ============================================================ */
+  cardGrid.addEventListener('click', function(e){
+    const card = e.target.closest('.card');
+    if (!card) return;
+    const t = templates.find(tm => tm.id === card.dataset.id);
+    if (!t) return;
+    openDetail(t);
+    if (t.creator && t.kode) history.pushState(null, '', `#/${encodeURIComponent(t.creator)}/${t.kode}`);
+  });
+  cardGrid.addEventListener('keydown', function(e){
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const card = e.target.closest('.card');
+    if (!card) return;
+    e.preventDefault();
+    card.click();
+  });
+
+  /* ============================================================
+     EVENTS — FILTERS
+     ============================================================ */
+  document.querySelectorAll('.cat-chip').forEach(chip => {
+    chip.addEventListener('click', function(){
+      activeFilter = this.dataset.filter;
+      document.querySelectorAll('.cat-chip').forEach(c => c.classList.toggle('active', c === this));
+      render();
+    });
+  });
+  document.querySelectorAll('.ratio-chip').forEach(chip => {
+    chip.addEventListener('click', function(){
+      activeRatio = (activeRatio === this.dataset.ratio) ? null : this.dataset.ratio;
+      applyRatioChipUI();
+      render();
+      updateUrl();
+    });
+  });
+
+  /* ============================================================
+     EVENTS — SEARCH
+     ============================================================ */
+  function syncSearch(source, target){
+    source.addEventListener('input', function(){
+      target.value = this.value;
+      render();
+    });
+  }
+  syncSearch(searchInput, searchInputMobile);
+  syncSearch(searchInputMobile, searchInput);
+
+  document.getElementById('mobileSearchToggle').addEventListener('click', function(){
+    const bar = document.getElementById('mobileSearchBar');
+    bar.classList.toggle('open');
+    if (bar.classList.contains('open')) setTimeout(() => searchInputMobile.focus(), 180);
+  });
+
+  /* ============================================================
+     EVENTS — NAV
+     ============================================================ */
+  function goToView(view){
+    currentView = view;
+    currentCreator = null;
+    setActiveNav(view);
+    if (view === 'creators') renderCreatorDirectory(); else render();
+    updateUrl();
+  }
+  document.querySelectorAll('#mainNav button, .mobile-nav button[data-nav]').forEach(btn => {
+    btn.addEventListener('click', function(){ goToView(this.dataset.view || this.dataset.nav); });
+  });
+  document.getElementById('logoLink').addEventListener('click', function(e){ e.preventDefault(); goToView('explore'); activeRatio=null; applyRatioChipUI(); });
+
+  /* ============================================================
+     EVENTS — UPLOAD
+     ============================================================ */
+  function openUploadFlow(){
+    if (!isCreator){
+      showToast('Daftar sebagai kreator dulu, ya', 'info');
+      document.getElementById('registerCreatorModal').classList.add('active');
+      return;
+    }
+    document.getElementById('modalTitle').textContent = 'Upload Template';
+    document.getElementById('uploadForm').reset();
+    document.getElementById('priceWrapper').classList.remove('active');
+    document.getElementById('uploadModal').classList.add('active');
+  }
+  document.getElementById('uploadBtn').addEventListener('click', openUploadFlow);
+  document.getElementById('mobileUploadBtn').addEventListener('click', openUploadFlow);
+  document.getElementById('closeUploadModal').addEventListener('click', () => document.getElementById('uploadModal').classList.remove('active'));
+
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    document.getElementById('uploadForm').reset();
+    document.getElementById('priceWrapper').classList.remove('active');
+  });
+
+  document.getElementById('fLicense').addEventListener('change', function(){
+    const wrap = document.getElementById('priceWrapper');
+    const harga = document.getElementById('fHarga');
+    if (this.value === 'paid'){ wrap.classList.add('active'); harga.setAttribute('required','required'); }
+    else { wrap.classList.remove('active'); harga.removeAttribute('required'); harga.value=''; }
+  });
+
+  document.getElementById('uploadForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const judul = document.getElementById('fJudul').value.trim();
+    const kategori = document.getElementById('fKategori').value;
+    const deskripsi = document.getElementById('fDeskripsi').value.trim();
+    const linkYoutube = document.getElementById('fLinkYoutube').value.trim();
+    const aspect = document.getElementById('fAspect').value;
+    const license = document.getElementById('fLicense').value;
+    const harga = parseInt(document.getElementById('fHarga').value, 10) || 0;
+    const linkProject = document.getElementById('fLinkProject').value.trim();
+    const linkDrive = document.getElementById('fLinkDrive').value.trim();
+    const linkAsset1 = document.getElementById('fLinkAsset1').value.trim();
+    const linkAsset2 = document.getElementById('fLinkAsset2').value.trim();
+
+    if (!judul || !kategori || !aspect){ showToast('Judul, kategori, dan aspect ratio wajib diisi', 'error'); return; }
+    if (license === 'paid' && !harga){ showToast('Isi harga untuk template berbayar', 'error'); return; }
+
+    const creators = loadCreators();
+    const creatorName = isCreator ? (creators[creators.length-1]?.name || 'Anonim') : 'Anonim';
+
+    templates.push({
+      id: randomId(), kode: generateKode(), judul, kategori, deskripsi, linkYoutube,
+      aspectRatio: aspect, license, harga, linkProject, linkDrive, linkAsset1, linkAsset2,
+      creator: creatorName, likes: 0, uses: 0, views: 0, createdAt: Date.now()
+    });
+    save();
+    showToast('Template berhasil dipublikasikan', 'success');
+    document.getElementById('uploadModal').classList.remove('active');
+    render();
+  });
+
+  /* ============================================================
+     EVENTS — REGISTER CREATOR
+     ============================================================ */
+  document.getElementById('registerCreatorForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('rNama').value.trim();
+    if (!name){ showToast('Nama wajib diisi', 'error'); return; }
+    const creators = loadCreators();
+    if (creators.some(c => c.name.toLowerCase() === name.toLowerCase())){
+      showToast('Nama kreator sudah terdaftar', 'error');
+      return;
+    }
+    creators.push({
+      name,
+      bio: document.getElementById('rBio').value.trim(),
+      software: document.getElementById('rSoftware').value,
+      wa: document.getElementById('rWa').value.trim(),
+      email: document.getElementById('rEmail').value.trim(),
+      portfolio: document.getElementById('rPortfolio').value.trim(),
+      registeredAt: Date.now()
+    });
+    saveCreators(creators);
+    isCreator = true;
+    showToast('Selamat! Kamu sekarang kreator PresetHub', 'success');
+    document.getElementById('registerCreatorForm').reset();
+    document.getElementById('registerCreatorModal').classList.remove('active');
+    if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
+  });
+  document.getElementById('cancelRegister').addEventListener('click', () => document.getElementById('registerCreatorModal').classList.remove('active'));
+  document.getElementById('closeRegisterModal').addEventListener('click', () => document.getElementById('registerCreatorModal').classList.remove('active'));
+
+  /* ============================================================
+     MISC
+     ============================================================ */
+  document.getElementById('notifBtn').addEventListener('click', () => showToast('Belum ada notifikasi baru', 'info'));
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k'){ e.preventDefault(); searchInput.focus(); }
+  });
+  window.addEventListener('hashchange', handleHashChange);
+
+  /* ============================================================
+     INIT
+     ============================================================ */
+  function init(){
+    initDefaultCreators();
+    load();
+    isCreator = loadCreators().length > 0;
+
+    // brief skeleton for perceived loading, then real content
+    cardGrid.innerHTML = `<div class="grid is-loading">${Array(4).fill('<div><div class="thumb skel" style="aspect-ratio:4/5"></div><div class="skel-line skel w60"></div><div class="skel-line skel w40"></div></div>').join('')}</div>`;
+    setTimeout(() => { handleHashChange(); showToast('PresetHub siap digunakan', 'info'); }, 160);
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
 })();
 </script>
 </body>
