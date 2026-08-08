@@ -19,7 +19,7 @@
 
     <style>
         /* ============================================================
-           RESET & TOKENS (sama seperti sebelumnya)
+           RESET & TOKENS
            ============================================================ */
         * {
             margin: 0;
@@ -1180,6 +1180,10 @@
         .btn-danger:hover {
             background: #8a2e2e;
         }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
         /* ============================================================
            TOAST
@@ -1226,6 +1230,9 @@
         }
         .toast.error {
             background: #a13d3d;
+        }
+        .toast.warning {
+            background: #b8860b;
         }
         @keyframes toastIn {
             from {
@@ -1451,6 +1458,48 @@
         }
 
         /* ============================================================
+           SETUP GUIDE BANNER
+           ============================================================ */
+        .setup-guide {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        .setup-guide h3 {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+            color: #856404;
+        }
+        .setup-guide p {
+            color: #856404;
+            margin-bottom: 0.3rem;
+        }
+        .setup-guide code {
+            background: rgba(0, 0, 0, 0.08);
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+        }
+        .setup-guide a {
+            color: #0d6efd;
+            text-decoration: underline;
+        }
+        .setup-guide .btn-close-guide {
+            float: right;
+            border: none;
+            background: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #856404;
+            padding: 0 0.3rem;
+        }
+
+        /* ============================================================
            RESPONSIVE
            ============================================================ */
         @media (max-width:380px) {
@@ -1520,6 +1569,24 @@
             <p id="contextLine">Memuat…</p>
         </div>
 
+        <!-- SETUP GUIDE (akan muncul jika Firebase belum dikonfigurasi) -->
+        <div class="main" id="setupGuideContainer" style="display:none;">
+            <div class="setup-guide">
+                <button class="btn-close-guide" id="closeSetupGuide">×</button>
+                <h3>⚙️ Setup Firebase Diperlukan</h3>
+                <p><strong>API Firestore belum diaktifkan atau konfigurasi belum benar.</strong></p>
+                <p>Ikuti langkah-langkah berikut:</p>
+                <ol style="padding-left:1.2rem;margin:0.4rem 0;color:#856404;">
+                    <li>Buka <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a></li>
+                    <li>Pilih project kamu → <strong>Firestore Database</strong> → <strong>Buat database</strong> (mode production)</li>
+                    <li>Buka <strong>Authentication</strong> → aktifkan <strong>Email/Password</strong></li>
+                    <li>Buka <strong>Project Settings</strong> → copy konfigurasi SDK</li>
+                    <li>Ganti <code>firebaseConfig</code> di kode dengan konfigurasi milikmu</li>
+                </ol>
+                <p style="font-size:0.8rem;margin-top:0.3rem;">Setelah setup, refresh halaman.</p>
+            </div>
+        </div>
+
         <!-- FILTERS -->
         <div class="filter-bar">
             <div class="filter-row" id="categoryFilters">
@@ -1568,8 +1635,9 @@
                     <button class="modal-close" id="closeLoginModal"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                 </div>
                 <form id="loginForm">
-                    <div class="form-group"><label>Email</label><input type="email" id="loginEmail" required /></div>
-                    <div class="form-group"><label>Password</label><input type="password" id="loginPassword" required /></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="loginEmail" required placeholder="email@example.com" /></div>
+                    <div class="form-group"><label>Password</label><input type="password" id="loginPassword" required placeholder="Min 6 karakter" /></div>
+                    <div id="loginError" style="color:#a13d3d;font-size:0.8rem;margin-bottom:0.5rem;display:none;"></div>
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary" id="loginSubmitBtn">Masuk</button>
                         <button type="button" class="btn btn-secondary" id="cancelLogin">Batal</button>
@@ -1579,8 +1647,9 @@
                     </div>
                 </form>
                 <form id="registerAuthForm" style="display:none;">
-                    <div class="form-group"><label>Email</label><input type="email" id="registerEmail" required /></div>
-                    <div class="form-group"><label>Password</label><input type="password" id="registerPassword" required minlength="6" /></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="registerEmail" required placeholder="email@example.com" /></div>
+                    <div class="form-group"><label>Password</label><input type="password" id="registerPassword" required placeholder="Min 6 karakter" minlength="6" /></div>
+                    <div id="registerError" style="color:#a13d3d;font-size:0.8rem;margin-bottom:0.5rem;display:none;"></div>
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary" id="registerSubmitBtn">Daftar</button>
                         <button type="button" class="btn btn-secondary" id="cancelRegisterAuth">Batal</button>
@@ -1694,8 +1763,14 @@
             'use strict';
 
             /* ============================================================
-               FIREBASE CONFIG — ganti dengan punya kamu
-               ============================================================ */
+               🔥 FIREBASE CONFIG — GANTI DENGAN PUNYA KAMU
+               ============================================================
+               Cara mendapatkan:
+               1. Buka https://console.firebase.google.com/
+               2. Pilih project → ⚙️ Project Settings
+               3. Scroll ke bawah → "Your apps" → pilih Web (</>)
+               4. Copy config object di sini
+            */
             const firebaseConfig = {
                 apiKey: "AIzaSyDemoKeyDoNotUseInProduction",
                 authDomain: "your-project.firebaseapp.com",
@@ -1705,13 +1780,58 @@
                 appId: "1:123456789:web:abcdef"
             };
 
-            // Inisialisasi Firebase
-            firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
-            const db = firebase.firestore();
+            /* ============================================================
+               INISIALISASI FIREBASE
+               ============================================================ */
+            let firebaseInitialized = false;
+            let db = null;
+            let auth = null;
 
-            // Aktifkan offline persistence (opsional)
-            db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+            try {
+                firebase.initializeApp(firebaseConfig);
+                auth = firebase.auth();
+                db = firebase.firestore();
+
+                // Coba enable persistence
+                db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+
+                // Cek koneksi dengan get()
+                db.collection('templates').limit(1).get()
+                    .then(() => {
+                        firebaseInitialized = true;
+                        document.getElementById('setupGuideContainer').style.display = 'none';
+                        // Mulai subscribe setelah koneksi berhasil
+                        subscribeTemplates();
+                        subscribeCreators();
+                        handleHashChange();
+                    })
+                    .catch(err => {
+                        console.warn('Firestore connection error:', err.message);
+                        // Tampilkan panduan setup
+                        document.getElementById('setupGuideContainer').style.display = 'block';
+                        // Fallback: coba lagi nanti
+                        setTimeout(() => {
+                            db.collection('templates').limit(1).get()
+                                .then(() => {
+                                    firebaseInitialized = true;
+                                    document.getElementById('setupGuideContainer').style.display = 'none';
+                                    subscribeTemplates();
+                                    subscribeCreators();
+                                    handleHashChange();
+                                })
+                                .catch(() => {});
+                        }, 5000);
+                    });
+
+                firebaseInitialized = true;
+            } catch (e) {
+                console.error('Firebase init error:', e.message);
+                document.getElementById('setupGuideContainer').style.display = 'block';
+            }
+
+            document.getElementById('closeSetupGuide').addEventListener('click', function() {
+                this.closest('.setup-guide').style.display = 'none';
+            });
 
             /* ============================================================
                ICONS
@@ -1743,8 +1863,8 @@
             let activeFilter = 'all';
             let activeRatio = null;
             let currentCreator = null;
-            let currentUser = null; // firebase user
-            let currentUserCreator = null; // data kreator dari firestore
+            let currentUser = null;
+            let currentUserCreator = null;
             let isCreator = false;
             let unsubscribeTemplates = null;
             let unsubscribeCreators = null;
@@ -1817,7 +1937,7 @@
             }
 
             /* ============================================================
-               AUTH
+               AUTH — dengan error handling yang lebih baik
                ============================================================ */
             function updateAuthUI(user) {
                 currentUser = user;
@@ -1831,12 +1951,13 @@
                     loginBtn.style.display = 'none';
                     uploadBtn.style.display = 'inline-flex';
                     mobileUploadBtn.style.display = 'flex';
-                    document.getElementById('userName').textContent = user.displayName || user.email || 'User';
-                    document.getElementById('userAvatar').textContent = (user.displayName || user.email || 'U')[0]
-                        .toUpperCase();
+                    const displayName = user.displayName || user.email || 'User';
+                    document.getElementById('userName').textContent = displayName;
+                    document.getElementById('userAvatar').textContent = (displayName)[0].toUpperCase();
 
-                    // Cek apakah user sudah terdaftar sebagai kreator
-                    checkIfCreator(user.uid);
+                    if (firebaseInitialized && db) {
+                        checkIfCreator(user.uid);
+                    }
                 } else {
                     badge.style.display = 'none';
                     loginBtn.style.display = 'inline-flex';
@@ -1848,7 +1969,7 @@
             }
 
             function checkIfCreator(uid) {
-                if (!uid) return;
+                if (!uid || !db) return;
                 db.collection('creators').where('uid', '==', uid).get()
                     .then(snapshot => {
                         if (!snapshot.empty) {
@@ -1864,21 +1985,26 @@
             }
 
             // Auth state listener
-            auth.onAuthStateChanged(user => {
-                updateAuthUI(user);
-                // Reload data jika sudah login
-                if (user) {
-                    // Pastikan data tetap live
-                }
-            });
+            if (auth) {
+                auth.onAuthStateChanged(user => {
+                    updateAuthUI(user);
+                });
+            }
 
             // Login
             document.getElementById('loginForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                const email = document.getElementById('loginEmail').value;
+                if (!auth) {
+                    showToast('Firebase belum siap. Periksa konfigurasi.', 'error');
+                    return;
+                }
+                const email = document.getElementById('loginEmail').value.trim();
                 const password = document.getElementById('loginPassword').value;
-                document.getElementById('loginSubmitBtn').textContent = 'Memproses...';
-                document.getElementById('loginSubmitBtn').disabled = true;
+                const errorEl = document.getElementById('loginError');
+                errorEl.style.display = 'none';
+                const btn = document.getElementById('loginSubmitBtn');
+                btn.textContent = 'Memproses...';
+                btn.disabled = true;
 
                 auth.signInWithEmailAndPassword(email, password)
                     .then(() => {
@@ -1887,48 +2013,72 @@
                         document.getElementById('loginForm').reset();
                     })
                     .catch(err => {
-                        showToast(err.message || 'Gagal masuk', 'error');
+                        errorEl.style.display = 'block';
+                        let msg = err.message;
+                        if (err.code === 'auth/user-not-found') msg = 'Email tidak terdaftar';
+                        else if (err.code === 'auth/wrong-password') msg = 'Password salah';
+                        else if (err.code === 'auth/invalid-email') msg = 'Format email tidak valid';
+                        else if (err.code === 'auth/too-many-requests') msg = 'Terlalu banyak percobaan. Coba lagi nanti.';
+                        errorEl.textContent = msg;
+                        showToast(msg, 'error');
                     })
                     .finally(() => {
-                        document.getElementById('loginSubmitBtn').textContent = 'Masuk';
-                        document.getElementById('loginSubmitBtn').disabled = false;
+                        btn.textContent = 'Masuk';
+                        btn.disabled = false;
                     });
             });
 
-            // Register auth
+            // Register
             document.getElementById('registerAuthForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                const email = document.getElementById('registerEmail').value;
+                if (!auth) {
+                    showToast('Firebase belum siap. Periksa konfigurasi.', 'error');
+                    return;
+                }
+                const email = document.getElementById('registerEmail').value.trim();
                 const password = document.getElementById('registerPassword').value;
+                const errorEl = document.getElementById('registerError');
+                errorEl.style.display = 'none';
                 if (password.length < 6) {
+                    errorEl.style.display = 'block';
+                    errorEl.textContent = 'Password minimal 6 karakter';
                     showToast('Password minimal 6 karakter', 'error');
                     return;
                 }
-                document.getElementById('registerSubmitBtn').textContent = 'Memproses...';
-                document.getElementById('registerSubmitBtn').disabled = true;
+                const btn = document.getElementById('registerSubmitBtn');
+                btn.textContent = 'Memproses...';
+                btn.disabled = true;
 
                 auth.createUserWithEmailAndPassword(email, password)
                     .then(() => {
                         showToast('Akun berhasil dibuat! Silakan daftar sebagai kreator.', 'success');
                         document.getElementById('loginModal').classList.remove('active');
                         document.getElementById('registerAuthForm').reset();
-                        // Buka modal daftar kreator
-                        openRegisterModal();
+                        // Buka modal daftar kreator setelah registrasi
+                        setTimeout(openRegisterModal, 500);
                     })
                     .catch(err => {
-                        showToast(err.message || 'Gagal daftar', 'error');
+                        errorEl.style.display = 'block';
+                        let msg = err.message;
+                        if (err.code === 'auth/email-already-in-use') msg = 'Email sudah terdaftar';
+                        else if (err.code === 'auth/invalid-email') msg = 'Format email tidak valid';
+                        else if (err.code === 'auth/weak-password') msg = 'Password terlalu lemah (min 6 karakter)';
+                        errorEl.textContent = msg;
+                        showToast(msg, 'error');
                     })
                     .finally(() => {
-                        document.getElementById('registerSubmitBtn').textContent = 'Daftar';
-                        document.getElementById('registerSubmitBtn').disabled = false;
+                        btn.textContent = 'Daftar';
+                        btn.disabled = false;
                     });
             });
 
             // Logout
             document.getElementById('logoutBtn').addEventListener('click', function() {
-                auth.signOut().then(() => {
-                    showToast('Berhasil keluar', 'info');
-                });
+                if (auth) {
+                    auth.signOut().then(() => {
+                        showToast('Berhasil keluar', 'info');
+                    }).catch(() => {});
+                }
             });
 
             // Login modal toggles
@@ -1939,6 +2089,8 @@
                 document.getElementById('loginModalTitle').textContent = 'Masuk';
                 document.getElementById('loginForm').reset();
                 document.getElementById('registerAuthForm').reset();
+                document.getElementById('loginError').style.display = 'none';
+                document.getElementById('registerError').style.display = 'none';
             });
             document.getElementById('closeLoginModal').addEventListener('click', () => document.getElementById('loginModal')
                 .classList.remove('active'));
@@ -1951,17 +2103,22 @@
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('registerAuthForm').style.display = 'block';
                 document.getElementById('loginModalTitle').textContent = 'Daftar Akun';
+                document.getElementById('loginError').style.display = 'none';
+                document.getElementById('registerError').style.display = 'none';
             });
             document.getElementById('switchToLogin').addEventListener('click', function() {
                 document.getElementById('loginForm').style.display = 'block';
                 document.getElementById('registerAuthForm').style.display = 'none';
                 document.getElementById('loginModalTitle').textContent = 'Masuk';
+                document.getElementById('loginError').style.display = 'none';
+                document.getElementById('registerError').style.display = 'none';
             });
 
             /* ============================================================
-               FIREBASE CRUD
+               FIRESTORE SUBSCRIPTIONS
                ============================================================ */
             function subscribeTemplates() {
+                if (!db) return;
                 if (unsubscribeTemplates) unsubscribeTemplates();
                 unsubscribeTemplates = db.collection('templates')
                     .orderBy('createdAt', 'desc')
@@ -1974,13 +2131,16 @@
                         });
                         render();
                     }, err => {
-                        showToast('Gagal memuat template: ' + err.message, 'error');
-                        // fallback: coba sekali lagi
-                        setTimeout(() => subscribeTemplates(), 3000);
+                        console.warn('Templates subscription error:', err.message);
+                        // Coba reconnect
+                        setTimeout(() => {
+                            if (db) subscribeTemplates();
+                        }, 5000);
                     });
             }
 
             function subscribeCreators() {
+                if (!db) return;
                 if (unsubscribeCreators) unsubscribeCreators();
                 unsubscribeCreators = db.collection('creators')
                     .orderBy('name')
@@ -1991,29 +2151,33 @@
                             data.id = doc.id;
                             allCreators.push(data);
                         });
-                        // Jika sedang di view creators, refresh
                         if (currentView === 'creators' && !currentCreator) {
                             renderCreatorDirectory();
                         } else {
                             render();
                         }
                     }, err => {
-                        showToast('Gagal memuat kreator: ' + err.message, 'error');
-                        setTimeout(() => subscribeCreators(), 3000);
+                        console.warn('Creators subscription error:', err.message);
+                        setTimeout(() => {
+                            if (db) subscribeCreators();
+                        }, 5000);
                     });
             }
 
             function addTemplate(data) {
+                if (!db) return Promise.reject('Firestore not ready');
                 return db.collection('templates').add(data);
             }
 
             function incrementField(docId, field, amount = 1) {
+                if (!db) return Promise.reject('Firestore not ready');
                 return db.collection('templates').doc(docId).update({
                     [field]: firebase.firestore.FieldValue.increment(amount)
                 });
             }
 
             function addCreator(data) {
+                if (!db) return Promise.reject('Firestore not ready');
                 return db.collection('creators').add(data);
             }
 
@@ -2075,7 +2239,8 @@
                 if (kind === 'creators') {
                     return `<div class="empty-state">${ICON.userPlus}<div class="title">Belum ada kreator terdaftar</div>
                 <div class="sub">Jadilah kreator pertama yang bergabung di PresetHub.</div>
-                <button class="btn-register-cta" id="emptyRegisterBtn">Daftar sebagai Kreator</button></div>`;
+                ${currentUser ? '<button class="btn-register-cta" id="emptyRegisterBtn">Daftar sebagai Kreator</button>' :
+                '<button class="btn-register-cta" id="emptyLoginBtn">Masuk untuk Daftar</button>'}</div>`;
                 }
                 if (kind === 'creator-profile') {
                     return `<div class="empty-state">${ICON.noVideo}<div class="title">Belum ada karya</div>
@@ -2157,6 +2322,9 @@
                     if (loginBtn) loginBtn.addEventListener('click', () => document.getElementById('loginBtn').click());
                     const emptyBtn = document.getElementById('emptyRegisterBtn');
                     if (emptyBtn) emptyBtn.addEventListener('click', openRegisterModal);
+                    const emptyLoginBtn = document.getElementById('emptyLoginBtn');
+                    if (emptyLoginBtn) emptyLoginBtn.addEventListener('click', () => document.getElementById('loginBtn')
+                        .click());
                     return;
                 }
 
@@ -2233,12 +2401,13 @@
                DETAIL
                ============================================================ */
             function openDetail(template) {
+                if (!template || !template.id) return;
                 const ytId = template.linkYoutube ? getYoutubeId(template.linkYoutube) : null;
                 const isFree = template.license === 'free';
                 const content = document.getElementById('detailContent');
 
                 // Increment views
-                if (template.id) {
+                if (template.id && db) {
                     incrementField(template.id, 'views', 1).catch(() => {});
                 }
 
@@ -2291,8 +2460,6 @@
               `;
                 }
 
-                const isLiked = false; // sementara, nanti bisa pakai localstorage atau subkoleksi
-
                 content.innerHTML = `
               <div class="modal-head">
                 <h2>${escapeHtml(template.judul || '')}</h2>
@@ -2316,7 +2483,7 @@
                 <span class="stat">${ICON.download}${formatNumber(template.uses || 0)} unduhan</span>
                 <span class="stat">${ICON.eye}${formatNumber(template.views || 0)} dilihat</span>
                 <span class="stat">
-                  <button class="stat-btn ${isLiked ? 'liked' : ''}" id="likeBtn" data-id="${template.id}">
+                  <button class="stat-btn" id="likeBtn" data-id="${template.id}">
                     ${ICON.heart} ${formatNumber(template.likes || 0)}
                   </button>
                 </span>
@@ -2331,10 +2498,8 @@
 
                 document.getElementById('detailModal').classList.add('active');
 
-                // Close
                 document.getElementById('closeDetailModal').addEventListener('click', closeDetail);
 
-                // Creator line
                 document.getElementById('detailCreatorLine').addEventListener('click', function() {
                     closeDetail();
                     currentCreator = this.dataset.creator;
@@ -2350,22 +2515,25 @@
                     likeBtn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         const id = this.dataset.id;
-                        if (!id) return;
-                        // Toggle like (sederhana: increment)
-                        incrementField(id, 'likes', 1).catch(() => {});
+                        if (!id || !db) return;
+                        const current = parseInt(this.textContent.trim().replace(/\D/g, '')) || 0;
+                        const isLiked = this.classList.contains('liked');
+                        const newCount = isLiked ? current - 1 : current + 1;
+                        this.innerHTML = ICON.heart + ' ' + newCount;
                         this.classList.toggle('liked');
-                        const current = parseInt(this.textContent.trim()) || 0;
-                        this.innerHTML = ICON.heart + ' ' + (this.classList.contains('liked') ? current + 1 :
-                            current - 1);
+                        incrementField(id, 'likes', isLiked ? -1 : 1).catch(() => {
+                            // revert on error
+                            this.innerHTML = ICON.heart + ' ' + current;
+                            this.classList.toggle('liked');
+                        });
                     });
                 }
 
-                // Use template button (increment uses)
                 const useBtn = document.getElementById('useTemplateBtn');
                 if (useBtn) {
                     useBtn.addEventListener('click', function() {
                         const id = this.dataset.id;
-                        if (!id) return;
+                        if (!id || !db) return;
                         incrementField(id, 'uses', 1)
                             .then(() => {
                                 showToast('Terima kasih telah menggunakan template ini!', 'success');
@@ -2595,8 +2763,8 @@
 
             document.getElementById('uploadForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                if (!currentUser) {
-                    showToast('Silakan masuk terlebih dahulu', 'error');
+                if (!currentUser || !db) {
+                    showToast('Firebase belum siap atau Anda belum login', 'error');
                     return;
                 }
                 if (!isCreator || !currentUserCreator) {
@@ -2663,7 +2831,6 @@
                     document.getElementById('loginBtn').click();
                     return;
                 }
-                // Cek apakah sudah terdaftar
                 if (isCreator) {
                     showToast('Anda sudah terdaftar sebagai kreator', 'info');
                     return;
@@ -2673,15 +2840,14 @@
 
             document.getElementById('registerCreatorForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                if (!currentUser) {
-                    showToast('Silakan masuk terlebih dahulu', 'error');
+                if (!currentUser || !db) {
+                    showToast('Firebase belum siap atau Anda belum login', 'error');
                     return;
                 }
 
                 const name = document.getElementById('rNama').value.trim();
                 if (!name) { showToast('Nama wajib diisi', 'error'); return; }
 
-                // Cek duplikat nama
                 if (allCreators.some(c => (c.name || '').toLowerCase() === name.toLowerCase())) {
                     showToast('Nama kreator sudah terdaftar', 'error');
                     return;
@@ -2706,7 +2872,6 @@
                         isCreator = true;
                         currentUserCreator = data;
                         currentUserCreator.id = 'temp';
-                        // Refresh view
                         if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
                         else render();
                     })
@@ -2720,7 +2885,6 @@
             document.getElementById('closeRegisterModal').addEventListener('click', () => document.getElementById(
                 'registerCreatorModal').classList.remove('active'));
 
-            // Expose untuk context bar
             window.openRegisterModal = openRegisterModal;
 
             /* ============================================================
@@ -2741,19 +2905,30 @@
                INIT
                ============================================================ */
             function init() {
-                // Subscribe ke Firestore
-                subscribeTemplates();
-                subscribeCreators();
-
-                // Tampilkan skeleton dulu
                 cardGrid.innerHTML =
                     `<div class="grid is-loading">${Array(4).fill('<div><div class="thumb skel" style="aspect-ratio:4/5"></div><div class="skel-line skel w60"></div><div class="skel-line skel w40"></div></div>').join('')}</div>`;
 
-                // Handle hash setelah data dimuat (atau timeout)
+                // Jika Firebase sudah siap, handle hash setelah delay
                 setTimeout(() => {
-                    handleHashChange();
-                    showToast('PresetHub siap digunakan', 'info');
-                }, 300);
+                    if (firebaseInitialized) {
+                        handleHashChange();
+                    } else {
+                        // Tampilkan panduan setup
+                        document.getElementById('setupGuideContainer').style.display = 'block';
+                        // Coba konek ulang
+                        if (db) {
+                            db.collection('templates').limit(1).get()
+                                .then(() => {
+                                    firebaseInitialized = true;
+                                    document.getElementById('setupGuideContainer').style.display = 'none';
+                                    subscribeTemplates();
+                                    subscribeCreators();
+                                    handleHashChange();
+                                })
+                                .catch(() => {});
+                        }
+                    }
+                }, 500);
             }
 
             document.addEventListener('DOMContentLoaded', init);
@@ -2768,9 +2943,6 @@
     service cloud.firestore {
       match /databases/{database}/documents {
 
-        // ============================================================
-        // TEMPLATES
-        // ============================================================
         match /templates/{docId} {
           allow read: if true;
 
@@ -2788,19 +2960,14 @@
             && request.resource.data.views is int && request.resource.data.views >= 0;
 
           allow update: if request.auth != null && (
-            // Creator dapat mengupdate semua field
             request.auth.uid == resource.data.creatorUid
             ||
-            // Siapa pun yang login dapat mengupdate views, uses, likes
             request.resource.data.diff(resource.data).affectedKeys.hasOnly(['views', 'uses', 'likes'])
           );
 
           allow delete: if request.auth != null && request.auth.uid == resource.data.creatorUid;
         }
 
-        // ============================================================
-        // CREATORS
-        // ============================================================
         match /creators/{docId} {
           allow read: if true;
 
@@ -2811,17 +2978,6 @@
 
           allow update: if request.auth != null && request.auth.uid == resource.data.uid;
 
-          allow delete: if request.auth != null && request.auth.uid == resource.data.uid;
-        }
-
-        // ============================================================
-        // LIKES (opsional: untuk track siapa yang like)
-        // ============================================================
-        match /likes/{docId} {
-          allow read: if true;
-          allow create: if request.auth != null
-            && request.resource.data.keys().hasAll(['templateId', 'uid', 'createdAt'])
-            && request.resource.data.uid == request.auth.uid;
           allow delete: if request.auth != null && request.auth.uid == resource.data.uid;
         }
       }
