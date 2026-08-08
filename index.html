@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
-        /* [CSS styles tetap sama seperti sebelumnya - tidak diubah] */
         :root {
             --bg: #F0EFEA;
             --surface: #ffffff;
@@ -70,19 +69,6 @@
             padding-bottom: calc(var(--nav-height) + 16px + var(--safe-bottom));
         }
 
-        .flex { display: flex; }
-        .flex-wrap { display: flex; flex-wrap: wrap; }
-        .center { align-items: center; justify-content: center; }
-        .gap-4 { gap: 0.25rem; }
-        .gap-8 { gap: 0.5rem; }
-        .gap-16 { gap: 1rem; }
-        .mt-8 { margin-top: 0.5rem; }
-        .mt-16 { margin-top: 1rem; }
-        .mb-8 { margin-bottom: 0.5rem; }
-        .mb-16 { margin-bottom: 1rem; }
-        .hidden { display: none !important; }
-
-        /* Header, Navigation, Cards, Modals styles remain unchanged */
         .header {
             position: sticky;
             top: 0;
@@ -1056,6 +1042,244 @@
             margin-bottom: 0.75rem;
         }
 
+        /* Creator Directory */
+        .creator-directory {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .creator-profile-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .creator-profile-card:active { transform: scale(0.98); }
+
+        .creator-profile-card .avatar-large {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .creator-profile-card .cp-name {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .creator-profile-card .cp-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .creator-profile-card .cp-badge svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--accent);
+            fill: var(--accent);
+        }
+
+        .creator-profile-card .cp-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .creator-profile-card .cp-stats span {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .creator-profile-card .cp-specialty {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            background: var(--bg);
+            padding: 0.15rem 0.6rem;
+            border-radius: 100px;
+        }
+
+        .creator-register-banner {
+            background: linear-gradient(135deg, var(--accent) 0%, #7C3AED 100%);
+            color: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .creator-register-banner h3 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .creator-register-banner p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .btn-register {
+            background: white;
+            color: var(--accent);
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-register:active { transform: scale(0.95); }
+
+        /* Search Page */
+        .search-page {
+            padding: 1rem 0;
+        }
+
+        .search-bar-large {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .search-bar-large svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+
+        .search-bar-large input {
+            flex: 1;
+            border: none;
+            padding: 0.75rem 0;
+            font-size: 1rem;
+            outline: none;
+            font-family: inherit;
+            background: transparent;
+            color: var(--text);
+        }
+
+        .search-bar-large input::placeholder { color: var(--text-muted); }
+
+        .recommendations-section { margin-top: 1rem; }
+
+        .recommendations-section h3 {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .search-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .suggestion-chip {
+            padding: 0.5rem 1rem;
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .suggestion-chip:active {
+            transform: scale(0.96);
+            background: var(--accent-light);
+            border-color: var(--accent);
+        }
+
+        .suggestion-chip svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .trending-searches { margin-bottom: 1.5rem; }
+
+        .trending-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .trending-item:last-child { border-bottom: none; }
+
+        .trending-item .trend-rank {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            width: 1.5rem;
+        }
+
+        .trending-item:nth-child(1) .trend-rank { color: var(--amber-ink); }
+        .trending-item:nth-child(2) .trend-rank { color: var(--text-secondary); }
+        .trending-item:nth-child(3) .trend-rank { color: var(--text-secondary); }
+
+        .trending-item .trend-text {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .trending-item .trend-count {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Modal */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -1070,9 +1294,7 @@
             animation: fadeIn 0.2s ease;
         }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
 
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -1133,9 +1355,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .modal-sheet .modal-close:active {
-            transform: scale(0.92);
-        }
+        .modal-sheet .modal-close:active { transform: scale(0.92); }
 
         .modal-sheet .modal-close svg {
             width: 24px;
@@ -1147,9 +1367,7 @@
             stroke-linejoin: round;
         }
 
-        .form-group {
-            margin-bottom: 0.75rem;
-        }
+        .form-group { margin-bottom: 0.75rem; }
 
         .form-group label {
             display: block;
@@ -1182,10 +1400,7 @@
             border-color: transparent;
         }
 
-        .form-group textarea {
-            resize: vertical;
-            min-height: 60px;
-        }
+        .form-group textarea { resize: vertical; min-height: 60px; }
 
         .form-actions {
             display: flex;
@@ -1210,19 +1425,10 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .form-actions .btn:active {
-            transform: scale(0.96);
-        }
+        .form-actions .btn:active { transform: scale(0.96); }
 
-        .form-actions .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .form-actions .btn-secondary {
-            background: var(--bg);
-            color: var(--text-secondary);
-        }
+        .form-actions .btn-primary { background: var(--accent); color: white; }
+        .form-actions .btn-secondary { background: var(--bg); color: var(--text-secondary); }
 
         .form-actions .btn svg {
             width: 18px;
@@ -1234,20 +1440,10 @@
             stroke-linejoin: round;
         }
 
-        .form-hint {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 0.2rem;
-        }
+        .form-hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; }
 
-        .price-input-wrapper {
-            display: none;
-            margin-top: 0.5rem;
-        }
-
-        .price-input-wrapper.active {
-            display: block;
-        }
+        .price-input-wrapper { display: none; margin-top: 0.5rem; }
+        .price-input-wrapper.active { display: block; }
 
         .toast-container {
             position: fixed;
@@ -1297,105 +1493,55 @@
 
         @media (min-width: 640px) {
             .rail { margin: 0 -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
-            .main {
-                padding: 1rem 1.5rem;
-                max-width: 720px;
-            }
-            .asset-card .body {
-                padding: 1rem 1.25rem 1.25rem;
-            }
-            .asset-title {
-                font-size: 1.1rem;
-            }
+            .main { padding: 1rem 1.5rem; max-width: 720px; }
         }
 
         @media (min-width: 1024px) {
             .rail { margin: 0 -2rem; padding-left: 2rem; padding-right: 2rem; }
             .trend-card { width: 260px; }
-            .main {
-                max-width: 960px;
-                padding: 1.5rem 2rem;
-            }
-            .asset-card {
-                margin-bottom: 1.25rem;
-            }
-            .asset-title {
-                font-size: 1.15rem;
-            }
-            .bottom-nav {
-                display: none;
-            }
-            .fab {
-                display: none;
-            }
-            .app {
-                padding-bottom: 0;
-            }
-            .sidebar-desktop {
-                display: flex !important;
-            }
-            .header {
-                padding: 0.75rem 2rem;
-            }
-            .app {
-                padding-left: 220px;
-            }
+            .main { max-width: 960px; padding: 1.5rem 2rem; }
+            .bottom-nav { display: none; }
+            .fab { display: none; }
+            .app { padding-bottom: 0; }
+            .sidebar-desktop { display: flex !important; }
+            .header { padding: 0.75rem 2rem; }
+            .app { padding-left: 220px; }
         }
 
         @media (hover: hover) and (pointer: fine) {
-            .asset-card:hover {
-                transform: translateY(-3px);
-                box-shadow: var(--shadow-md);
-                border-color: var(--border);
-            }
-            .asset-card:hover .thumb {
-                transform: scale(1.03);
-            }
-            .asset-creator:hover .name {
-                color: var(--accent);
-                text-decoration: underline;
-            }
-            .asset-download:hover {
-                background: var(--accent-hover);
-            }
-            .trend-card:hover {
-                transform: translateY(-3px);
-                box-shadow: var(--shadow-md);
-            }
-            .trend-card:hover .thumb {
-                transform: scale(1.03);
-            }
-            .creator-card:hover {
-                transform: translateY(-2px);
-                box-shadow: var(--shadow);
-                border-color: var(--accent);
-            }
-            .rank-row:hover {
-                background: var(--bg);
-            }
-            .filter-chips .chip:hover:not(.active) {
-                border-color: var(--accent);
-                color: var(--accent);
-            }
+            .asset-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+            .creator-profile-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--accent); }
+            .suggestion-chip:hover { background: var(--accent-light); border-color: var(--accent); }
+            .trending-item:hover { background: var(--bg); border-radius: var(--radius-xs); }
+            .btn-register:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         }
     </style>
 </head>
 <body>
 
 <div class="app">
-    <!-- [Sidebar, Header, Filter Chips, Main Content, Navigation - same as before] -->
     <aside class="sidebar-desktop" id="sidebarDesktop">
         <div class="brand">
             <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
             <span>Preset</span>Hub
         </div>
         <nav>
-            <button class="active" data-view="all">Semua</button>
-            <button data-view="trending">Trending</button>
-            <button data-view="favorites">Favorit</button>
-            <button data-view="free">Gratis</button>
-            <button data-view="pro">Pro</button>
-            <button data-view="creators">Kreator</button>
+            <button class="active" data-view="all">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                Semua
+            </button>
+            <button data-view="trending">
+                <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                Trending
+            </button>
+            <button data-view="favorites">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Favorit
+            </button>
+            <button data-view="creators">
+                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Kreator
+            </button>
         </nav>
         <div class="footer">v2.3 · <span id="totalDesktop">0</span> asset</div>
     </aside>
@@ -1414,9 +1560,6 @@
                 <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 <span class="badge-dot"></span>
             </button>
-            <button class="btn-icon" id="profileBtn" title="Profil">
-                <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </button>
         </div>
     </header>
 
@@ -1425,12 +1568,8 @@
         <span class="chip" data-filter="after-effects">AE</span>
         <span class="chip" data-filter="premiere">Premiere</span>
         <span class="chip" data-filter="capcut">CapCut</span>
-        <span class="chip" data-filter="alight">Alight Motion</span>
-        <span class="chip" data-filter="vn">VN</span>
         <span class="chip" data-filter="free">Gratis</span>
         <span class="chip" data-filter="pro">Pro</span>
-        <span class="chip" data-filter="velocity">Velocity</span>
-        <span class="chip" data-filter="transition">Transition</span>
     </div>
 
     <main class="main" id="mainContent">
@@ -1454,13 +1593,12 @@
             <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             <span class="nav-label">Saved</span>
         </button>
-        <button class="nav-btn" data-nav="profile">
+        <button class="nav-btn" data-nav="creators">
             <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span class="nav-label">Profil</span>
+            <span class="nav-label">Kreator</span>
         </button>
     </nav>
 
-    <!-- UPLOAD MODAL - UPDATED FORM -->
     <div class="modal-overlay" id="uploadModal">
         <div class="modal-sheet">
             <div class="handle"></div>
@@ -1471,20 +1609,15 @@
                 </button>
             </div>
             <form id="uploadForm">
-                <!-- 1. Judul -->
                 <div class="form-group">
                     <label for="fJudul">1. Judul *</label>
                     <input type="text" id="fJudul" placeholder="Contoh: Cinematic Transition Pack" required />
                 </div>
-
-                <!-- 2. Kode (auto-generated) -->
                 <div class="form-group">
                     <label for="fKode">2. Kode Preset</label>
-                    <input type="text" id="fKode" readonly placeholder="Auto-generated" style="background: var(--bg); cursor: not-allowed;" />
+                    <input type="text" id="fKode" readonly placeholder="Auto-generated" style="background:var(--bg);cursor:not-allowed;" />
                     <div class="form-hint">Kode unik otomatis dibuat saat upload</div>
                 </div>
-
-                <!-- 3. Kategori -->
                 <div class="form-group">
                     <label for="fKategori">3. Kategori *</label>
                     <select id="fKategori" required>
@@ -1493,21 +1626,15 @@
                         <option value="Assets">Assets</option>
                     </select>
                 </div>
-
-                <!-- 4. Deskripsi -->
                 <div class="form-group">
                     <label for="fDeskripsi">4. Deskripsi</label>
                     <textarea id="fDeskripsi" rows="4" placeholder="Jelaskan preset/asset ini secara detail..."></textarea>
                 </div>
-
-                <!-- 5. Link Embed YouTube -->
                 <div class="form-group">
                     <label for="fLinkYoutube">5. Link Video YouTube</label>
                     <input type="url" id="fLinkYoutube" placeholder="https://youtube.com/watch?v=... atau https://youtu.be/..." />
-                    <div class="form-hint">Masukkan link YouTube biasa, akan otomatis diubah jadi embed. Contoh: https://youtu.be/dQw4w9WgXcQ</div>
+                    <div class="form-hint">Masukkan link YouTube biasa, akan otomatis diubah jadi embed</div>
                 </div>
-
-                <!-- 6. Harga -->
                 <div class="form-group">
                     <label for="fLicense">6. Harga *</label>
                     <select id="fLicense" required>
@@ -1515,44 +1642,28 @@
                         <option value="paid">Paid (Berbayar)</option>
                     </select>
                 </div>
-                
-                <!-- Input harga muncul saat pilih Paid -->
                 <div class="price-input-wrapper" id="priceWrapper">
                     <div class="form-group">
                         <label for="fHarga">Jumlah Harga (Rp)</label>
                         <input type="number" id="fHarga" placeholder="Masukkan harga dalam Rupiah" min="1000" step="1000" />
-                        <div class="form-hint">Contoh: 25000 untuk Rp 25.000</div>
                     </div>
                 </div>
-
-                <!-- 7. Link Project -->
                 <div class="form-group">
                     <label for="fLinkProject">7. Link Project</label>
-                    <input type="url" id="fLinkProject" placeholder="https://drive.google.com/... atau link project file" />
-                    <div class="form-hint">Link file project (XML, AEP, dll)</div>
+                    <input type="url" id="fLinkProject" placeholder="https://drive.google.com/..." />
                 </div>
-
-                <!-- 8. Link Drive -->
                 <div class="form-group">
                     <label for="fLinkDrive">8. Link Drive</label>
                     <input type="url" id="fLinkDrive" placeholder="https://drive.google.com/..." />
-                    <div class="form-hint">Link Google Drive atau cloud storage lainnya</div>
                 </div>
-
-                <!-- 9. Link Asset 1 -->
                 <div class="form-group">
                     <label for="fLinkAsset1">9. Link Asset 1</label>
                     <input type="url" id="fLinkAsset1" placeholder="https://..." />
-                    <div class="form-hint">Link asset pendukung (overlay, sound effect, dll)</div>
                 </div>
-
-                <!-- 10. Link Asset 2 -->
                 <div class="form-group">
                     <label for="fLinkAsset2">10. Link Asset 2</label>
                     <input type="url" id="fLinkAsset2" placeholder="https://..." />
-                    <div class="form-hint">Link asset pendukung tambahan</div>
                 </div>
-
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary" id="submitBtn">
                         <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
@@ -1564,7 +1675,6 @@
         </div>
     </div>
 
-    <!-- [Detail Modal, Creator Modal - same as before] -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal-sheet">
             <div class="handle"></div>
@@ -1572,616 +1682,640 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="creatorModal">
+    <div class="modal-overlay" id="registerCreatorModal">
         <div class="modal-sheet">
             <div class="handle"></div>
-            <div id="creatorContent"></div>
+            <div class="modal-header">
+                <h2>Daftar Sebagai Kreator</h2>
+                <button class="modal-close" id="closeRegisterModal">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="registerCreatorForm">
+                <div class="form-group">
+                    <label for="rNama">Nama Kreator *</label>
+                    <input type="text" id="rNama" placeholder="Nama kreator Anda" required />
+                </div>
+                <div class="form-group">
+                    <label for="rBio">Bio Singkat</label>
+                    <textarea id="rBio" rows="3" placeholder="Ceritakan tentang diri Anda..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="rSoftware">Software Utama</label>
+                    <select id="rSoftware">
+                        <option value="">Pilih Software...</option>
+                        <option value="After Effects">After Effects</option>
+                        <option value="Premiere Pro">Premiere Pro</option>
+                        <option value="CapCut">CapCut</option>
+                        <option value="Alight Motion">Alight Motion</option>
+                        <option value="VN Video Editor">VN Video Editor</option>
+                        <option value="DaVinci Resolve">DaVinci Resolve</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="rPortfolio">Link Portfolio (opsional)</label>
+                    <input type="url" id="rPortfolio" placeholder="https://instagram.com/..." />
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+                        Daftar Sekarang
+                    </button>
+                    <button type="reset" class="btn btn-secondary" id="cancelRegister">Batal</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <div class="toast-container" id="toastContainer"></div>
+</div>
 
-    <script>
-        (function() {
-            'use strict';
+<script>
+(function() {
+    'use strict';
 
-            // ============ DATA MANAGEMENT ============
-            let assets = [];
-            let editIndex = null;
-            let currentFilter = 'all';
-            let currentChip = 'all';
-            let currentView = 'all';
+    let assets = [];
+    let editIndex = null;
+    let currentView = 'all';
+    let currentChip = 'all';
 
-            // DOM Elements
-            const cardGrid = document.getElementById('cardGrid');
-            const searchInput = document.getElementById('searchInput');
-            
-            // Form Elements - Updated
-            const fJudul = document.getElementById('fJudul');
-            const fKode = document.getElementById('fKode');
-            const fKategori = document.getElementById('fKategori');
-            const fDeskripsi = document.getElementById('fDeskripsi');
-            const fLinkYoutube = document.getElementById('fLinkYoutube');
-            const fLicense = document.getElementById('fLicense');
-            const fHarga = document.getElementById('fHarga');
-            const fLinkProject = document.getElementById('fLinkProject');
-            const fLinkDrive = document.getElementById('fLinkDrive');
-            const fLinkAsset1 = document.getElementById('fLinkAsset1');
-            const fLinkAsset2 = document.getElementById('fLinkAsset2');
-            const priceWrapper = document.getElementById('priceWrapper');
+    const cardGrid = document.getElementById('cardGrid');
+    const searchInput = document.getElementById('searchInput');
+    const fJudul = document.getElementById('fJudul');
+    const fKode = document.getElementById('fKode');
+    const fKategori = document.getElementById('fKategori');
+    const fDeskripsi = document.getElementById('fDeskripsi');
+    const fLinkYoutube = document.getElementById('fLinkYoutube');
+    const fLicense = document.getElementById('fLicense');
+    const fHarga = document.getElementById('fHarga');
+    const fLinkProject = document.getElementById('fLinkProject');
+    const fLinkDrive = document.getElementById('fLinkDrive');
+    const fLinkAsset1 = document.getElementById('fLinkAsset1');
+    const fLinkAsset2 = document.getElementById('fLinkAsset2');
+    const priceWrapper = document.getElementById('priceWrapper');
+    const submitBtn = document.getElementById('submitBtn');
+    const modalTitle = document.getElementById('modalTitle');
+    const uploadModal = document.getElementById('uploadModal');
+    const detailModal = document.getElementById('detailModal');
+    const registerCreatorModal = document.getElementById('registerCreatorModal');
+    const totalDesktop = document.getElementById('totalDesktop');
 
-            // Modal Elements
-            const submitBtn = document.getElementById('submitBtn');
-            const modalTitle = document.getElementById('modalTitle');
-            const uploadModal = document.getElementById('uploadModal');
-            const detailModal = document.getElementById('detailModal');
-            const creatorModal = document.getElementById('creatorModal');
-            const closeUpload = document.getElementById('closeUploadModal');
-            const fabUpload = document.getElementById('fabUpload');
-            const totalDesktop = document.getElementById('totalDesktop');
+    function generateKode() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let kode = 'PH-';
+        for (let i = 0; i < 4; i++) kode += chars.charAt(Math.floor(Math.random() * chars.length));
+        kode += '-';
+        for (let i = 0; i < 4; i++) kode += chars.charAt(Math.floor(Math.random() * chars.length));
+        return kode;
+    }
 
-            // ============ UTILITY FUNCTIONS ============
-            function generateKode() {
-                // Generate kode unik: PH-XXXX-YYYY (PH = PresetHub)
-                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                let kode = 'PH-';
-                for (let i = 0; i < 4; i++) kode += chars.charAt(Math.floor(Math.random() * chars.length));
-                kode += '-';
-                for (let i = 0; i < 4; i++) kode += chars.charAt(Math.floor(Math.random() * chars.length));
-                return kode;
-            }
+    function getYoutubeId(url) {
+        if (!url) return null;
+        const patterns = [
+            /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?/]+)/,
+            /youtube\.com\/shorts\/([^&\s?/]+)/
+        ];
+        for (const pattern of patterns) {
+            const match = url.match(pattern);
+            if (match) return match[1];
+        }
+        return null;
+    }
 
-            function getYoutubeId(url) {
-                if (!url) return null;
-                // Handle various YouTube URL formats
-                const patterns = [
-                    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?/]+)/,
-                    /youtube\.com\/shorts\/([^&\s?/]+)/
-                ];
-                for (const pattern of patterns) {
-                    const match = url.match(pattern);
-                    if (match) return match[1];
+    function embedYoutube(id) { return `https://www.youtube.com/embed/${id}?rel=0`; }
+
+    function formatNumber(n) {
+        if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+        if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+        return n.toString();
+    }
+
+    function formatRupiah(n) {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(n);
+    }
+
+    function formatDate(ts) {
+        if (!ts) return '-';
+        const d = new Date(ts);
+        const now = new Date();
+        const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24));
+        if (diff === 0) return 'Hari ini';
+        if (diff === 1) return 'Kemarin';
+        if (diff < 7) return `${diff} hari lalu`;
+        return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+        return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    function getInitials(name) {
+        if (!name) return '?';
+        return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    function randomId() { return Math.random().toString(36).substring(2, 9); }
+
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        let icon = '';
+        if (type === 'success') icon = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`;
+        else if (type === 'error') icon = `<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        else icon = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+        toast.innerHTML = `${icon} ${message}`;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(10px)';
+            toast.style.transition = '0.3s';
+            setTimeout(() => toast.remove(), 400);
+        }, 3000);
+    }
+
+    function save() { localStorage.setItem('presethub_assets', JSON.stringify(assets)); }
+
+    function loadCreators() {
+        try { return JSON.parse(localStorage.getItem('presethub_creators')) || []; }
+        catch (e) { return []; }
+    }
+
+    function saveCreators(list) { localStorage.setItem('presethub_creators', JSON.stringify(list)); }
+
+    function load() {
+        const stored = localStorage.getItem('presethub_assets');
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed)) {
+                    assets = parsed;
+                    assets.forEach(item => {
+                        if (!item.kode) item.kode = generateKode();
+                        if (!item.kategori) item.kategori = 'Preset';
+                        if (!item.harga) item.harga = 0;
+                        if (!item.id) item.id = randomId();
+                    });
+                    return;
                 }
-                return null;
+            } catch (e) {}
+        }
+        assets = [
+            {
+                id: 'a1', judul: 'Cinematic Transition Pack', kode: 'PH-A3B7-X9K2', kategori: 'Preset',
+                deskripsi: '50 cinematic transitions profesional.', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ',
+                license: 'paid', harga: 25000, linkDrive: 'https://drive.google.com/',
+                likes: 234, downloads: 1240, views: 4300, createdAt: Date.now() - 100000, updatedAt: Date.now() - 50000
+            },
+            {
+                id: 'a2', judul: 'Color Grade LUT Pack', kode: 'PH-M4N8-J3L7', kategori: 'Assets',
+                deskripsi: '20 cinematic LUT profesional.', license: 'free', harga: 0,
+                linkDrive: 'https://drive.google.com/', likes: 156, downloads: 3400, views: 8900,
+                createdAt: Date.now() - 200000, updatedAt: Date.now() - 100000
             }
+        ];
+        save();
+    }
 
-            function embedYoutube(id) { 
-                return `https://www.youtube.com/embed/${id}?rel=0`; 
-            }
+    function getFiltered() {
+        let result = [...assets];
+        const q = searchInput.value.toLowerCase().trim();
+        if (q) {
+            result = result.filter(item =>
+                item.judul.toLowerCase().includes(q) || item.kode.toLowerCase().includes(q) ||
+                item.kategori.toLowerCase().includes(q) || item.deskripsi.toLowerCase().includes(q)
+            );
+        }
+        if (currentView === 'trending') result.sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
+        else if (currentView === 'favorites') result = result.filter(item => item.favorite);
+        else if (currentView === 'free') result = result.filter(item => item.license === 'free');
+        else if (currentView === 'pro') result = result.filter(item => item.license === 'paid');
+        if (currentChip !== 'all') {
+            result = result.filter(item => {
+                if (currentChip === 'after-effects') return item.software === 'After Effects';
+                if (currentChip === 'premiere') return item.software === 'Premiere Pro';
+                if (currentChip === 'capcut') return item.software === 'CapCut';
+                if (currentChip === 'free') return item.license === 'free';
+                if (currentChip === 'pro') return item.license === 'paid';
+                return true;
+            });
+        }
+        return result;
+    }
 
-            function formatNumber(n) {
-                if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-                if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
-                return n.toString();
-            }
-
-            function formatRupiah(n) {
-                return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(n);
-            }
-
-            function formatDate(ts) {
-                if (!ts) return '-';
-                const d = new Date(ts);
-                const now = new Date();
-                const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24));
-                if (diff === 0) return 'Hari ini';
-                if (diff === 1) return 'Kemarin';
-                if (diff < 7) return `${diff} hari lalu`;
-                return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-            }
-
-            function escapeHtml(text) {
-                if (!text) return '';
-                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-                return text.replace(/[&<>"']/g, m => map[m]);
-            }
-
-            function getInitials(name) {
-                if (!name) return '?';
-                return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-            }
-
-            function randomId() { return Math.random().toString(36).substring(2, 9); }
-
-            // ============ TOAST NOTIFICATIONS ============
-            function showToast(message, type = 'info') {
-                const container = document.getElementById('toastContainer');
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
-
-                let icon = '';
-                if (type === 'success') {
-                    icon = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`;
-                } else if (type === 'error') {
-                    icon = `<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
-                } else {
-                    icon = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
-                }
-
-                toast.innerHTML = `${icon} ${message}`;
-                container.appendChild(toast);
-                setTimeout(() => {
-                    toast.style.opacity = '0';
-                    toast.style.transform = 'translateY(10px)';
-                    toast.style.transition = '0.3s';
-                    setTimeout(() => toast.remove(), 400);
-                }, 3000);
-            }
-
-            // ============ LOCAL STORAGE ============
-            function save() {
-                localStorage.setItem('presethub_assets', JSON.stringify(assets));
-            }
-
-            function load() {
-                const stored = localStorage.getItem('presethub_assets');
-                if (stored) {
-                    try {
-                        const parsed = JSON.parse(stored);
-                        if (Array.isArray(parsed)) {
-                            assets = parsed;
-                            assets.forEach(item => {
-                                if (!item.createdAt) item.createdAt = Date.now();
-                                if (!item.updatedAt) item.updatedAt = Date.now();
-                                if (item.likes === undefined) item.likes = 0;
-                                if (item.saves === undefined) item.saves = 0;
-                                if (item.downloads === undefined) item.downloads = 0;
-                                if (item.views === undefined) item.views = 0;
-                                if (!item.kode) item.kode = generateKode();
-                                if (!item.kategori) item.kategori = 'Preset';
-                                if (!item.harga) item.harga = 0;
-                                if (!item.id) item.id = randomId();
-                            });
-                            return;
-                        }
-                    } catch (e) {}
-                }
-
-                // Default assets
-                assets = [
-                    {
-                        id: 'a1',
-                        judul: 'Cinematic Transition Pack',
-                        kode: 'PH-A3B7-X9K2',
-                        kategori: 'Preset',
-                        deskripsi: '50 cinematic transitions untuk video editor profesional. Cocok untuk film pendek, trailer, dan konten branding.',
-                        linkYoutube: 'https://youtu.be/dQw4w9WgXcQ',
-                        license: 'paid',
-                        harga: 25000,
-                        linkProject: 'https://drive.google.com/project1',
-                        linkDrive: 'https://drive.google.com/drive1',
-                        linkAsset1: 'https://drive.google.com/asset1a',
-                        linkAsset2: 'https://drive.google.com/asset1b',
-                        likes: 234,
-                        saves: 89,
-                        downloads: 1240,
-                        views: 4300,
-                        createdAt: Date.now() - 100000,
-                        updatedAt: Date.now() - 50000,
-                        favorite: true
-                    },
-                    {
-                        id: 'a2',
-                        judul: 'Color Grade LUT Pack',
-                        kode: 'PH-M4N8-J3L7',
-                        kategori: 'Assets',
-                        deskripsi: '20 cinematic LUT untuk color grading profesional. Cocok untuk film dan video musik.',
-                        linkYoutube: '',
-                        license: 'free',
-                        harga: 0,
-                        linkProject: '',
-                        linkDrive: 'https://drive.google.com/drive2',
-                        linkAsset1: '',
-                        linkAsset2: '',
-                        likes: 156,
-                        saves: 67,
-                        downloads: 3400,
-                        views: 8900,
-                        createdAt: Date.now() - 200000,
-                        updatedAt: Date.now() - 100000,
-                        favorite: false
-                    }
-                ];
-                save();
-            }
-
-            // ============ FILTERING ============
-            function getFiltered() {
-                let result = [...assets];
-                const q = searchInput.value.toLowerCase().trim();
-
-                if (q) {
-                    result = result.filter(item =>
-                        item.judul.toLowerCase().includes(q) ||
-                        item.kode.toLowerCase().includes(q) ||
-                        item.kategori.toLowerCase().includes(q) ||
-                        item.deskripsi.toLowerCase().includes(q)
-                    );
-                }
-
-                if (currentView === 'trending') {
-                    result.sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
-                } else if (currentView === 'favorites') {
-                    result = result.filter(item => item.favorite);
-                } else if (currentView === 'free') {
-                    result = result.filter(item => item.license === 'free');
-                } else if (currentView === 'pro') {
-                    result = result.filter(item => item.license === 'paid');
-                }
-
-                return result;
-            }
-
-            function isHomeState() {
-                return currentView === 'all' && currentChip === 'all' && !searchInput.value.trim();
-            }
-
-            // ============ ASSET CARD HTML ============
-            function assetCardHTML(item, opts) {
-                opts = opts || {};
-                const youtubeId = item.linkYoutube ? getYoutubeId(item.linkYoutube) : null;
-                const embedUrl = youtubeId ? embedYoutube(youtubeId) : null;
-                const isFree = item.license === 'free';
-                const isPaid = item.license === 'paid';
-                const badgeClass = isFree ? 'free' : 'pro';
-                const badgeText = isFree ? 'Gratis' : `Rp ${formatNumber(item.harga || 0)}`;
-
-                return `
-                    <div class="asset-card" data-id="${item.id}">
-                        <div class="card-media-wrap">
-                            ${opts.newRibbon ? `<span class="ribbon-new">Baru</span>` : ''}
-                            ${embedUrl ? 
-                                `<div style="aspect-ratio:16/9;background:#000;">
-                                    <iframe src="${embedUrl}" style="width:100%;height:100%;border:none;" allowfullscreen loading="lazy"></iframe>
-                                </div>` :
-                                `<div class="thumb-placeholder"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/></svg></div>`
-                            }
-                        </div>
-                        <div class="body">
-                            <div class="asset-top">
-                                <div class="asset-title">${escapeHtml(item.judul)}</div>
-                                <div class="asset-badges">
-                                    <span class="badge ${badgeClass}">${badgeText}</span>
-                                    <span class="badge">${escapeHtml(item.kategori)}</span>
-                                </div>
-                            </div>
-                            <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);">${item.kode}</div>
-                            <div class="asset-stats">
-                                <span>⬇ ${formatNumber(item.downloads || 0)}</span>
-                                <span>👁 ${formatNumber(item.views || 0)}</span>
-                                <span>❤️ ${formatNumber(item.likes || 0)}</span>
-                            </div>
-                            ${item.deskripsi ? `<div style="font-size:0.8rem;color:var(--text-secondary);margin:0.3rem 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${escapeHtml(item.deskripsi)}</div>` : ''}
-                            <div class="asset-actions">
-                                <button class="asset-like ${item.favorite ? 'active' : ''}" data-like="${item.id}">
-                                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                    ${item.likes || 0}
-                                </button>
-                                <button class="asset-download" data-download="${item.id}">
-                                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                    Download
-                                </button>
-                            </div>
+    function assetCardHTML(item) {
+        const youtubeId = item.linkYoutube ? getYoutubeId(item.linkYoutube) : null;
+        const embedUrl = youtubeId ? embedYoutube(youtubeId) : null;
+        const isFree = item.license === 'free';
+        const badgeText = isFree ? 'Gratis' : `Rp ${formatNumber(item.harga || 0)}`;
+        return `
+            <div class="asset-card" data-id="${item.id}">
+                <div class="card-media-wrap">
+                    ${embedUrl ? `<div style="aspect-ratio:16/9;background:#000;"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none;" allowfullscreen loading="lazy"></iframe></div>` :
+                    `<div class="thumb-placeholder"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/></svg></div>`}
+                </div>
+                <div class="body">
+                    <div class="asset-top">
+                        <div class="asset-title">${escapeHtml(item.judul)}</div>
+                        <div class="asset-badges">
+                            <span class="badge ${isFree ? 'free' : 'pro'}">${badgeText}</span>
+                            <span class="badge">${escapeHtml(item.kategori)}</span>
                         </div>
                     </div>
-                `;
-            }
-
-            // ============ RENDER ============
-            function render() {
-                totalDesktop.textContent = assets.length;
-                const filtered = getFiltered();
-                
-                if (filtered.length === 0) {
-                    cardGrid.innerHTML = `
-                        <div class="empty-state">
-                            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/></svg>
-                            <p>Tidak ada preset ditemukan</p>
-                        </div>
-                    `;
-                } else {
-                    cardGrid.innerHTML = filtered.map(item => assetCardHTML(item)).join('');
-                }
-            }
-
-            // ============ EVENT LISTENERS ============
-            cardGrid.addEventListener('click', function(e) {
-                const likeBtn = e.target.closest('[data-like]');
-                const downloadBtn = e.target.closest('[data-download]');
-                const card = e.target.closest('.asset-card');
-
-                if (likeBtn) {
-                    e.stopPropagation();
-                    const idx = assets.findIndex(a => a.id === likeBtn.dataset.like);
-                    if (idx !== -1) {
-                        assets[idx].likes = (assets[idx].likes || 0) + 1;
-                        assets[idx].favorite = !assets[idx].favorite;
-                        save();
-                        render();
-                        showToast(assets[idx].favorite ? '❤️ Ditambahkan ke favorit' : '💔 Dihapus dari favorit', 'info');
-                    }
-                    return;
-                }
-
-                if (downloadBtn) {
-                    e.stopPropagation();
-                    const idx = assets.findIndex(a => a.id === downloadBtn.dataset.download);
-                    if (idx !== -1) {
-                        assets[idx].downloads = (assets[idx].downloads || 0) + 1;
-                        save();
-                        // Prioritaskan link drive, lalu link project
-                        const dlLink = assets[idx].linkDrive || assets[idx].linkProject;
-                        if (dlLink) {
-                            window.open(dlLink, '_blank');
-                            showToast('⬇️ Memulai download...', 'success');
-                        } else {
-                            showToast('Link download tidak tersedia', 'error');
-                        }
-                        render();
-                    }
-                    return;
-                }
-
-                if (card) {
-                    const id = card.dataset.id;
-                    const idx = assets.findIndex(a => a.id === id);
-                    if (idx !== -1) {
-                        assets[idx].views = (assets[idx].views || 0) + 1;
-                        save();
-                        openDetail(idx);
-                    }
-                }
-            });
-
-            // ============ FORM HANDLING ============
-            function resetForm() {
-                fJudul.value = '';
-                fKode.value = '';
-                fKategori.value = '';
-                fDeskripsi.value = '';
-                fLinkYoutube.value = '';
-                fLicense.value = 'free';
-                fHarga.value = '';
-                fLinkProject.value = '';
-                fLinkDrive.value = '';
-                fLinkAsset1.value = '';
-                fLinkAsset2.value = '';
-                priceWrapper.classList.remove('active');
-                submitBtn.textContent = 'Publikasikan';
-                modalTitle.textContent = 'Upload Preset / Asset';
-                editIndex = null;
-                fKode.value = generateKode(); // Auto-generate kode
-            }
-
-            function getFormData() {
-                const youtubeUrl = fLinkYoutube.value.trim();
-                const youtubeId = getYoutubeId(youtubeUrl);
-                
-                return {
-                    id: editIndex !== null ? assets[editIndex].id : randomId(),
-                    kode: fKode.value || generateKode(),
-                    judul: fJudul.value.trim(),
-                    kategori: fKategori.value,
-                    deskripsi: fDeskripsi.value.trim(),
-                    linkYoutube: youtubeId ? `https://youtube.com/watch?v=${youtubeId}` : youtubeUrl,
-                    license: fLicense.value,
-                    harga: fLicense.value === 'paid' ? parseInt(fHarga.value) || 0 : 0,
-                    linkProject: fLinkProject.value.trim(),
-                    linkDrive: fLinkDrive.value.trim(),
-                    linkAsset1: fLinkAsset1.value.trim(),
-                    linkAsset2: fLinkAsset2.value.trim(),
-                    likes: editIndex !== null ? assets[editIndex].likes : 0,
-                    saves: editIndex !== null ? assets[editIndex].saves : 0,
-                    downloads: editIndex !== null ? assets[editIndex].downloads : 0,
-                    views: editIndex !== null ? assets[editIndex].views : 0,
-                    favorite: editIndex !== null ? assets[editIndex].favorite : false,
-                    createdAt: editIndex !== null ? assets[editIndex].createdAt : Date.now(),
-                    updatedAt: Date.now()
-                };
-            }
-
-            function handleSubmit(e) {
-                e.preventDefault();
-                const data = getFormData();
-
-                // Validasi
-                if (!data.judul) {
-                    showToast('Judul wajib diisi', 'error');
-                    fJudul.focus();
-                    return;
-                }
-                if (!data.kategori) {
-                    showToast('Kategori wajib dipilih', 'error');
-                    fKategori.focus();
-                    return;
-                }
-                if (data.license === 'paid' && !data.harga) {
-                    showToast('Harga wajib diisi untuk preset berbayar', 'error');
-                    fHarga.focus();
-                    return;
-                }
-                if (data.linkYoutube) {
-                    const id = getYoutubeId(data.linkYoutube);
-                    if (!id) {
-                        showToast('Format YouTube tidak valid. Gunakan link seperti https://youtube.com/watch?v=...', 'error');
-                        fLinkYoutube.focus();
-                        return;
-                    }
-                }
-
-                if (editIndex !== null) {
-                    assets[editIndex] = data;
-                    showToast('✅ Preset berhasil diupdate', 'success');
-                } else {
-                    assets.push(data);
-                    showToast('✅ Preset berhasil dipublikasikan!', 'success');
-                }
-
-                save();
-                resetForm();
-                render();
-                uploadModal.classList.remove('active');
-            }
-
-            // License change handler
-            fLicense.addEventListener('change', function() {
-                if (this.value === 'paid') {
-                    priceWrapper.classList.add('active');
-                    fHarga.setAttribute('required', 'required');
-                } else {
-                    priceWrapper.classList.remove('active');
-                    fHarga.removeAttribute('required');
-                    fHarga.value = '';
-                }
-            });
-
-            // ============ INITIALIZATION ============
-            function init() {
-                load();
-
-                // Sidebar navigation
-                document.querySelectorAll('.sidebar-desktop nav button').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        currentView = this.dataset.view;
-                        document.querySelectorAll('.sidebar-desktop nav button').forEach(b => {
-                            b.classList.toggle('active', b === this);
-                        });
-                        render();
-                    });
-                });
-
-                // Bottom nav
-                document.querySelectorAll('.bottom-nav .nav-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const nav = this.dataset.nav;
-                        document.querySelectorAll('.bottom-nav .nav-btn').forEach(b => {
-                            b.classList.toggle('active', b.dataset.nav === nav);
-                        });
-                        if (nav === 'home') {
-                            currentView = 'all';
-                            render();
-                        } else if (nav === 'search') {
-                            searchInput.focus();
-                        } else if (nav === 'saved') {
-                            currentView = 'favorites';
-                            render();
-                        }
-                    });
-                });
-
-                // FAB Upload
-                fabUpload.addEventListener('click', function() {
-                    resetForm();
-                    uploadModal.classList.add('active');
-                });
-
-                // Close modals
-                closeUpload.addEventListener('click', () => uploadModal.classList.remove('active'));
-                uploadModal.addEventListener('click', function(e) {
-                    if (e.target === this) uploadModal.classList.remove('active');
-                });
-                detailModal.addEventListener('click', function(e) {
-                    if (e.target === this) detailModal.classList.remove('active');
-                });
-                creatorModal.addEventListener('click', function(e) {
-                    if (e.target === this) creatorModal.classList.remove('active');
-                });
-
-                // Search
-                searchInput.addEventListener('input', render);
-
-                // Form submit
-                document.getElementById('uploadForm').addEventListener('submit', handleSubmit);
-                document.getElementById('resetBtn').addEventListener('click', function(e) {
-                    e.preventDefault();
-                    resetForm();
-                });
-
-                // Keyboard shortcuts
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        uploadModal.classList.remove('active');
-                        detailModal.classList.remove('active');
-                        creatorModal.classList.remove('active');
-                    }
-                    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                        e.preventDefault();
-                        searchInput.focus();
-                    }
-                });
-
-                // Notifications & Profile
-                document.querySelectorAll('.header-actions .btn-icon').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        if (this.id === 'notifBtn') {
-                            showToast('🔔 Belum ada notifikasi', 'info');
-                        } else if (this.id === 'profileBtn') {
-                            showToast('👤 Profil kreator (coming soon)', 'info');
-                        }
-                    });
-                });
-
-                render();
-                showToast('🎬 PresetHub siap digunakan', 'info');
-            }
-
-            // Detail modal function (simplified)
-            function openDetail(index) {
-                const item = assets[index];
-                if (!item) return;
-
-                const youtubeId = item.linkYoutube ? getYoutubeId(item.linkYoutube) : null;
-                const embedUrl = youtubeId ? embedYoutube(youtubeId) : null;
-
-                const detailContent = document.getElementById('detailContent');
-                detailContent.innerHTML = `
-                    <div class="modal-header">
-                        <h2>${escapeHtml(item.judul)}</h2>
-                        <button class="modal-close" id="closeDetailModal">
-                            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);">${item.kode}</div>
+                    <div class="asset-stats">
+                        <span>⬇ ${formatNumber(item.downloads || 0)}</span>
+                        <span>👁 ${formatNumber(item.views || 0)}</span>
+                        <span>❤️ ${formatNumber(item.likes || 0)}</span>
+                    </div>
+                    <div class="asset-actions">
+                        <button class="asset-like ${item.favorite ? 'active' : ''}" data-like="${item.id}">
+                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            ${item.likes || 0}
+                        </button>
+                        <button class="asset-download" data-download="${item.id}">
+                            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Download
                         </button>
                     </div>
-                    
-                    ${embedUrl ? `<div style="aspect-ratio:16/9;background:#000;border-radius:var(--radius-sm);overflow:hidden;margin-bottom:1rem;"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none;" allowfullscreen></iframe></div>` : ''}
-                    
-                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">
-                        <span class="badge" style="background:${item.license === 'free' ? 'var(--mint-light)' : 'var(--amber-light)'};color:${item.license === 'free' ? 'var(--mint-ink)' : 'var(--amber-ink)'};padding:0.2rem 0.6rem;border-radius:100px;font-size:0.75rem;font-weight:600;">
-                            ${item.license === 'free' ? 'Gratis' : `Rp ${formatNumber(item.harga)}`}
-                        </span>
-                        <span style="background:var(--bg);padding:0.2rem 0.6rem;border-radius:100px;font-size:0.75rem;">${escapeHtml(item.kategori)}</span>
-                        <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);">${item.kode}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    function render() {
+        totalDesktop.textContent = assets.length;
+        const filtered = getFiltered();
+        if (filtered.length === 0) {
+            cardGrid.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"/></svg><p>Tidak ada preset ditemukan</p></div>`;
+        } else {
+            cardGrid.innerHTML = filtered.map(item => assetCardHTML(item)).join('');
+        }
+    }
+
+    function renderSearchPage() {
+        const trendingSearches = [
+            { text: 'Cinematic transition', count: 2340 },
+            { text: 'Color grading LUT', count: 1890 },
+            { text: 'Text animation preset', count: 1560 },
+            { text: 'Velocity effect', count: 1230 },
+            { text: 'CapCut template', count: 980 }
+        ];
+        const popularTags = ['Transition', 'Velocity', 'Color Grade', 'Text Effect', 'LUT Pack', 'CapCut', 'After Effects', 'Free Preset', 'Pro Preset', 'Overlay'];
+        
+        cardGrid.innerHTML = `
+            <div class="search-page">
+                <div class="search-bar-large">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="searchPageInput" placeholder="Cari preset, kreator, atau tag..." autofocus />
+                </div>
+                <div class="recommendations-section">
+                    <h3>🔥 Pencarian Trending</h3>
+                    <div class="trending-searches">
+                        ${trendingSearches.map((item, i) => `
+                            <div class="trending-item" data-search="${item.text}">
+                                <span class="trend-rank">#${i + 1}</span>
+                                <span class="trend-text">${item.text}</span>
+                                <span class="trend-count">${formatNumber(item.count)} pencarian</span>
+                            </div>
+                        `).join('')}
                     </div>
-
-                    <div class="detail-stats" style="margin:0.5rem 0;">
-                        <span>⬇ ${formatNumber(item.downloads || 0)} download</span>
-                        <span>👁 ${formatNumber(item.views || 0)} views</span>
-                        <span>❤️ ${item.likes || 0} likes</span>
+                </div>
+                <div class="recommendations-section">
+                    <h3>💡 Rekomendasi Pencarian</h3>
+                    <div class="search-suggestions">
+                        ${popularTags.map(tag => `
+                            <span class="suggestion-chip" data-tag="${tag}">
+                                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                ${tag}
+                            </span>
+                        `).join('')}
                     </div>
+                </div>
+                <div id="searchResults"></div>
+            </div>
+        `;
 
-                    ${item.deskripsi ? `<div style="color:var(--text-secondary);margin:0.5rem 0;line-height:1.6;">${escapeHtml(item.deskripsi)}</div>` : ''}
+        const searchPageInput = document.getElementById('searchPageInput');
+        const searchResults = document.getElementById('searchResults');
 
-                    <div style="margin:1rem 0;">
-                        <strong style="font-size:0.85rem;">📁 Download Links:</strong>
-                        <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
-                            ${item.linkDrive ? `<a href="${item.linkDrive}" target="_blank" style="background:var(--accent);color:white;padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">📥 Download dari Drive</a>` : ''}
-                            ${item.linkProject ? `<a href="${item.linkProject}" target="_blank" style="background:var(--bg);color:var(--text);padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">📁 Link Project File</a>` : ''}
-                            ${item.linkAsset1 ? `<a href="${item.linkAsset1}" target="_blank" style="background:var(--bg);color:var(--text);padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">🎨 Asset 1</a>` : ''}
-                            ${item.linkAsset2 ? `<a href="${item.linkAsset2}" target="_blank" style="background:var(--bg);color:var(--text);padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">🎨 Asset 2</a>` : ''}
-                        </div>
-                    </div>
-
-                    <div style="font-size:0.7rem;color:var(--text-muted);text-align:center;margin-top:1rem;">
-                        Diupload ${formatDate(item.createdAt)} · Diupdate ${formatDate(item.updatedAt)}
-                    </div>
-                `;
-
-                detailModal.classList.add('active');
-                document.getElementById('closeDetailModal').addEventListener('click', () => detailModal.classList.remove('active'));
+        function performSearch(query) {
+            if (!query.trim()) { searchResults.innerHTML = ''; return; }
+            const q = query.toLowerCase();
+            const filtered = assets.filter(item =>
+                item.judul.toLowerCase().includes(q) || item.kode.toLowerCase().includes(q) ||
+                item.kategori.toLowerCase().includes(q) || item.deskripsi.toLowerCase().includes(q)
+            );
+            if (filtered.length === 0) {
+                searchResults.innerHTML = `<div class="empty-state"><p>Tidak ditemukan hasil untuk "${query}"</p></div>`;
+            } else {
+                searchResults.innerHTML = `<div class="recommendations-section"><h3>📊 Hasil Pencarian (${filtered.length})</h3>${filtered.map(item => assetCardHTML(item)).join('')}</div>`;
             }
+        }
 
-            document.addEventListener('DOMContentLoaded', init);
-        })();
-    </script>
+        searchPageInput.addEventListener('input', function() { performSearch(this.value); });
+        
+        document.querySelectorAll('.trending-item').forEach(item => {
+            item.addEventListener('click', function() {
+                searchPageInput.value = this.dataset.search;
+                performSearch(this.dataset.search);
+            });
+        });
+        
+        document.querySelectorAll('.suggestion-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                searchPageInput.value = this.dataset.tag;
+                performSearch(this.dataset.tag);
+            });
+        });
+    }
 
+    function renderCreatorDirectory() {
+        const fromAssets = new Map();
+        assets.forEach(item => {
+            const name = item.pembuat || 'Anonim';
+            if (!fromAssets.has(name)) fromAssets.set(name, { name, presetCount: 0, totalDownloads: 0 });
+            const c = fromAssets.get(name);
+            c.presetCount++;
+            c.totalDownloads += (item.downloads || 0);
+        });
+        
+        const registered = loadCreators();
+        const allCreators = new Map();
+        registered.forEach(c => allCreators.set(c.name, { ...c, isRegistered: true, presetCount: 0, totalDownloads: 0 }));
+        fromAssets.forEach((c, name) => {
+            if (!allCreators.has(name)) allCreators.set(name, { ...c, isRegistered: false });
+        });
+
+        if (allCreators.size === 0) {
+            cardGrid.innerHTML = `
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <p>Belum ada kreator terdaftar</p>
+                    <p style="font-size:0.85rem;color:var(--text-muted);">Jadilah kreator pertama di PresetHub!</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '<div class="creator-directory">';
+        allCreators.forEach(creator => {
+            html += `
+                <div class="creator-profile-card" data-creator="${escapeHtml(creator.name)}">
+                    <div class="avatar-large">${getInitials(creator.name)}</div>
+                    <div class="cp-name">
+                        ${escapeHtml(creator.name)}
+                        ${creator.isRegistered ? '<span class="cp-badge"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>' : ''}
+                    </div>
+                    ${creator.bio ? `<div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.5rem;">${escapeHtml(creator.bio)}</div>` : ''}
+                    <div class="cp-stats">
+                        <div>Preset: <span>${creator.presetCount}</span></div>
+                        <div>Unduhan: <span>${formatNumber(creator.totalDownloads)}</span></div>
+                    </div>
+                    <div class="cp-specialty">${escapeHtml(creator.software || 'Multi Software')}</div>
+                </div>
+            `;
+        });
+        html += '</div>';
+        html += `
+            <div class="creator-register-banner">
+                <h3>🚀 Ingin Jadi Kreator?</h3>
+                <p>Daftarkan diri Anda sekarang dan dapatkan badge verified!</p>
+                <button class="btn-register" id="btnRegisterCreator">Daftar Sebagai Kreator</button>
+            </div>
+        `;
+        
+        cardGrid.innerHTML = html;
+        
+        cardGrid.querySelectorAll('.creator-profile-card').forEach(card => {
+            card.addEventListener('click', function() {
+                showToast('👤 Profil kreator: ' + this.dataset.creator, 'info');
+            });
+        });
+        
+        const registerBtn = document.getElementById('btnRegisterCreator');
+        if (registerBtn) {
+            registerBtn.addEventListener('click', function() {
+                registerCreatorModal.classList.add('active');
+            });
+        }
+    }
+
+    function resetForm() {
+        fJudul.value = ''; fKode.value = generateKode(); fKategori.value = '';
+        fDeskripsi.value = ''; fLinkYoutube.value = ''; fLicense.value = 'free';
+        fHarga.value = ''; fLinkProject.value = ''; fLinkDrive.value = '';
+        fLinkAsset1.value = ''; fLinkAsset2.value = '';
+        priceWrapper.classList.remove('active');
+        submitBtn.textContent = 'Publikasikan'; modalTitle.textContent = 'Upload Preset / Asset';
+        editIndex = null;
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        const youtubeId = getYoutubeId(fLinkYoutube.value.trim());
+        const data = {
+            id: editIndex !== null ? assets[editIndex].id : randomId(),
+            kode: fKode.value || generateKode(),
+            judul: fJudul.value.trim(),
+            kategori: fKategori.value,
+            deskripsi: fDeskripsi.value.trim(),
+            linkYoutube: youtubeId ? `https://youtube.com/watch?v=${youtubeId}` : fLinkYoutube.value.trim(),
+            license: fLicense.value,
+            harga: fLicense.value === 'paid' ? parseInt(fHarga.value) || 0 : 0,
+            linkProject: fLinkProject.value.trim(),
+            linkDrive: fLinkDrive.value.trim(),
+            linkAsset1: fLinkAsset1.value.trim(),
+            linkAsset2: fLinkAsset2.value.trim(),
+            likes: editIndex !== null ? assets[editIndex].likes : 0,
+            downloads: editIndex !== null ? assets[editIndex].downloads : 0,
+            views: editIndex !== null ? assets[editIndex].views : 0,
+            favorite: editIndex !== null ? assets[editIndex].favorite : false,
+            createdAt: editIndex !== null ? assets[editIndex].createdAt : Date.now(),
+            updatedAt: Date.now()
+        };
+        if (!data.judul) { showToast('Judul wajib diisi', 'error'); return; }
+        if (!data.kategori) { showToast('Kategori wajib dipilih', 'error'); return; }
+        if (data.license === 'paid' && !data.harga) { showToast('Harga wajib diisi', 'error'); return; }
+        
+        if (editIndex !== null) {
+            assets[editIndex] = data;
+            showToast('✅ Preset berhasil diupdate', 'success');
+        } else {
+            assets.push(data);
+            showToast('✅ Preset berhasil dipublikasikan!', 'success');
+        }
+        save(); resetForm(); render();
+        uploadModal.classList.remove('active');
+    }
+
+    function openDetail(index) {
+        const item = assets[index];
+        if (!item) return;
+        const youtubeId = item.linkYoutube ? getYoutubeId(item.linkYoutube) : null;
+        const embedUrl = youtubeId ? embedYoutube(youtubeId) : null;
+        const isFree = item.license === 'free';
+        
+        const detailContent = document.getElementById('detailContent');
+        detailContent.innerHTML = `
+            <div class="modal-header">
+                <h2>${escapeHtml(item.judul)}</h2>
+                <button class="modal-close" id="closeDetailModal">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            ${embedUrl ? `<div style="aspect-ratio:16/9;background:#000;border-radius:var(--radius-sm);overflow:hidden;margin-bottom:1rem;"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none;" allowfullscreen></iframe></div>` : ''}
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">
+                <span class="badge" style="background:${isFree ? 'var(--mint-light)' : 'var(--amber-light)'};color:${isFree ? 'var(--mint-ink)' : 'var(--amber-ink)'};padding:0.2rem 0.6rem;border-radius:100px;font-size:0.75rem;font-weight:600;">${isFree ? 'Gratis' : `Rp ${formatNumber(item.harga)}`}</span>
+                <span style="background:var(--bg);padding:0.2rem 0.6rem;border-radius:100px;font-size:0.75rem;">${escapeHtml(item.kategori)}</span>
+                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);">${item.kode}</span>
+            </div>
+            <div class="detail-stats" style="margin:0.5rem 0;">
+                <span>⬇ ${formatNumber(item.downloads || 0)} download</span>
+                <span>👁 ${formatNumber(item.views || 0)} views</span>
+                <span>❤️ ${item.likes || 0} likes</span>
+            </div>
+            ${item.deskripsi ? `<div style="color:var(--text-secondary);margin:0.5rem 0;line-height:1.6;">${escapeHtml(item.deskripsi)}</div>` : ''}
+            <div style="margin:1rem 0;">
+                <strong style="font-size:0.85rem;">📁 Download Links:</strong>
+                <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
+                    ${item.linkDrive ? `<a href="${item.linkDrive}" target="_blank" style="background:var(--accent);color:white;padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">📥 Download dari Drive</a>` : ''}
+                    ${item.linkProject ? `<a href="${item.linkProject}" target="_blank" style="background:var(--bg);color:var(--text);padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">📁 Link Project File</a>` : ''}
+                    ${item.linkAsset1 ? `<a href="${item.linkAsset1}" target="_blank" style="background:var(--bg);color:var(--text);padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">🎨 Asset 1</a>` : ''}
+                    ${item.linkAsset2 ? `<a href="${item.linkAsset2}" target="_blank" style="background:var(--bg);color:var(--text);padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">🎨 Asset 2</a>` : ''}
+                </div>
+            </div>
+            <div style="font-size:0.7rem;color:var(--text-muted);text-align:center;margin-top:1rem;">Diupload ${formatDate(item.createdAt)}</div>
+        `;
+        detailModal.classList.add('active');
+        document.getElementById('closeDetailModal').addEventListener('click', () => detailModal.classList.remove('active'));
+    }
+
+    // Event Listeners
+    cardGrid.addEventListener('click', function(e) {
+        const likeBtn = e.target.closest('[data-like]');
+        const downloadBtn = e.target.closest('[data-download]');
+        const card = e.target.closest('.asset-card');
+        if (likeBtn) {
+            e.stopPropagation();
+            const idx = assets.findIndex(a => a.id === likeBtn.dataset.like);
+            if (idx !== -1) {
+                assets[idx].likes = (assets[idx].likes || 0) + 1;
+                assets[idx].favorite = !assets[idx].favorite;
+                save(); render();
+            }
+            return;
+        }
+        if (downloadBtn) {
+            e.stopPropagation();
+            const idx = assets.findIndex(a => a.id === downloadBtn.dataset.download);
+            if (idx !== -1) {
+                assets[idx].downloads = (assets[idx].downloads || 0) + 1;
+                save();
+                const dlLink = assets[idx].linkDrive || assets[idx].linkProject;
+                if (dlLink) { window.open(dlLink, '_blank'); showToast('⬇️ Memulai download...', 'success'); }
+                else showToast('Link download tidak tersedia', 'error');
+                render();
+            }
+            return;
+        }
+        if (card) {
+            const idx = assets.findIndex(a => a.id === card.dataset.id);
+            if (idx !== -1) {
+                assets[idx].views = (assets[idx].views || 0) + 1;
+                save(); openDetail(idx);
+            }
+        }
+    });
+
+    document.querySelectorAll('.sidebar-desktop nav button').forEach(btn => {
+        btn.addEventListener('click', function() {
+            currentView = this.dataset.view;
+            document.querySelectorAll('.sidebar-desktop nav button').forEach(b => b.classList.toggle('active', b === this));
+            if (currentView === 'creators') renderCreatorDirectory();
+            else render();
+        });
+    });
+
+    document.querySelectorAll('.bottom-nav .nav-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const nav = this.dataset.nav;
+            document.querySelectorAll('.bottom-nav .nav-btn').forEach(b => b.classList.toggle('active', b.dataset.nav === nav));
+            if (nav === 'home') { currentView = 'all'; render(); }
+            else if (nav === 'search') { currentView = 'search'; renderSearchPage(); }
+            else if (nav === 'saved') { currentView = 'favorites'; render(); }
+            else if (nav === 'creators') { currentView = 'creators'; renderCreatorDirectory(); }
+        });
+    });
+
+    document.querySelectorAll('.filter-chips .chip').forEach(chip => {
+        chip.addEventListener('click', function() {
+            currentChip = this.dataset.filter;
+            document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.toggle('active', c === this));
+            render();
+        });
+    });
+
+    document.getElementById('fabUpload').addEventListener('click', function() {
+        resetForm(); uploadModal.classList.add('active');
+    });
+
+    document.getElementById('closeUploadModal').addEventListener('click', () => uploadModal.classList.remove('active'));
+    document.getElementById('closeRegisterModal').addEventListener('click', () => registerCreatorModal.classList.remove('active'));
+    document.getElementById('cancelRegister').addEventListener('click', (e) => { e.preventDefault(); registerCreatorModal.classList.remove('active'); });
+
+    [uploadModal, detailModal, registerCreatorModal].forEach(modal => {
+        modal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
+    });
+
+    fLicense.addEventListener('change', function() {
+        if (this.value === 'paid') { priceWrapper.classList.add('active'); fHarga.setAttribute('required', 'required'); }
+        else { priceWrapper.classList.remove('active'); fHarga.removeAttribute('required'); fHarga.value = ''; }
+    });
+
+    searchInput.addEventListener('input', render);
+    document.getElementById('uploadForm').addEventListener('submit', handleSubmit);
+    document.getElementById('resetBtn').addEventListener('click', function(e) { e.preventDefault(); resetForm(); });
+
+    document.getElementById('registerCreatorForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nama = document.getElementById('rNama').value.trim();
+        if (!nama) { showToast('Nama kreator wajib diisi', 'error'); return; }
+        const creators = loadCreators();
+        if (creators.some(c => c.name.toLowerCase() === nama.toLowerCase())) { showToast('Kreator sudah terdaftar', 'error'); return; }
+        creators.push({
+            name: nama, bio: document.getElementById('rBio').value.trim(),
+            software: document.getElementById('rSoftware').value,
+            portfolio: document.getElementById('rPortfolio').value.trim(), registeredAt: Date.now()
+        });
+        saveCreators(creators);
+        showToast('✅ Selamat! Anda sekarang kreator verified!', 'success');
+        document.getElementById('registerCreatorForm').reset();
+        registerCreatorModal.classList.remove('active');
+        if (currentView === 'creators') renderCreatorDirectory();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            uploadModal.classList.remove('active');
+            detailModal.classList.remove('active');
+            registerCreatorModal.classList.remove('active');
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); searchInput.focus(); }
+    });
+
+    document.getElementById('notifBtn').addEventListener('click', () => showToast('🔔 Belum ada notifikasi', 'info'));
+
+    function init() {
+        load();
+        render();
+        showToast('🎬 PresetHub siap digunakan', 'info');
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
 </body>
 </html>
