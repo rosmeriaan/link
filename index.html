@@ -1491,6 +1491,125 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
+        /* Overlay download count di video */
+        .download-overlay {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Tombol link di detail */
+        .link-btn-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .link-btn-group button {
+            flex: 1;
+            justify-content: center;
+            padding: 0.5rem;
+            background: var(--bg);
+            border: none;
+            border-radius: var(--radius-xs);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .link-btn-group button:active { transform: scale(0.96); }
+        .link-btn-group button.primary { background: var(--accent); color: white; }
+
+        .link-container {
+            margin-top: 0.5rem;
+            background: var(--bg);
+            border-radius: var(--radius-xs);
+            padding: 0.75rem;
+            display: none;
+        }
+        .link-container.active { display: block; }
+        .link-container a {
+            display: block;
+            padding: 0.4rem 0.6rem;
+            border-radius: var(--radius-xs);
+            background: var(--surface);
+            margin-bottom: 0.3rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.85rem;
+            word-break: break-all;
+        }
+        .link-container a:last-child { margin-bottom: 0; }
+        .link-container a:hover { background: var(--accent-light); }
+
+        /* Profil kreator di modal */
+        .creator-profile-modal .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .creator-profile-modal .profile-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .creator-profile-modal .profile-info h2 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+        .creator-profile-modal .profile-info .bio {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .creator-profile-modal .profile-assets {
+            margin-top: 1rem;
+        }
+        .creator-profile-modal .profile-assets h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .creator-profile-modal .profile-assets .asset-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .creator-profile-modal .profile-assets .asset-item:last-child { border-bottom: none; }
+        .creator-profile-modal .profile-assets .asset-item .title {
+            font-weight: 500;
+        }
+        .creator-profile-modal .profile-assets .asset-item .meta {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
         @media (min-width: 640px) {
             .rail { margin: 0 -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
             .main { padding: 1rem 1.5rem; max-width: 720px; }
@@ -1664,6 +1783,10 @@
                     <label for="fLinkAsset2">10. Link Asset 2</label>
                     <input type="url" id="fLinkAsset2" placeholder="https://..." />
                 </div>
+                <div class="form-group">
+                    <label for="fPembuat">11. Nama Kreator</label>
+                    <input type="text" id="fPembuat" placeholder="ctfy atau myxrin" />
+                </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary" id="submitBtn">
                         <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
@@ -1679,6 +1802,13 @@
         <div class="modal-sheet">
             <div class="handle"></div>
             <div id="detailContent"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="creatorProfileModal">
+        <div class="modal-sheet">
+            <div class="handle"></div>
+            <div id="creatorProfileContent"></div>
         </div>
     </div>
 
@@ -1752,11 +1882,13 @@
     const fLinkDrive = document.getElementById('fLinkDrive');
     const fLinkAsset1 = document.getElementById('fLinkAsset1');
     const fLinkAsset2 = document.getElementById('fLinkAsset2');
+    const fPembuat = document.getElementById('fPembuat');
     const priceWrapper = document.getElementById('priceWrapper');
     const submitBtn = document.getElementById('submitBtn');
     const modalTitle = document.getElementById('modalTitle');
     const uploadModal = document.getElementById('uploadModal');
     const detailModal = document.getElementById('detailModal');
+    const creatorProfileModal = document.getElementById('creatorProfileModal');
     const registerCreatorModal = document.getElementById('registerCreatorModal');
     const totalDesktop = document.getElementById('totalDesktop');
 
@@ -1845,35 +1977,67 @@
 
     function saveCreators(list) { localStorage.setItem('presethub_creators', JSON.stringify(list)); }
 
+    function initDefaultCreators() {
+        const creators = loadCreators();
+        if (creators.length === 0) {
+            const defaultCreators = [
+                { name: 'ctfy', bio: 'Motion designer & preset creator', software: 'After Effects', portfolio: 'https://instagram.com/ctfy' },
+                { name: 'myxrin', bio: 'Color grading specialist', software: 'Premiere Pro', portfolio: 'https://instagram.com/myxrin' }
+            ];
+            saveCreators(defaultCreators);
+        }
+    }
+
     function load() {
         const stored = localStorage.getItem('presethub_assets');
         if (stored) {
             try {
                 const parsed = JSON.parse(stored);
-                if (Array.isArray(parsed)) {
+                if (Array.isArray(parsed) && parsed.length > 0) {
                     assets = parsed;
                     assets.forEach(item => {
                         if (!item.kode) item.kode = generateKode();
                         if (!item.kategori) item.kategori = 'Preset';
                         if (!item.harga) item.harga = 0;
                         if (!item.id) item.id = randomId();
+                        if (!item.pembuat) item.pembuat = 'Anonim';
                     });
                     return;
                 }
             } catch (e) {}
         }
+        // Data default
         assets = [
             {
                 id: 'a1', judul: 'Cinematic Transition Pack', kode: 'PH-A3B7-X9K2', kategori: 'Preset',
-                deskripsi: '50 cinematic transitions profesional.', linkYoutube: 'https://youtu.be/dQw4w9WgXcQ',
+                deskripsi: '50 cinematic transitions profesional.', pembuat: 'ctfy',
+                linkYoutube: 'https://youtu.be/dQw4w9WgXcQ',
                 license: 'paid', harga: 25000, linkDrive: 'https://drive.google.com/',
                 likes: 234, downloads: 1240, views: 4300, createdAt: Date.now() - 100000, updatedAt: Date.now() - 50000
             },
             {
                 id: 'a2', judul: 'Color Grade LUT Pack', kode: 'PH-M4N8-J3L7', kategori: 'Assets',
-                deskripsi: '20 cinematic LUT profesional.', license: 'free', harga: 0,
+                deskripsi: '20 cinematic LUT profesional.', pembuat: 'myxrin',
+                linkYoutube: 'https://youtu.be/dQw4w9WgXcQ',
+                license: 'free', harga: 0,
                 linkDrive: 'https://drive.google.com/', likes: 156, downloads: 3400, views: 8900,
                 createdAt: Date.now() - 200000, updatedAt: Date.now() - 100000
+            },
+            {
+                id: 'a3', judul: 'Velocity Text Preset', kode: 'PH-B8N2-K4M9', kategori: 'Preset',
+                deskripsi: 'Dynamic velocity text animations.', pembuat: 'ctfy',
+                linkYoutube: 'https://youtu.be/dQw4w9WgXcQ',
+                license: 'free', harga: 0,
+                linkDrive: 'https://drive.google.com/', likes: 89, downloads: 560, views: 1200,
+                createdAt: Date.now() - 300000, updatedAt: Date.now() - 150000
+            },
+            {
+                id: 'a4', judul: 'Glitch Effect Pack', kode: 'PH-C9R7-T5L1', kategori: 'Assets',
+                deskripsi: 'Glitch effects for video editing.', pembuat: 'myxrin',
+                linkYoutube: 'https://youtu.be/dQw4w9WgXcQ',
+                license: 'paid', harga: 15000,
+                linkDrive: 'https://drive.google.com/', likes: 210, downloads: 980, views: 3100,
+                createdAt: Date.now() - 400000, updatedAt: Date.now() - 200000
             }
         ];
         save();
@@ -1885,7 +2049,8 @@
         if (q) {
             result = result.filter(item =>
                 item.judul.toLowerCase().includes(q) || item.kode.toLowerCase().includes(q) ||
-                item.kategori.toLowerCase().includes(q) || item.deskripsi.toLowerCase().includes(q)
+                item.kategori.toLowerCase().includes(q) || item.deskripsi.toLowerCase().includes(q) ||
+                (item.pembuat && item.pembuat.toLowerCase().includes(q))
             );
         }
         if (currentView === 'trending') result.sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
@@ -1912,33 +2077,20 @@
         const badgeText = isFree ? 'Gratis' : `Rp ${formatNumber(item.harga || 0)}`;
         return `
             <div class="asset-card" data-id="${item.id}">
-                <div class="card-media-wrap">
+                <div class="card-media-wrap" style="position:relative;">
                     ${embedUrl ? `<div style="aspect-ratio:16/9;background:#000;"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none;" allowfullscreen loading="lazy"></iframe></div>` :
                     `<div class="thumb-placeholder"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/></svg></div>`}
+                    <div class="download-overlay">⬇ ${formatNumber(item.downloads || 0)} downloads</div>
                 </div>
                 <div class="body">
-                    <div class="asset-top">
-                        <div class="asset-title">${escapeHtml(item.judul)}</div>
-                        <div class="asset-badges">
-                            <span class="badge ${isFree ? 'free' : 'pro'}">${badgeText}</span>
-                            <span class="badge">${escapeHtml(item.kategori)}</span>
-                        </div>
+                    <div class="asset-title">${escapeHtml(item.judul)}</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                        <span style="font-size:0.8rem; color:var(--text-muted);">${escapeHtml(item.pembuat || 'Anonim')}</span>
+                        <span class="badge ${isFree ? 'free' : 'pro'}">${badgeText}</span>
                     </div>
-                    <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);">${item.kode}</div>
-                    <div class="asset-stats">
-                        <span>⬇ ${formatNumber(item.downloads || 0)}</span>
-                        <span>👁 ${formatNumber(item.views || 0)}</span>
+                    <div class="asset-stats" style="margin-top:4px;">
                         <span>❤️ ${formatNumber(item.likes || 0)}</span>
-                    </div>
-                    <div class="asset-actions">
-                        <button class="asset-like ${item.favorite ? 'active' : ''}" data-like="${item.id}">
-                            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                            ${item.likes || 0}
-                        </button>
-                        <button class="asset-download" data-download="${item.id}">
-                            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            Download
-                        </button>
+                        <span>👁 ${formatNumber(item.views || 0)}</span>
                     </div>
                 </div>
             </div>
@@ -2006,7 +2158,8 @@
             const q = query.toLowerCase();
             const filtered = assets.filter(item =>
                 item.judul.toLowerCase().includes(q) || item.kode.toLowerCase().includes(q) ||
-                item.kategori.toLowerCase().includes(q) || item.deskripsi.toLowerCase().includes(q)
+                item.kategori.toLowerCase().includes(q) || item.deskripsi.toLowerCase().includes(q) ||
+                (item.pembuat && item.pembuat.toLowerCase().includes(q))
             );
             if (filtered.length === 0) {
                 searchResults.innerHTML = `<div class="empty-state"><p>Tidak ditemukan hasil untuk "${query}"</p></div>`;
@@ -2091,7 +2244,8 @@
         
         cardGrid.querySelectorAll('.creator-profile-card').forEach(card => {
             card.addEventListener('click', function() {
-                showToast('👤 Profil kreator: ' + this.dataset.creator, 'info');
+                const name = this.dataset.creator;
+                showCreatorProfile(name);
             });
         });
         
@@ -2103,11 +2257,66 @@
         }
     }
 
+    // Show creator profile in modal
+    function showCreatorProfile(name) {
+        const creators = loadCreators();
+        const creator = creators.find(c => c.name.toLowerCase() === name.toLowerCase());
+        const creatorAssets = assets.filter(a => (a.pembuat || '').toLowerCase() === name.toLowerCase());
+
+        const content = document.getElementById('creatorProfileContent');
+        let html = `
+            <div class="modal-header">
+                <h2>Profil Kreator</h2>
+                <button class="modal-close" id="closeCreatorProfile">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="creator-profile-modal">
+                <div class="profile-header">
+                    <div class="profile-avatar">${getInitials(name)}</div>
+                    <div class="profile-info">
+                        <h2>${escapeHtml(name)} ${creator ? '<span class="cp-badge"><svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--accent);fill:var(--accent);"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>' : ''}</h2>
+                        ${creator && creator.bio ? `<div class="bio">${escapeHtml(creator.bio)}</div>` : ''}
+                        ${creator && creator.software ? `<div style="font-size:0.8rem;color:var(--text-muted);">🛠 ${escapeHtml(creator.software)}</div>` : ''}
+                        ${creator && creator.portfolio ? `<a href="${escapeHtml(creator.portfolio)}" target="_blank" style="font-size:0.8rem;color:var(--accent);">🌐 Portfolio</a>` : ''}
+                    </div>
+                </div>
+                <div class="profile-assets">
+                    <h3>📹 Template yang diunggah (${creatorAssets.length})</h3>
+                    ${creatorAssets.length === 0 ? '<p style="color:var(--text-muted);font-size:0.85rem;">Belum ada template.</p>' : ''}
+                    ${creatorAssets.map(item => `
+                        <div class="asset-item" data-id="${item.id}">
+                            <span class="title">${escapeHtml(item.judul)}</span>
+                            <span class="meta">⬇ ${formatNumber(item.downloads)} · ❤️ ${formatNumber(item.likes)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        content.innerHTML = html;
+        creatorProfileModal.classList.add('active');
+
+        document.getElementById('closeCreatorProfile').addEventListener('click', () => {
+            creatorProfileModal.classList.remove('active');
+        });
+
+        // Click asset item -> open detail
+        content.querySelectorAll('.asset-item').forEach(el => {
+            el.addEventListener('click', function() {
+                const idx = assets.findIndex(a => a.id === this.dataset.id);
+                if (idx !== -1) {
+                    creatorProfileModal.classList.remove('active');
+                    openDetail(idx);
+                }
+            });
+        });
+    }
+
     function resetForm() {
         fJudul.value = ''; fKode.value = generateKode(); fKategori.value = '';
         fDeskripsi.value = ''; fLinkYoutube.value = ''; fLicense.value = 'free';
         fHarga.value = ''; fLinkProject.value = ''; fLinkDrive.value = '';
-        fLinkAsset1.value = ''; fLinkAsset2.value = '';
+        fLinkAsset1.value = ''; fLinkAsset2.value = ''; fPembuat.value = '';
         priceWrapper.classList.remove('active');
         submitBtn.textContent = 'Publikasikan'; modalTitle.textContent = 'Upload Preset / Asset';
         editIndex = null;
@@ -2129,6 +2338,7 @@
             linkDrive: fLinkDrive.value.trim(),
             linkAsset1: fLinkAsset1.value.trim(),
             linkAsset2: fLinkAsset2.value.trim(),
+            pembuat: fPembuat.value.trim() || 'Anonim',
             likes: editIndex !== null ? assets[editIndex].likes : 0,
             downloads: editIndex !== null ? assets[editIndex].downloads : 0,
             views: editIndex !== null ? assets[editIndex].views : 0,
@@ -2172,55 +2382,71 @@
                 <span style="background:var(--bg);padding:0.2rem 0.6rem;border-radius:100px;font-size:0.75rem;">${escapeHtml(item.kategori)}</span>
                 <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);">${item.kode}</span>
             </div>
-            <div class="detail-stats" style="margin:0.5rem 0;">
-                <span>⬇ ${formatNumber(item.downloads || 0)} download</span>
-                <span>👁 ${formatNumber(item.views || 0)} views</span>
-                <span>❤️ ${item.likes || 0} likes</span>
+            <div style="display:flex; gap:0.75rem; font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">
+                <span>⬇ ${formatNumber(item.downloads)} downloads</span>
+                <span>👁 ${formatNumber(item.views)} views</span>
+            </div>
+            <div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">
+                Kreator: <strong>${escapeHtml(item.pembuat || 'Anonim')}</strong>
             </div>
             ${item.deskripsi ? `<div style="color:var(--text-secondary);margin:0.5rem 0;line-height:1.6;">${escapeHtml(item.deskripsi)}</div>` : ''}
-            <div style="margin:1rem 0;">
-                <strong style="font-size:0.85rem;">📁 Download Links:</strong>
-                <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
-                    ${item.linkDrive ? `<a href="${item.linkDrive}" target="_blank" style="background:var(--accent);color:white;padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">📥 Download dari Drive</a>` : ''}
-                    ${item.linkProject ? `<a href="${item.linkProject}" target="_blank" style="background:var(--bg);color:var(--text);padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">📁 Link Project File</a>` : ''}
-                    ${item.linkAsset1 ? `<a href="${item.linkAsset1}" target="_blank" style="background:var(--bg);color:var(--text);padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">🎨 Asset 1</a>` : ''}
-                    ${item.linkAsset2 ? `<a href="${item.linkAsset2}" target="_blank" style="background:var(--bg);color:var(--text);padding:0.5rem;border-radius:var(--radius-xs);text-decoration:none;text-align:center;font-weight:500;">🎨 Asset 2</a>` : ''}
-                </div>
+            
+            <div class="link-btn-group">
+                <button id="detailLikeBtn" class="${item.favorite ? 'active' : ''}" style="background:var(--bg);border:none;border-radius:var(--radius-xs);padding:0.5rem;display:flex;align-items:center;gap:0.3rem;cursor:pointer;flex:1;justify-content:center;">
+                    <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:${item.favorite ? '#ef4444' : 'none'};"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span id="detailLikeCount">${item.likes}</span>
+                </button>
+                <button id="detailLinkToggle" class="primary" style="background:var(--accent);color:white;border:none;border-radius:var(--radius-xs);padding:0.5rem;display:flex;align-items:center;gap:0.3rem;cursor:pointer;flex:1;justify-content:center;">
+                    <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    Link
+                </button>
+            </div>
+            <div id="linkContainer" class="link-container">
+                ${item.linkDrive ? `<a href="${item.linkDrive}" target="_blank">📥 Google Drive</a>` : ''}
+                ${item.linkProject ? `<a href="${item.linkProject}" target="_blank">📁 Project File</a>` : ''}
+                ${item.linkAsset1 ? `<a href="${item.linkAsset1}" target="_blank">🎨 Asset 1</a>` : ''}
+                ${item.linkAsset2 ? `<a href="${item.linkAsset2}" target="_blank">🎨 Asset 2</a>` : ''}
+                ${!item.linkDrive && !item.linkProject && !item.linkAsset1 && !item.linkAsset2 ? '<span style="color:var(--text-muted);font-size:0.85rem;">Tidak ada link tersedia</span>' : ''}
             </div>
             <div style="font-size:0.7rem;color:var(--text-muted);text-align:center;margin-top:1rem;">Diupload ${formatDate(item.createdAt)}</div>
         `;
         detailModal.classList.add('active');
+
+        // Close
         document.getElementById('closeDetailModal').addEventListener('click', () => detailModal.classList.remove('active'));
+
+        // Like
+        const likeBtn = document.getElementById('detailLikeBtn');
+        const likeCount = document.getElementById('detailLikeCount');
+        likeBtn.addEventListener('click', function() {
+            const idx = assets.findIndex(a => a.id === item.id);
+            if (idx !== -1) {
+                assets[idx].likes = (assets[idx].likes || 0) + 1;
+                assets[idx].favorite = !assets[idx].favorite;
+                save();
+                likeCount.textContent = assets[idx].likes;
+                this.classList.toggle('active');
+                const svg = this.querySelector('svg');
+                if (assets[idx].favorite) {
+                    svg.style.fill = '#ef4444';
+                } else {
+                    svg.style.fill = 'none';
+                }
+                render(); // update card
+            }
+        });
+
+        // Link toggle
+        const linkToggle = document.getElementById('detailLinkToggle');
+        const linkContainer = document.getElementById('linkContainer');
+        linkToggle.addEventListener('click', function() {
+            linkContainer.classList.toggle('active');
+        });
     }
 
     // Event Listeners
     cardGrid.addEventListener('click', function(e) {
-        const likeBtn = e.target.closest('[data-like]');
-        const downloadBtn = e.target.closest('[data-download]');
         const card = e.target.closest('.asset-card');
-        if (likeBtn) {
-            e.stopPropagation();
-            const idx = assets.findIndex(a => a.id === likeBtn.dataset.like);
-            if (idx !== -1) {
-                assets[idx].likes = (assets[idx].likes || 0) + 1;
-                assets[idx].favorite = !assets[idx].favorite;
-                save(); render();
-            }
-            return;
-        }
-        if (downloadBtn) {
-            e.stopPropagation();
-            const idx = assets.findIndex(a => a.id === downloadBtn.dataset.download);
-            if (idx !== -1) {
-                assets[idx].downloads = (assets[idx].downloads || 0) + 1;
-                save();
-                const dlLink = assets[idx].linkDrive || assets[idx].linkProject;
-                if (dlLink) { window.open(dlLink, '_blank'); showToast('⬇️ Memulai download...', 'success'); }
-                else showToast('Link download tidak tersedia', 'error');
-                render();
-            }
-            return;
-        }
         if (card) {
             const idx = assets.findIndex(a => a.id === card.dataset.id);
             if (idx !== -1) {
@@ -2266,7 +2492,7 @@
     document.getElementById('closeRegisterModal').addEventListener('click', () => registerCreatorModal.classList.remove('active'));
     document.getElementById('cancelRegister').addEventListener('click', (e) => { e.preventDefault(); registerCreatorModal.classList.remove('active'); });
 
-    [uploadModal, detailModal, registerCreatorModal].forEach(modal => {
+    [uploadModal, detailModal, creatorProfileModal, registerCreatorModal].forEach(modal => {
         modal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
     });
 
@@ -2301,6 +2527,7 @@
         if (e.key === 'Escape') {
             uploadModal.classList.remove('active');
             detailModal.classList.remove('active');
+            creatorProfileModal.classList.remove('active');
             registerCreatorModal.classList.remove('active');
         }
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); searchInput.focus(); }
@@ -2309,6 +2536,7 @@
     document.getElementById('notifBtn').addEventListener('click', () => showToast('🔔 Belum ada notifikasi', 'info'));
 
     function init() {
+        initDefaultCreators();
         load();
         render();
         showToast('🎬 PresetHub siap digunakan', 'info');
