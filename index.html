@@ -1070,22 +1070,23 @@
 
         /* === EXPLORE / CARI VIEW STYLES === */
         .explore-hero-search {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 1rem;
-            margin-bottom: 1.2rem;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            margin-bottom: 1rem;
+            box-shadow: none;
         }
         .explore-search-input-wrap {
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            background: var(--surface-sunk);
+            background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius-pill);
-            padding: 0.5rem 0.9rem;
+            padding: 0.55rem 0.95rem;
             transition: border-color 0.15s, box-shadow 0.15s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
         }
         .explore-search-input-wrap:focus-within {
             border-color: var(--accent);
@@ -1117,6 +1118,62 @@
         }
         .explore-search-input-wrap .clear-search-btn:hover {
             color: var(--text);
+        }
+
+        /* Home Search Bar Pill (TikTok style search trigger on Home) */
+        .home-search-container {
+            max-width: var(--container-max);
+            margin: 0 auto 0.4rem;
+            padding: 0.6rem 1rem 0;
+        }
+        @media (min-width: 1024px) {
+            .home-search-container {
+                padding: 0.8rem 2rem 0;
+            }
+        }
+        .home-search-pill {
+            cursor: pointer;
+            user-select: none;
+        }
+        .home-search-pill input {
+            cursor: pointer;
+        }
+
+        /* Avatar Color Picker in Forms */
+        .avatar-color-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin-top: 0.35rem;
+        }
+        .color-swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: transform 0.15s, box-shadow 0.15s;
+            padding: 0;
+            outline: none;
+        }
+        .color-swatch:hover {
+            transform: scale(1.12);
+        }
+        .color-swatch.selected {
+            box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
+            transform: scale(1.12);
+        }
+        .color-swatch .swatch-check {
+            display: none;
+        }
+        .color-swatch.selected .swatch-check {
+            display: inline;
         }
 
         .hashtag-scroll {
@@ -2191,6 +2248,14 @@
             <p id="contextLine">Memuat&hellip;</p>
         </div>
 
+        <!-- HOME SEARCH CONTAINER (TikTok style trigger on Home) -->
+        <div class="home-search-container" id="homeSearchSection" style="display:none;">
+            <div class="explore-search-input-wrap home-search-pill" id="homeSearchTrigger">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7.5"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>
+                <input type="text" placeholder="Cari preset, template, atau kreator..." readonly />
+            </div>
+        </div>
+
         <!-- SETUP GUIDE -->
         <div class="main" id="setupGuideContainer" style="display:none;">
             <div class="setup-guide">
@@ -2717,6 +2782,87 @@
             const mainNav = document.getElementById('mainNav');
             const mobileNav = document.getElementById('mobileNav');
 
+            // ===== AVATAR COLOR PALETTE & HELPER =====
+            const AVATAR_PALETTE = [
+                { bg: '#a8672b', label: 'Cokelat Amber' },
+                { bg: '#2563eb', label: 'Biru Samudra' },
+                { bg: '#7c3aed', label: 'Ungu Elegan' },
+                { bg: '#db2777', label: 'Merah Muda' },
+                { bg: '#dc2626', label: 'Merah Cerah' },
+                { bg: '#d97706', label: 'Kuning Emas' },
+                { bg: '#059669', label: 'Hijau Zamrud' },
+                { bg: '#0284c7', label: 'Biru Langit' },
+                { bg: '#4f46e5', label: 'Indigo' },
+                { bg: '#0d9488', label: 'Teal' },
+                { bg: '#334155', label: 'Abu-Abu Slate' },
+                { bg: '#ea580c', label: 'Oranye Jingga' }
+            ];
+
+            function getAvatarStyle(creatorOrName) {
+                if (!creatorOrName) return `background: ${AVATAR_PALETTE[0].bg}; color: #ffffff;`;
+
+                let colorHex = '';
+                let nameStr = '';
+
+                if (typeof creatorOrName === 'object' && creatorOrName !== null) {
+                    nameStr = creatorOrName.displayName || creatorOrName.name || '';
+                    if (creatorOrName.avatarColor) {
+                        colorHex = creatorOrName.avatarColor;
+                    }
+                } else if (typeof creatorOrName === 'string') {
+                    nameStr = creatorOrName;
+                    const matched = allCreators.find(c =>
+                        (c.name || '').toLowerCase() === creatorOrName.toLowerCase() ||
+                        (c.displayName || '').toLowerCase() === creatorOrName.toLowerCase()
+                    );
+                    if (matched && matched.avatarColor) {
+                        colorHex = matched.avatarColor;
+                    }
+                }
+
+                if (!colorHex) {
+                    let hash = 0;
+                    for (let i = 0; i < nameStr.length; i++) {
+                        hash = nameStr.charCodeAt(i) + ((hash << 5) - hash);
+                    }
+                    const index = Math.abs(hash) % AVATAR_PALETTE.length;
+                    colorHex = AVATAR_PALETTE[index].bg;
+                }
+
+                return `background: ${colorHex}; color: #ffffff;`;
+            }
+
+            function renderAvatarPickerHtml(selectedColor, idPrefix = 'a') {
+                const current = selectedColor || AVATAR_PALETTE[0].bg;
+                return `
+                    <div class="form-group">
+                        <label>Warna Foto Profil (PP)</label>
+                        <div class="avatar-color-picker" id="${idPrefix}AvatarColorPicker">
+                            ${AVATAR_PALETTE.map(item => `
+                                <button type="button" class="color-swatch ${current === item.bg ? 'selected' : ''}"
+                                        data-color="${item.bg}" style="background:${item.bg};" title="${item.label}">
+                                    <span class="swatch-check">&check;</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                        <input type="hidden" id="${idPrefix}AvatarColor" value="${current}" />
+                    </div>
+                `;
+            }
+
+            function bindAvatarPickerEvents(idPrefix = 'a') {
+                const picker = document.getElementById(`${idPrefix}AvatarColorPicker`);
+                if (!picker) return;
+                picker.querySelectorAll('.color-swatch').forEach(swatch => {
+                    swatch.addEventListener('click', function() {
+                        picker.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+                        this.classList.add('selected');
+                        const hiddenInput = document.getElementById(`${idPrefix}AvatarColor`);
+                        if (hiddenInput) hiddenInput.value = this.dataset.color;
+                    });
+                });
+            }
+
             // ===== NAV BUILDER =====
             function buildDesktopNav() {
                 mainNav.innerHTML = '';
@@ -3218,7 +3364,7 @@
                       <div class="creator-mini-row">
                         ${allCreators.slice(0, 8).map(c => `
                           <div class="creator-mini-chip" data-creator="${escapeHtml(c.name || '')}">
-                            <div class="mini-avatar">${getInitials(c.displayName || c.name || '')}</div>
+                            <div class="mini-avatar" style="${getAvatarStyle(c)}">${getInitials(c.displayName || c.name || '')}</div>
                             <div class="mini-info">
                               <span class="mini-name">${escapeHtml(c.displayName || c.name || '')}</span>
                               <span class="mini-sub">${escapeHtml(c.software || 'Video Editor')}</span>
@@ -3405,6 +3551,7 @@
                                         <option value="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
+                                ${renderAvatarPickerHtml(AVATAR_PALETTE[0].bg, 'pr')}
                                 <div class="form-group">
                                     <label>No. WhatsApp (opsional)</label>
                                     <input type="text" id="prWa" placeholder="628xxxxxxxx" />
@@ -3432,7 +3579,7 @@
                 let html = `
                     <div class="profile-page-view">
                         <div class="profile-header">
-                            <div class="avatar">${getInitials(c.displayName || c.name || '')}</div>
+                            <div class="avatar" style="${getAvatarStyle(c)}">${getInitials(c.displayName || c.name || '')}</div>
                             <div class="info">
                                 <h1>${escapeHtml(c.displayName || c.name || '')}</h1>
                                 <div class="role">@${escapeHtml(c.name || '')} &bull; ${escapeHtml(c.software || 'Kreator')}</div>
@@ -3506,6 +3653,7 @@
             }
 
             function bindPageRegisterCreatorEvents() {
+                bindAvatarPickerEvents('pr');
                 const unInput = document.getElementById('prUsername');
                 if (unInput) {
                     unInput.addEventListener('input', function() {
@@ -3552,6 +3700,7 @@
                             wa: document.getElementById('prWa').value.trim(),
                             email: document.getElementById('prEmail').value.trim(),
                             portfolio: document.getElementById('prPortfolio').value.trim(),
+                            avatarColor: (document.getElementById('prAvatarColor') && document.getElementById('prAvatarColor').value) || AVATAR_PALETTE[0].bg,
                             uid: currentUser.uid,
                             registeredAt: firebase.firestore.FieldValue.serverTimestamp()
                         };
@@ -3579,6 +3728,11 @@
                 const desktopSearch = document.querySelector('.desktop-search');
                 const mobileSearchToggle = document.getElementById('mobileSearchToggle');
                 const mobileSearchBar = document.getElementById('mobileSearchBar');
+
+                const homeSearchSection = document.getElementById('homeSearchSection');
+                if (homeSearchSection) {
+                    homeSearchSection.style.display = (currentView === 'home' || currentView === 'explore') ? 'block' : 'none';
+                }
 
                 if (currentView === 'cari' || currentView === 'search') {
                     if (desktopSearch) desktopSearch.style.display = 'none';
@@ -3657,7 +3811,7 @@
                         .toLowerCase()).length;
                     html += `
                 <div class="creator-card" data-creator="${escapeHtml(c.name || '')}">
-                  <div class="avatar">${getInitials(displayName)}</div>
+                  <div class="avatar" style="${getAvatarStyle(c)}">${getInitials(displayName)}</div>
                   <div class="name">${escapeHtml(displayName)}</div>
                   <div class="sub">${escapeHtml(c.software || '')}</div>
                   <div class="count">${count} template</div>
@@ -3699,7 +3853,7 @@
                 return `
               <button class="back-link" id="backToCreators">${ICON.arrowLeft} Semua kreator</button>
               <div class="profile-header">
-                <div class="avatar">${getInitials(displayName)}</div>
+                <div class="avatar" style="${getAvatarStyle(c || name)}">${getInitials(displayName)}</div>
                 <div class="info">
                   <h1>${displayName}</h1>
                   ${software ? `<div class="role">${software}</div>` : ''}
@@ -3765,6 +3919,7 @@
                       <option value="Node Video" ${c.software==='Node Video'?'selected':''}>Node Video</option>
                     </select>
                   </div>
+                  ${renderAvatarPickerHtml(c.avatarColor, 'a')}
                 </div>
                 <div class="form-section">
                   <div class="section-label">Kontak</div>
@@ -3780,6 +3935,7 @@
             }
 
             function bindAkunProfileEvents() {
+                bindAvatarPickerEvents('a');
                 const unInput = document.getElementById('aUsername');
                 if (unInput) {
                     unInput.addEventListener('input', function() {
@@ -3831,8 +3987,9 @@
                             currentUserCreatorId
                         );
                         if (exists) { showToast('Username sudah digunakan', 'error'); return; }
+                        const avatarColor = (document.getElementById('aAvatarColor') && document.getElementById('aAvatarColor').value) || AVATAR_PALETTE[0].bg;
                         const data = { name: username, displayName, bio, software, wa, email,
-                            portfolio };
+                            portfolio, avatarColor };
                         updateCreator(currentUserCreatorId, data)
                             .then(() => {
                                 showToast('Profil berhasil diperbarui!', 'success');
@@ -4021,7 +4178,7 @@
               </div>
               ${uploadDate ? `<div class="detail-date">${ICON.calendar} Diunggah ${uploadDate}</div>` : ''}
               <div class="detail-creator-line" id="detailCreatorLine" data-creator="${escapeHtml(template.creator || '')}">
-                <div class="avatar">${getInitials(template.creator)}</div>
+                <div class="avatar" style="${getAvatarStyle(template.creator)}">${getInitials(template.creator)}</div>
                 <div><div class="name">${escapeHtml(template.creator || 'Anonim')}</div><div class="role">Kreator</div></div>
               </div>
               ${template.deskripsi ? `<p class="detail-desc">${escapeHtml(template.deskripsi)}</p>` : ''}
@@ -4311,10 +4468,43 @@
                 });
             });
 
+            const homeSearchTrigger = document.getElementById('homeSearchTrigger');
+            if (homeSearchTrigger) {
+                homeSearchTrigger.addEventListener('click', function() {
+                    goToView('cari');
+                    setTimeout(() => {
+                        const input = document.getElementById('explorePageSearch');
+                        if (input) input.focus();
+                    }, 120);
+                });
+            }
+
             function syncSearch(source, target) {
                 source.addEventListener('input', function() {
                     target.value = this.value;
-                    render();
+                    if (currentView !== 'cari') {
+                        cariSearchQuery = this.value;
+                        goToView('cari');
+                        setTimeout(() => {
+                            const input = document.getElementById('explorePageSearch');
+                            if (input) {
+                                input.value = target.value;
+                                input.focus();
+                            }
+                        }, 120);
+                    } else {
+                        render();
+                    }
+                });
+
+                source.addEventListener('focus', function() {
+                    if (currentView !== 'cari') {
+                        goToView('cari');
+                        setTimeout(() => {
+                            const input = document.getElementById('explorePageSearch');
+                            if (input) input.focus();
+                        }, 120);
+                    }
                 });
             }
             syncSearch(searchInput, searchInputMobile);
@@ -4323,7 +4513,17 @@
             document.getElementById('mobileSearchToggle').addEventListener('click', function() {
                 const bar = document.getElementById('mobileSearchBar');
                 bar.classList.toggle('open');
-                if (bar.classList.contains('open')) setTimeout(() => searchInputMobile.focus(), 180);
+                if (bar.classList.contains('open')) {
+                    if (currentView !== 'cari') {
+                        goToView('cari');
+                        setTimeout(() => {
+                            const input = document.getElementById('explorePageSearch');
+                            if (input) input.focus();
+                        }, 120);
+                    } else {
+                        setTimeout(() => searchInputMobile.focus(), 180);
+                    }
+                }
             });
 
             function goToView(view) {
@@ -4870,7 +5070,11 @@
                     loginBtn.style.display = 'none';
                     const displayName = user.displayName || user.email || 'User';
                     document.getElementById('userName').textContent = displayName;
-                    document.getElementById('userAvatar').textContent = (displayName)[0].toUpperCase();
+                    const userAvatarEl = document.getElementById('userAvatar');
+                    if (userAvatarEl) {
+                        userAvatarEl.textContent = (displayName)[0].toUpperCase();
+                        userAvatarEl.setAttribute('style', getAvatarStyle(currentUserCreator || displayName));
+                    }
                     if (firebaseInitialized && db) {
                         checkIfCreator(user.uid).then(() => {
                             buildDesktopNav();
