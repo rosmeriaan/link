@@ -1297,6 +1297,64 @@
             white-space: nowrap;
         }
 
+        /* Profile Page View Styles */
+        .profile-page-view {
+            column-span: all;
+            margin-bottom: 2rem;
+        }
+        .profile-page-tabs {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.25rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .profile-page-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        .profile-page-tabs button {
+            border: none;
+            background: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            padding: 0.65rem 1rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s, border-color 0.15s;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .profile-page-tabs button svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+        }
+        .profile-page-tabs button:hover {
+            color: var(--text);
+        }
+        .profile-page-tabs button.active {
+            color: var(--accent-dark);
+            font-weight: 600;
+            border-bottom-color: var(--accent-dark);
+        }
+        .profile-page-card-wrap {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            max-width: 580px;
+            margin: 1rem auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            column-span: all;
+        }
+
         /* Sembunyikan tombol yang tidak perlu */
         .mobile-nav button.hidden-nav {
             display: none !important;
@@ -2718,14 +2776,7 @@
                     profileBtn.textContent = 'Profile';
                     profileBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        if (!isCreator) {
-                            openRegisterModal();
-                            return;
-                        }
-                        currentAkunTab = 'profile';
-                        updateAkunTabsUI();
-                        renderAkunContent();
-                        document.getElementById('akunModal').classList.add('active');
+                        goToView('profile');
                     });
                     mainNav.appendChild(profileBtn);
                 }
@@ -2792,14 +2843,7 @@
                     profileBtn.innerHTML = ICON.user + '<span>Profile</span>';
                     profileBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        if (!isCreator) {
-                            openRegisterModal();
-                            return;
-                        }
-                        currentAkunTab = 'profile';
-                        updateAkunTabsUI();
-                        renderAkunContent();
-                        document.getElementById('akunModal').classList.add('active');
+                        goToView('profile');
                     });
                 } else {
                     profileBtn.innerHTML = ICON.user + '<span>Masuk</span>';
@@ -3102,111 +3146,112 @@
             function renderCariView() {
                 updateContextLine();
 
-                const query = (cariSearchQuery || searchInput.value || searchInputMobile.value || '').toLowerCase().trim();
+                // Sembunyikan pencarian header saat berada di halaman Cari agar tidak double
+                const desktopSearch = document.querySelector('.desktop-search');
+                const mobileSearchToggle = document.getElementById('mobileSearchToggle');
+                const mobileSearchBar = document.getElementById('mobileSearchBar');
+                if (desktopSearch) desktopSearch.style.display = 'none';
+                if (mobileSearchToggle) mobileSearchToggle.style.display = 'none';
+                if (mobileSearchBar) mobileSearchBar.classList.remove('open');
 
-                let templates = allTemplates.slice();
-                if (query) {
-                    templates = templates.filter(t =>
-                        (t.judul || '').toLowerCase().includes(query) ||
-                        (t.kode || '').toLowerCase().includes(query) ||
-                        (t.kategori || '').toLowerCase().includes(query) ||
-                        (t.creator || '').toLowerCase().includes(query) ||
-                        (t.deskripsi || '').toLowerCase().includes(query)
-                    );
+                const searchInputEl = document.getElementById('explorePageSearch');
+
+                // Jika elemen input belum ada di DOM, buat kerangka tampilan sekali saja
+                if (!searchInputEl) {
+                    const query = (cariSearchQuery || searchInput.value || searchInputMobile.value || '').toLowerCase().trim();
+                    if (query) cariSearchQuery = query;
+
+                    const hashtags = [
+                        'CinematicTeal', 'CapCutPreset', 'Reels9:16', 'AlightMotion',
+                        'CyberpunkNeon', 'VintageFilm', 'PresetGratis', '3DMotion'
+                    ];
+
+                    const topicCards = [
+                        { id: 'viral', label: '🔥 Viral & Tren', desc: 'Paling banyak digunakan', filter: 'preset', bg: 'linear-gradient(135deg, #1e1b4b, #312e81)' },
+                        { id: 'cinematic', label: '🎬 Cinematic Tone', desc: 'Teal & Orange, Moody Film', filter: 'preset', bg: 'linear-gradient(135deg, #0f172a, #1e293b)' },
+                        { id: 'reels', label: '📱 Reels & TikTok', desc: 'Format Vertikal 9:16', ratio: '9:16', bg: 'linear-gradient(135deg, #2e1065, #4c1d95)' },
+                        { id: 'glitch', label: '⚡ Glitch & Overlay', desc: 'Efek VHS, Static & Textures', filter: 'assets', bg: 'linear-gradient(135deg, #3f0712, #881337)' },
+                        { id: 'free', label: '✨ Template Gratis', desc: 'Unduh & pakai tanpa bayar', filter: 'free', bg: 'linear-gradient(135deg, #064e3b, #047857)' },
+                        { id: '3d', label: '🎨 Motion & 3D Title', desc: 'Animasi judul & teks', filter: 'assets', bg: 'linear-gradient(135deg, #1a2e05, #365314)' }
+                    ];
+
+                    let html = `
+                    <div class="explore-hero-search">
+                      <div class="explore-search-input-wrap">
+                        ${ICON.search}
+                        <input type="text" id="explorePageSearch" placeholder="Cari preset, efek, hashtag, atau kreator..." value="${escapeHtml(query)}" />
+                        <button class="clear-search-btn" id="clearExploreSearch" style="display:${query ? 'inline-block' : 'none'};">&times;</button>
+                      </div>
+
+                      <div class="hashtag-scroll">
+                        ${hashtags.map(tag => `
+                          <button class="hashtag-pill ${query.includes(tag.toLowerCase()) ? 'active' : ''}" data-tag="${tag}">
+                            #${tag}
+                          </button>
+                        `).join('')}
+                      </div>
+                    </div>
+
+                    <div class="explore-section" id="exploreTopicSection" style="display:${!query ? 'block' : 'none'};">
+                      <div class="section-header">
+                        <h3>${ICON.sparkle} Kategori Populer</h3>
+                        <span class="sub-text">Temukan inspirasi sesuai gayamu</span>
+                      </div>
+                      <div class="topic-grid">
+                        ${topicCards.map(tc => `
+                          <div class="topic-card" style="background:${tc.bg};" data-filter="${tc.filter || ''}" data-ratio="${tc.ratio || ''}">
+                            <div class="topic-card-content">
+                              <h4>${tc.label}</h4>
+                              <p>${tc.desc}</p>
+                            </div>
+                            <span class="topic-arrow">${ICON.arrowLeft}</span>
+                          </div>
+                        `).join('')}
+                      </div>
+                    </div>
+
+                    <div class="explore-section" id="exploreKreatorSection" style="display:${!query ? 'block' : 'none'};">
+                      <div class="section-header">
+                        <h3>${ICON.users} Kreator Pilihan</h3>
+                        <span class="sub-text">Editor berbakat yang aktif berbagi</span>
+                      </div>
+                      <div class="creator-mini-row">
+                        ${allCreators.slice(0, 8).map(c => `
+                          <div class="creator-mini-chip" data-creator="${escapeHtml(c.name || '')}">
+                            <div class="mini-avatar">${getInitials(c.displayName || c.name || '')}</div>
+                            <div class="mini-info">
+                              <span class="mini-name">${escapeHtml(c.displayName || c.name || '')}</span>
+                              <span class="mini-sub">${escapeHtml(c.software || 'Video Editor')}</span>
+                            </div>
+                          </div>
+                        `).join('')}
+                      </div>
+                    </div>
+
+                    <div class="explore-section">
+                      <div class="section-header" id="exploreResultsHeader">
+                        <h3>${query ? `Hasil Pencarian "${escapeHtml(query)}"` : `${ICON.trend} Jelajah Terbaru`}</h3>
+                        <span class="sub-text" id="exploreResultsCount"></span>
+                      </div>
+                      <div id="cariResultsContainer"></div>
+                    </div>
+                    `;
+
+                    cardGrid.innerHTML = html;
+                    bindCariInitialEvents();
                 }
 
-                const hashtags = [
-                    'CinematicTeal', 'CapCutPreset', 'Reels9:16', 'AlightMotion',
-                    'CyberpunkNeon', 'VintageFilm', 'PresetGratis', '3DMotion'
-                ];
-
-                const topicCards = [
-                    { id: 'viral', label: '🔥 Viral & Tren', desc: 'Paling banyak digunakan', filter: 'preset', bg: 'linear-gradient(135deg, #1e1b4b, #312e81)' },
-                    { id: 'cinematic', label: '🎬 Cinematic Tone', desc: 'Teal & Orange, Moody Film', filter: 'preset', bg: 'linear-gradient(135deg, #0f172a, #1e293b)' },
-                    { id: 'reels', label: '📱 Reels & TikTok', desc: 'Format Vertikal 9:16', ratio: '9:16', bg: 'linear-gradient(135deg, #2e1065, #4c1d95)' },
-                    { id: 'glitch', label: '⚡ Glitch & Overlay', desc: 'Efek VHS, Static & Textures', filter: 'assets', bg: 'linear-gradient(135deg, #3f0712, #881337)' },
-                    { id: 'free', label: '✨ Template Gratis', desc: 'Unduh & pakai tanpa bayar', filter: 'free', bg: 'linear-gradient(135deg, #064e3b, #047857)' },
-                    { id: '3d', label: '🎨 Motion & 3D Title', desc: 'Animasi judul & teks', filter: 'assets', bg: 'linear-gradient(135deg, #1a2e05, #365314)' }
-                ];
-
-                let html = `
-                <div class="explore-hero-search">
-                  <div class="explore-search-input-wrap">
-                    ${ICON.search}
-                    <input type="text" id="explorePageSearch" placeholder="Cari preset, efek, hashtag, atau kreator..." value="${escapeHtml(query)}" />
-                    ${query ? `<button class="clear-search-btn" id="clearExploreSearch">&times;</button>` : ''}
-                  </div>
-
-                  <div class="hashtag-scroll">
-                    ${hashtags.map(tag => `
-                      <button class="hashtag-pill ${query.includes(tag.toLowerCase()) ? 'active' : ''}" data-tag="${tag}">
-                        #${tag}
-                      </button>
-                    `).join('')}
-                  </div>
-                </div>
-
-                ${!query ? `
-                <div class="explore-section">
-                  <div class="section-header">
-                    <h3>${ICON.sparkle} Kategori Populer</h3>
-                    <span class="sub-text">Temukan inspirasi sesuai gayamu</span>
-                  </div>
-                  <div class="topic-grid">
-                    ${topicCards.map(tc => `
-                      <div class="topic-card" style="background:${tc.bg};" data-filter="${tc.filter || ''}" data-ratio="${tc.ratio || ''}">
-                        <div class="topic-card-content">
-                          <h4>${tc.label}</h4>
-                          <p>${tc.desc}</p>
-                        </div>
-                        <span class="topic-arrow">${ICON.arrowLeft}</span>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-
-                <div class="explore-section">
-                  <div class="section-header">
-                    <h3>${ICON.users} Kreator Pilihan</h3>
-                    <span class="sub-text">Editor berbakat yang aktif berbagi</span>
-                  </div>
-                  <div class="creator-mini-row">
-                    ${allCreators.slice(0, 8).map(c => `
-                      <div class="creator-mini-chip" data-creator="${escapeHtml(c.name || '')}">
-                        <div class="mini-avatar">${getInitials(c.displayName || c.name || '')}</div>
-                        <div class="mini-info">
-                          <span class="mini-name">${escapeHtml(c.displayName || c.name || '')}</span>
-                          <span class="mini-sub">${escapeHtml(c.software || 'Video Editor')}</span>
-                        </div>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-                ` : ''}
-
-                <div class="explore-section">
-                  <div class="section-header">
-                    <h3>${query ? `Hasil Pencarian "${escapeHtml(query)}"` : `${ICON.trend} Jelajah Terbaru`}</h3>
-                    <span class="sub-text">${templates.length} template ditemukan</span>
-                  </div>
-                  ${templates.length === 0 ? emptyStateHtml('search') : `
-                    <div class="grid">${templates.map(renderCard).join('')}</div>
-                  `}
-                </div>
-                `;
-
-                cardGrid.innerHTML = html;
-                bindCariEvents();
+                updateCariResults();
             }
 
-            function bindCariEvents() {
+            function bindCariInitialEvents() {
                 const input = document.getElementById('explorePageSearch');
                 if (input) {
                     input.addEventListener('input', function() {
                         cariSearchQuery = this.value;
-                        searchInput.value = this.value;
-                        searchInputMobile.value = this.value;
-                        renderCariView();
+                        if (searchInput) searchInput.value = this.value;
+                        if (searchInputMobile) searchInputMobile.value = this.value;
+                        updateCariResults();
                     });
                 }
 
@@ -3214,9 +3259,10 @@
                 if (clearBtn) {
                     clearBtn.addEventListener('click', function() {
                         cariSearchQuery = '';
-                        searchInput.value = '';
-                        searchInputMobile.value = '';
-                        renderCariView();
+                        if (input) input.value = '';
+                        if (searchInput) searchInput.value = '';
+                        if (searchInputMobile) searchInputMobile.value = '';
+                        updateCariResults();
                     });
                 }
 
@@ -3224,9 +3270,10 @@
                     pill.addEventListener('click', function() {
                         const tag = this.dataset.tag;
                         cariSearchQuery = '#' + tag;
-                        searchInput.value = '#' + tag;
-                        searchInputMobile.value = '#' + tag;
-                        renderCariView();
+                        if (input) input.value = '#' + tag;
+                        if (searchInput) searchInput.value = '#' + tag;
+                        if (searchInputMobile) searchInputMobile.value = '#' + tag;
+                        updateCariResults();
                     });
                 });
 
@@ -3254,16 +3301,303 @@
                 });
             }
 
+            function updateCariResults() {
+                const query = (cariSearchQuery || '').toLowerCase().trim();
+
+                const clearBtn = document.getElementById('clearExploreSearch');
+                if (clearBtn) clearBtn.style.display = query ? 'inline-block' : 'none';
+
+                const topicSec = document.getElementById('exploreTopicSection');
+                const kreatorSec = document.getElementById('exploreKreatorSection');
+                if (topicSec) topicSec.style.display = !query ? 'block' : 'none';
+                if (kreatorSec) kreatorSec.style.display = !query ? 'block' : 'none';
+
+                document.querySelectorAll('.hashtag-pill').forEach(pill => {
+                    const tag = (pill.dataset.tag || '').toLowerCase();
+                    pill.classList.toggle('active', query.includes(tag));
+                });
+
+                const headerEl = document.getElementById('exploreResultsHeader');
+                if (headerEl) {
+                    const titleH3 = headerEl.querySelector('h3');
+                    if (titleH3) {
+                        titleH3.innerHTML = query ? `Hasil Pencarian "${escapeHtml(query)}"` : `${ICON.trend} Jelajah Terbaru`;
+                    }
+                }
+
+                let templates = allTemplates.slice();
+                if (query) {
+                    templates = templates.filter(t =>
+                        (t.judul || '').toLowerCase().includes(query) ||
+                        (t.kode || '').toLowerCase().includes(query) ||
+                        (t.kategori || '').toLowerCase().includes(query) ||
+                        (t.creator || '').toLowerCase().includes(query) ||
+                        (t.deskripsi || '').toLowerCase().includes(query)
+                    );
+                }
+
+                const countEl = document.getElementById('exploreResultsCount');
+                if (countEl) countEl.textContent = `${templates.length} template ditemukan`;
+
+                const container = document.getElementById('cariResultsContainer');
+                if (container) {
+                    if (templates.length === 0) {
+                        container.innerHTML = emptyStateHtml('search');
+                    } else {
+                        container.innerHTML = `<div class="grid">${templates.map(renderCard).join('')}</div>`;
+                    }
+                }
+            }
+
+            let currentProfileTab = 'templates';
+
+            function renderProfilePage() {
+                updateContextLine();
+
+                const filterBar = document.querySelector('.filter-bar');
+                if (filterBar) filterBar.style.display = 'none';
+
+                if (!currentUser) {
+                    cardGrid.innerHTML = `
+                        <div class="empty-state" style="padding: 3rem 1rem;">
+                            ${ICON.user}
+                            <div class="title" style="font-size:1.1rem;margin-top:0.5rem;">Akun Anda</div>
+                            <div class="sub">Masuk untuk melihat profil, mengelola template, dan menyimpan suka.</div>
+                            <button class="btn btn-primary" id="profileLoginBtn" style="margin-top:1rem;padding:0.6rem 1.4rem;">${ICON.user} Masuk dengan Google</button>
+                        </div>
+                    `;
+                    const loginBtn = document.getElementById('profileLoginBtn');
+                    if (loginBtn) loginBtn.addEventListener('click', () => document.getElementById('loginBtn').click());
+                    return;
+                }
+
+                if (!isCreator || !currentUserCreator) {
+                    cardGrid.innerHTML = `
+                        <div class="profile-page-card-wrap">
+                            <div class="section-header" style="margin-bottom:1.2rem;text-align:center;">
+                                <h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:0.4rem;">
+                                    ${ICON.userPlus} Daftar sebagai Kreator
+                                </h2>
+                                <p class="sub-text" style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem;">Lengkapi profil kreator kamu untuk mulai membagikan preset & asset.</p>
+                            </div>
+                            <form id="pageRegisterCreatorForm">
+                                <div class="form-group">
+                                    <label>Username *</label>
+                                    <input type="text" id="prUsername" required placeholder="username_kamu" pattern="[a-zA-Z0-9_]{3,20}" />
+                                    <div class="username-hint" id="prUsernameHint">Min 3 karakter, hanya huruf/angka/garis bawah.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nama Tampilan *</label>
+                                    <input type="text" id="prDisplayName" required placeholder="Nama Lengkap / Studio" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Bio Singkat</label>
+                                    <textarea id="prBio" rows="2" placeholder="Ceritakan gaya editing atau keahlianmu..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Software yang Digunakan *</label>
+                                    <select id="prSoftware" required>
+                                        <option value="">-- Pilih Software --</option>
+                                        <option value="Alight Motion">Alight Motion</option>
+                                        <option value="Node Video">Node Video</option>
+                                        <option value="CapCut">CapCut</option>
+                                        <option value="Premiere Pro / After Effects">Premiere Pro / After Effects</option>
+                                        <option value="Lainnya">Lainnya</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>No. WhatsApp (opsional)</label>
+                                    <input type="text" id="prWa" placeholder="628xxxxxxxx" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Kontak (opsional)</label>
+                                    <input type="email" id="prEmail" placeholder="kreator@email.com" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Portfolio / Social Media (opsional)</label>
+                                    <input type="url" id="prPortfolio" placeholder="https://instagram.com/..." />
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="width:100%;margin-top:1rem;padding:0.65rem;">Daftar Kreator Sekarang</button>
+                            </form>
+                        </div>
+                    `;
+                    bindPageRegisterCreatorEvents();
+                    return;
+                }
+
+                const c = currentUserCreator;
+                const myTemplates = allTemplates.filter(t => t.creatorUid === currentUser.uid || (t.creator || '').toLowerCase() === (c.name || '').toLowerCase());
+                const myLiked = allTemplates.filter(t => likedTemplateIds.has(t.id));
+
+                let html = `
+                    <div class="profile-page-view">
+                        <div class="profile-header">
+                            <div class="avatar">${getInitials(c.displayName || c.name || '')}</div>
+                            <div class="info">
+                                <h1>${escapeHtml(c.displayName || c.name || '')}</h1>
+                                <div class="role">@${escapeHtml(c.name || '')} &bull; ${escapeHtml(c.software || 'Kreator')}</div>
+                                <div class="bio">${escapeHtml(c.bio || 'Belum ada bio.')}</div>
+                                <div class="stats">
+                                    <span><strong>${myTemplates.length}</strong> template dipublikasi</span>
+                                    <span><strong>${myLiked.length}</strong> template disukai</span>
+                                </div>
+                                ${c.portfolio ? `<a class="portfolio-link" href="${c.portfolio}" target="_blank" rel="noopener">${ICON.ext} Lihat portfolio</a>` : ''}
+                                ${c.wa ? `<div class="contact-row" style="margin-top:0.3rem;">${ICON.wa} <a href="https://wa.me/${c.wa}" target="_blank" rel="noopener">${c.wa}</a></div>` : ''}
+                                ${c.email ? `<div class="contact-row">${ICON.mail} <a href="mailto:${c.email}">${c.email}</a></div>` : ''}
+                            </div>
+                        </div>
+
+                        <div class="profile-page-tabs">
+                            <button class="${currentProfileTab === 'templates' ? 'active' : ''}" data-ptab="templates">${ICON.grid || ''} Template Saya (${myTemplates.length})</button>
+                            <button class="${currentProfileTab === 'liked' ? 'active' : ''}" data-ptab="liked">${ICON.heart || ''} Disukai (${myLiked.length})</button>
+                            <button class="${currentProfileTab === 'profile' ? 'active' : ''}" data-ptab="profile">${ICON.edit || ''} Edit Profil</button>
+                        </div>
+
+                        <div id="profileTabContent"></div>
+                    </div>
+                `;
+
+                cardGrid.innerHTML = html;
+                bindProfilePageTabEvents(myTemplates);
+                renderProfileTabContent(myTemplates);
+            }
+
+            function bindProfilePageTabEvents(myTemplates) {
+                document.querySelectorAll('.profile-page-tabs button').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const ptab = this.dataset.ptab;
+                        currentProfileTab = ptab;
+                        document.querySelectorAll('.profile-page-tabs button').forEach(b => {
+                            b.classList.toggle('active', b.dataset.ptab === ptab);
+                        });
+                        renderProfileTabContent(myTemplates);
+                    });
+                });
+            }
+
+            function renderProfileTabContent(myTemplates) {
+                const container = document.getElementById('profileTabContent');
+                if (!container) return;
+
+                if (currentProfileTab === 'templates') {
+                    if (myTemplates.length === 0) {
+                        container.innerHTML = `
+                            <div class="empty-state" style="padding: 2.5rem 0;">
+                                ${ICON.plusBox || ''}
+                                <div class="title" style="margin-top:0.5rem;">Belum ada template</div>
+                                <div class="sub">Kamu belum mempublikasikan template. Yuk, unggah preset pertama kamu!</div>
+                                <button class="btn btn-primary" id="profileUploadCtaBtn" style="margin-top:0.8rem;padding:0.5rem 1.2rem;">Upload Preset</button>
+                            </div>
+                        `;
+                        const uploadCta = document.getElementById('profileUploadCtaBtn');
+                        if (uploadCta) uploadCta.addEventListener('click', openUploadFlow);
+                    } else {
+                        let html = `<div class="result-line">${myTemplates.length} template dipublikasikan</div>`;
+                        html += `<div class="grid">${myTemplates.map(renderCard).join('')}</div>`;
+                        container.innerHTML = html;
+                    }
+                } else if (currentProfileTab === 'liked') {
+                    container.innerHTML = renderAkunLikedTemplates();
+                    bindAkunLikedEvents();
+                } else if (currentProfileTab === 'profile') {
+                    container.innerHTML = renderAkunProfileForm();
+                    bindAkunProfileEvents();
+                }
+            }
+
+            function bindPageRegisterCreatorEvents() {
+                const unInput = document.getElementById('prUsername');
+                if (unInput) {
+                    unInput.addEventListener('input', function() {
+                        const val = this.value.trim();
+                        const hint = document.getElementById('prUsernameHint');
+                        if (!hint) return;
+                        if (val.length < 3) {
+                            hint.innerHTML = 'Min 3 karakter. <span class="cross">&cross;</span> Terlalu pendek';
+                            return;
+                        }
+                        if (!/^[a-zA-Z0-9_]{3,20}$/.test(val)) {
+                            hint.innerHTML = 'Hanya huruf/angka/garis bawah. <span class="cross">&cross;</span> Tidak valid';
+                            return;
+                        }
+                        const exists = allCreators.some(c => (c.name || '').toLowerCase() === val.toLowerCase());
+                        if (exists) {
+                            hint.innerHTML = 'Username sudah dipakai. <span class="cross">&cross;</span>';
+                        } else {
+                            hint.innerHTML = 'Tersedia. <span class="check">&check;</span>';
+                        }
+                    });
+                }
+
+                const form = document.getElementById('pageRegisterCreatorForm');
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        if (!currentUser || !db) { showToast('Firebase belum siap', 'error'); return; }
+                        const name = document.getElementById('prUsername').value.trim();
+                        const displayName = document.getElementById('prDisplayName').value.trim();
+                        if (!name || !displayName) { showToast('Username dan nama tampilan wajib diisi', 'error'); return; }
+                        if (!/^[a-zA-Z0-9_]{3,20}$/.test(name)) { showToast('Username tidak valid', 'error'); return; }
+                        if (allCreators.some(c => (c.name || '').toLowerCase() === name.toLowerCase())) {
+                            showToast('Username sudah terdaftar', 'error'); return;
+                        }
+                        const software = document.getElementById('prSoftware').value;
+                        if (!software) { showToast('Pilih software yang digunakan', 'error'); return; }
+
+                        const data = {
+                            name,
+                            displayName,
+                            bio: document.getElementById('prBio').value.trim(),
+                            software,
+                            wa: document.getElementById('prWa').value.trim(),
+                            email: document.getElementById('prEmail').value.trim(),
+                            portfolio: document.getElementById('prPortfolio').value.trim(),
+                            uid: currentUser.uid,
+                            registeredAt: firebase.firestore.FieldValue.serverTimestamp()
+                        };
+
+                        addCreator(data)
+                            .then(() => {
+                                showToast('Selamat! Kamu sekarang terdaftar sebagai kreator', 'success');
+                                isCreator = true;
+                                currentUserCreator = data;
+                                currentUserCreatorId = currentUser.uid;
+                                buildDesktopNav();
+                                buildMobileNav();
+                                if (unsubscribeCreators) unsubscribeCreators();
+                                subscribeCreators();
+                                renderProfilePage();
+                            })
+                            .catch(err => { showToast('Gagal daftar: ' + err.message, 'error'); });
+                    });
+                }
+            }
+
             function render() {
                 updateContextLine();
+
+                const desktopSearch = document.querySelector('.desktop-search');
+                const mobileSearchToggle = document.getElementById('mobileSearchToggle');
+                const mobileSearchBar = document.getElementById('mobileSearchBar');
+
+                if (currentView === 'cari' || currentView === 'search') {
+                    if (desktopSearch) desktopSearch.style.display = 'none';
+                    if (mobileSearchToggle) mobileSearchToggle.style.display = 'none';
+                    if (mobileSearchBar) mobileSearchBar.classList.remove('open');
+                    renderCariView();
+                    return;
+                } else {
+                    if (desktopSearch) desktopSearch.style.display = '';
+                    if (mobileSearchToggle) mobileSearchToggle.style.display = '';
+                }
 
                 const filterBar = document.querySelector('.filter-bar');
                 if (filterBar) {
                     filterBar.style.display = (currentView === 'home' || currentView === 'explore') ? 'block' : 'none';
                 }
 
-                if (currentView === 'cari' || currentView === 'search') {
-                    renderCariView();
+                if (currentView === 'profile' || currentView === 'akun') {
+                    renderProfilePage();
                     return;
                 }
 
@@ -3305,12 +3639,12 @@
                     html += emptyStateHtml('creators');
                     cardGrid.innerHTML = html;
                     const btn = document.getElementById('dirRegisterBtn');
-                    if (btn) btn.addEventListener('click', openRegisterModal);
+                    if (btn) btn.addEventListener('click', () => goToView('profile'));
                     const loginBtn = document.getElementById('dirLoginBtn');
                     if (loginBtn) loginBtn.addEventListener('click', () => document.getElementById('loginBtn')
                         .click());
                     const emptyBtn = document.getElementById('emptyRegisterBtn');
-                    if (emptyBtn) emptyBtn.addEventListener('click', openRegisterModal);
+                    if (emptyBtn) emptyBtn.addEventListener('click', () => goToView('profile'));
                     const emptyLoginBtn = document.getElementById('emptyLoginBtn');
                     if (emptyLoginBtn) emptyLoginBtn.addEventListener('click', () => document.getElementById(
                         'loginBtn').click());
@@ -3342,7 +3676,7 @@
                     });
                 });
                 const btn = document.getElementById('dirRegisterBtn');
-                if (btn) btn.addEventListener('click', openRegisterModal);
+                if (btn) btn.addEventListener('click', () => goToView('profile'));
                 const loginBtn = document.getElementById('dirLoginBtn');
                 if (loginBtn) loginBtn.addEventListener('click', () => document.getElementById('loginBtn').click());
             }
@@ -3391,10 +3725,8 @@
                 });
                 const editBtn = document.getElementById('editProfileBtn');
                 if (editBtn) editBtn.addEventListener('click', () => {
-                    document.getElementById('akunModal').classList.add('active');
-                    currentAkunTab = 'profile';
-                    renderAkunContent();
-                    updateAkunTabsUI();
+                    currentProfileTab = 'profile';
+                    goToView('profile');
                 });
             }
 
@@ -3887,6 +4219,13 @@
                         render();
                         return;
                     }
+                    if (route === 'profile' || route === 'akun') {
+                        currentView = 'profile';
+                        currentCreator = null;
+                        updateNavActiveState();
+                        render();
+                        return;
+                    }
                     if (route === 'home' || route === 'explore' || route === 'beranda') {
                         currentView = 'home';
                         currentCreator = null;
@@ -3914,6 +4253,8 @@
                     path = '/kreator';
                 } else if (currentView === 'cari') {
                     path = '/cari';
+                } else if (currentView === 'profile' || currentView === 'akun') {
+                    path = '/profile';
                 } else {
                     path = '/home';
                 }
