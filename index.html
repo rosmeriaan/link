@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
     <meta name="theme-color" content="#f2f0ea" />
     <title>Preset Library — Komunitas Kreator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -71,6 +71,8 @@
             --header-h: 56px;
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --like-red: #d43b3b;
+            --gap: 1rem;
+            --col-min: 180px;
         }
 
         ::-webkit-scrollbar {
@@ -146,7 +148,6 @@
             font-weight: 500;
         }
 
-        /* desktop search */
         .desktop-search {
             display: none;
             flex: 1;
@@ -182,7 +183,6 @@
             color: var(--text-muted);
         }
 
-        /* nav */
         .main-nav {
             display: none;
             gap: 0.15rem;
@@ -207,7 +207,6 @@
             font-weight: 600;
         }
 
-        /* header actions */
         .header-actions {
             display: flex;
             align-items: center;
@@ -522,58 +521,37 @@
             margin-bottom: 0.6rem;
         }
 
-        /* ===== GRID ===== */
+        /* ===== MASONRY GRID ===== */
         .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.7rem;
-        }
-        @media (min-width: 520px) {
-            .grid {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-                gap: 0.9rem;
-            }
-        }
-        @media (min-width: 768px) {
-            .grid {
-                grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-                gap: 1rem;
-            }
-        }
-        @media (min-width: 1024px) {
-            .grid {
-                grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-                gap: 1.2rem;
-            }
-        }
-        @media (min-width: 1440px) {
-            .grid {
-                grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            }
+            column-count: 2;
+            column-gap: var(--gap);
+            padding: 0;
         }
 
-        /* ===== CARD ===== */
-        .card {
+        .grid .card {
+            break-inside: avoid;
+            margin-bottom: var(--gap);
+            display: inline-block;
+            width: 100%;
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
             border-radius: var(--radius);
-            overflow: hidden;
             background: transparent;
             transition: transform 0.15s;
         }
-        .card:active {
-            transform: scale(0.97);
+        .grid .card:active {
+            transform: scale(0.98);
         }
-        .card .thumb {
+
+        .grid .card .thumb {
             position: relative;
             width: 100%;
             border-radius: var(--radius);
             overflow: hidden;
             background: var(--surface-sunk);
-            aspect-ratio: 4/5;
+            /* aspect-ratio di-set inline dari data template */
         }
-        .thumb-fallback {
+
+        .grid .card .thumb .thumb-fallback {
             position: absolute;
             inset: 0;
             display: flex;
@@ -582,14 +560,14 @@
             background: linear-gradient(135deg, #e9e6dc, #ddd8c9);
             color: var(--text-muted);
         }
-        .thumb-fallback svg {
+        .grid .card .thumb .thumb-fallback svg {
             width: 24px;
             height: 24px;
             stroke: currentColor;
             fill: none;
             stroke-width: 1.4;
         }
-        .thumb-img {
+        .grid .card .thumb .thumb-img {
             position: absolute;
             inset: 0;
             width: 100%;
@@ -598,11 +576,11 @@
             transition: transform 0.35s ease;
         }
         @media (hover: hover) {
-            .card:hover .thumb-img {
-                transform: scale(1.035);
+            .grid .card:hover .thumb-img {
+                transform: scale(1.03);
             }
         }
-        .play-badge {
+        .grid .card .thumb .play-badge {
             position: absolute;
             left: 0.4rem;
             bottom: 0.4rem;
@@ -615,14 +593,14 @@
             align-items: center;
             justify-content: center;
         }
-        .play-badge svg {
+        .grid .card .thumb .play-badge svg {
             width: 11px;
             height: 11px;
             fill: #fff;
             stroke: none;
             margin-left: 1px;
         }
-        .ratio-tag {
+        .grid .card .thumb .ratio-tag {
             position: absolute;
             top: 0.4rem;
             right: 0.4rem;
@@ -636,10 +614,12 @@
             border-radius: var(--radius-sm);
             letter-spacing: 0.01em;
         }
-        .card-info {
+
+        .grid .card .card-info {
             padding: 0.45rem 0.1rem 0;
+            width: 100%;
         }
-        .card-title {
+        .grid .card .card-title {
             font-family: var(--font-display);
             font-weight: 600;
             font-size: 0.88rem;
@@ -650,12 +630,12 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        .card-creator {
+        .grid .card .card-creator {
             font-size: 0.73rem;
             color: var(--text-secondary);
             margin-top: 0.1rem;
         }
-        .card-foot {
+        .grid .card .card-foot {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -663,28 +643,54 @@
             font-size: 0.7rem;
             color: var(--text-muted);
         }
-        .card-foot .price {
+        .grid .card .card-foot .price {
             font-weight: 600;
         }
-        .card-foot .price.free {
+        .grid .card .card-foot .price.free {
             color: var(--green);
         }
-        .card-foot .price.paid {
+        .grid .card .card-foot .price.paid {
             color: var(--accent-dark);
         }
-        .card-foot .uses {
+        .grid .card .card-foot .uses {
             display: flex;
             align-items: center;
             gap: 0.2rem;
             font-family: var(--font-mono);
             font-size: 0.65rem;
         }
-        .card-foot .uses svg {
+        .grid .card .card-foot .uses svg {
             width: 11px;
             height: 11px;
             stroke: currentColor;
             fill: none;
             stroke-width: 2;
+        }
+
+        /* ===== RESPONSIVE COLUMNS ===== */
+        @media (min-width: 520px) {
+            .grid {
+                column-count: 2;
+                column-gap: var(--gap);
+            }
+        }
+        @media (min-width: 720px) {
+            .grid {
+                column-count: 3;
+                column-gap: calc(var(--gap) * 1.1);
+            }
+        }
+        @media (min-width: 1024px) {
+            .grid {
+                column-count: 4;
+                column-gap: calc(var(--gap) * 1.2);
+            }
+        }
+        @media (min-width: 1360px) {
+            .grid {
+                column-count: 5;
+                column-gap: calc(var(--gap) * 1.3);
+            }
         }
 
         /* ===== SKELETON ===== */
@@ -729,6 +735,7 @@
             text-align: center;
             padding: 2.5rem 1rem;
             color: var(--text-muted);
+            column-span: all;
         }
         .empty-state svg {
             width: 30px;
@@ -875,6 +882,7 @@
             border-bottom: 1px solid var(--border-soft);
             margin-bottom: 1rem;
             flex-wrap: wrap;
+            column-span: all;
         }
         .profile-header .avatar {
             width: 56px;
@@ -963,6 +971,7 @@
             border: none;
             background: none;
             padding: 0;
+            column-span: all;
         }
         .back-link:hover {
             color: var(--text);
@@ -1608,11 +1617,18 @@
             background: var(--surface-sunk);
         }
 
+        /* ===== LIKED MINI GRID (responsive) ===== */
         .liked-mini-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 0.6rem;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 0.7rem;
             margin-top: 0.4rem;
+        }
+        @media (max-width: 480px) {
+            .liked-mini-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.5rem;
+            }
         }
         .liked-mini-card {
             border: 1px solid var(--border-soft);
@@ -1632,6 +1648,7 @@
             justify-content: center;
             font-size: 0.65rem;
             color: var(--text-muted);
+            overflow: hidden;
         }
         .liked-mini-card .mini-thumb img {
             width: 100%;
@@ -1650,7 +1667,10 @@
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
             .grid {
-                gap: 0.5rem;
+                column-gap: 0.5rem;
+            }
+            .grid .card {
+                margin-bottom: 0.5rem;
             }
             .header-inner {
                 gap: 0.4rem;
@@ -1676,17 +1696,13 @@
         }
         @media (min-width: 381px) and (max-width: 520px) {
             .grid {
-                gap: 0.6rem;
+                column-gap: 0.6rem;
+            }
+            .grid .card {
+                margin-bottom: 0.6rem;
             }
         }
 
-        .card .thumb {
-            aspect-ratio: 4/5;
-            width: 100%;
-        }
-        .card-info {
-            width: 100%;
-        }
         .app,
         .main,
         .filter-bar,
@@ -1736,6 +1752,30 @@
         .btn-register-creator svg,
         .profile-header .edit-profile-btn svg {
             flex-shrink: 0;
+        }
+
+        /* ===== FORCE CARD WIDTH INSIDE COLUMNS ===== */
+        .grid .card {
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* ===== SKELETON FIX FOR MASONRY ===== */
+        .grid.is-loading .card .thumb {
+            aspect-ratio: 4/5 !important;
+        }
+        .grid.is-loading .card .thumb .thumb-fallback {
+            display: none;
+        }
+        .grid.is-loading .card .thumb .ratio-tag {
+            display: none;
+        }
+        .grid.is-loading .card .thumb .play-badge {
+            display: none;
+        }
+        .grid.is-loading .card .thumb .thumb-img {
+            display: none;
         }
     </style>
 </head>
@@ -2572,13 +2612,14 @@
                 const ytId = t.linkYoutube ? getYoutubeId(t.linkYoutube) : null;
                 const isFree = t.license === 'free';
                 const priceLabel = isFree ? 'Gratis' : formatRupiah(t.harga || 0);
+                const ratio = t.aspectRatio || '16:9';
                 return `
               <article class="card" data-id="${t.id}" data-creator="${escapeHtml(t.creator || '')}" data-kode="${escapeHtml(t.kode || '')}" tabindex="0" role="button" aria-label="${escapeHtml(t.judul || '')}">
-                <div class="thumb" style="aspect-ratio:${ratioCss(t.aspectRatio || '16:9')}">
+                <div class="thumb" style="aspect-ratio:${ratioCss(ratio)}">
                   <div class="thumb-fallback">${ICON.noVideo}</div>
                   ${ytId ? `<img class="thumb-img" src="${thumbYoutube(ytId)}" alt="" loading="lazy" onerror="this.remove()">
                   <span class="play-badge">${ICON.play}</span>` : ''}
-                  <span class="ratio-tag">${t.aspectRatio || '16:9'}</span>
+                  <span class="ratio-tag">${ratio}</span>
                 </div>
                 <div class="card-info">
                   <h3 class="card-title">${escapeHtml(t.judul || 'Tanpa judul')}</h3>
@@ -3678,8 +3719,9 @@
             window.addEventListener('hashchange', handleHashChange);
 
             function init() {
+                // Skeleton with varied aspect ratios for visual preview
                 cardGrid.innerHTML =
-                    `<div class="grid is-loading">${Array(4).fill('<div><div class="thumb skel" style="aspect-ratio:4/5"></div><div class="skel-line skel w60"></div><div class="skel-line skel w40"></div></div>').join('')}</div>`;
+                    `<div class="grid is-loading">${Array(6).fill('<div><div class="thumb skel" style="aspect-ratio:4/5"></div><div class="skel-line skel w60"></div><div class="skel-line skel w40"></div></div>').join('')}</div>`;
                 setTimeout(() => {
                     if (firebaseInitialized) {
                         const hash = window.location.hash.slice(1);
