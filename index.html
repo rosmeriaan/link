@@ -74,6 +74,8 @@
             --gap: clamp(0.5rem, 1.6vw + 0.25rem, 1.1rem);
             --col-min: 180px;
             --container-max: 1360px;
+            --nav-upload-bg: #a8672b;
+            --nav-upload-color: #fff;
         }
 
         ::-webkit-scrollbar {
@@ -136,6 +138,7 @@
             letter-spacing: -0.01em;
             color: var(--text);
             flex-shrink: 0;
+            cursor: pointer;
         }
         .logo svg {
             width: 20px;
@@ -184,20 +187,24 @@
             color: var(--text-muted);
         }
 
+        /* === NAV UTAMA DESKTOP === */
         .main-nav {
             display: none;
-            gap: 0.15rem;
+            gap: 0.1rem;
+            align-items: center;
         }
         .main-nav button {
             border: none;
             background: none;
             cursor: pointer;
-            font-size: 0.84rem;
+            font-size: 0.82rem;
             font-weight: 500;
             color: var(--text-secondary);
-            padding: 0.3rem 0.5rem;
+            padding: 0.3rem 0.6rem;
             border-radius: var(--radius-sm);
             transition: color 0.15s, background 0.15s;
+            white-space: nowrap;
+            min-height: 34px;
         }
         .main-nav button:hover {
             color: var(--text);
@@ -206,6 +213,36 @@
         .main-nav button.active {
             color: var(--text);
             font-weight: 600;
+        }
+        .main-nav button.nav-upload {
+            background: var(--nav-upload-bg);
+            color: var(--nav-upload-color);
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: transform 0.15s, background 0.15s;
+            margin-left: 0.1rem;
+        }
+        .main-nav button.nav-upload:hover {
+            background: var(--accent-dark);
+            transform: scale(1.05);
+        }
+        .main-nav button.nav-upload svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.2;
+        }
+        .main-nav button.nav-upload.active {
+            background: var(--accent-dark);
+            color: #fff;
         }
 
         .header-actions {
@@ -239,31 +276,22 @@
             stroke-width: 1.8;
         }
 
-        .btn-akun {
+        .btn-login {
             display: none;
-            align-items: center;
-            gap: 0.3rem;
             border: 1px solid var(--border);
             background: var(--surface);
             color: var(--text);
             font-weight: 600;
-            font-size: 0.78rem;
-            padding: 0.35rem 0.7rem;
-            border-radius: var(--radius);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.7rem;
+            border-radius: var(--radius-pill);
             cursor: pointer;
             transition: border-color 0.15s, background 0.15s;
             white-space: nowrap;
         }
-        .btn-akun:hover {
+        .btn-login:hover {
             border-color: var(--accent);
             background: var(--accent-soft);
-        }
-        .btn-akun svg {
-            width: 14px;
-            height: 14px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
         }
 
         .user-badge {
@@ -301,24 +329,6 @@
         }
         .user-badge .logout-btn:hover {
             color: var(--text);
-        }
-
-        .btn-login {
-            display: none;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
-            font-weight: 600;
-            font-size: 0.75rem;
-            padding: 0.25rem 0.7rem;
-            border-radius: var(--radius-pill);
-            cursor: pointer;
-            transition: border-color 0.15s, background 0.15s;
-            white-space: nowrap;
-        }
-        .btn-login:hover {
-            border-color: var(--accent);
-            background: var(--accent-soft);
         }
 
         .mobile-search-toggle {
@@ -367,14 +377,11 @@
             .main-nav {
                 display: flex;
             }
-            .btn-akun {
+            .btn-login {
                 display: inline-flex;
             }
             .user-badge {
                 display: flex;
-            }
-            .btn-login {
-                display: inline-flex;
             }
             .mobile-search-toggle,
             .mobile-search-bar {
@@ -978,6 +985,7 @@
             stroke-width: 2;
         }
 
+        /* === MOBILE NAV === */
         .mobile-nav {
             position: fixed;
             bottom: 0;
@@ -1010,8 +1018,9 @@
             min-height: 44px;
             min-width: 44px;
             flex: 1 1 0;
-            max-width: 90px;
+            max-width: 80px;
             transition: color 0.15s;
+            border-radius: 0;
         }
         .mobile-nav button svg {
             width: 19px;
@@ -1024,6 +1033,40 @@
         .mobile-nav button.active {
             color: var(--accent-dark);
         }
+
+        /* Tombol Upload di mobile — bundar dengan latar */
+        .mobile-nav button.nav-upload-mobile {
+            background: var(--nav-upload-bg);
+            color: var(--nav-upload-color);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            max-width: 48px;
+            padding: 0;
+            flex: none;
+            margin-top: -6px;
+            box-shadow: 0 4px 12px rgba(168, 103, 43, 0.3);
+            transition: transform 0.15s, background 0.15s;
+        }
+        .mobile-nav button.nav-upload-mobile svg {
+            stroke: currentColor;
+            width: 22px;
+            height: 22px;
+        }
+        .mobile-nav button.nav-upload-mobile:active {
+            transform: scale(0.92);
+        }
+        .mobile-nav button.nav-upload-mobile.active {
+            background: var(--accent-dark);
+            color: #fff;
+        }
+
+        /* Sembunyikan tombol yang tidak perlu */
+        .mobile-nav button.hidden-nav {
+            display: none !important;
+        }
+
         @media (min-width: 1024px) {
             .mobile-nav {
                 display: none !important;
@@ -1034,21 +1077,38 @@
                 font-size: 0.5rem;
                 padding: 0.15rem 0.2rem;
                 min-width: 40px;
-                max-width: 72px;
+                max-width: 68px;
             }
             .mobile-nav button svg {
                 width: 17px;
                 height: 17px;
+            }
+            .mobile-nav button.nav-upload-mobile {
+                width: 44px;
+                height: 44px;
+                min-width: 44px;
+                max-width: 44px;
+            }
+            .mobile-nav button.nav-upload-mobile svg {
+                width: 20px;
+                height: 20px;
             }
         }
         @media (max-width: 340px) {
             .mobile-nav button {
                 font-size: 0.44rem;
                 min-width: 36px;
+                max-width: 56px;
             }
-            .mobile-nav button svg {
-                width: 16px;
-                height: 16px;
+            .mobile-nav button.nav-upload-mobile {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+                max-width: 40px;
+            }
+            .mobile-nav button.nav-upload-mobile svg {
+                width: 18px;
+                height: 18px;
             }
         }
 
@@ -1781,13 +1841,18 @@
                 height: 40px;
             }
         }
+
+        /* desktop nav upload badge */
+        .main-nav button.nav-upload .upload-badge {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
     <div class="app">
 
-        <!-- HEADER (tanpa tombol Upload) -->
+        <!-- HEADER -->
         <header class="site-header">
             <div class="header-inner">
                 <a href="#/explore" class="logo" id="logoLink">
@@ -1800,9 +1865,11 @@
                     <input type="text" id="searchInput" placeholder="Cari preset, template, kreator..." />
                 </div>
 
+                <!-- DESKTOP NAV -->
                 <nav class="main-nav" id="mainNav">
-                    <button class="active" data-view="explore">Explore</button>
-                    <button data-view="creators">Kreator</button>
+                    <button class="active" data-view="explore" data-nav-label="home">Home</button>
+                    <button data-view="creators" data-nav-label="creators">Kreator</button>
+                    <!-- Upload & Profile akan ditambahkan lewat JS -->
                 </nav>
 
                 <div class="header-actions">
@@ -1815,11 +1882,6 @@
                         <span id="userName">User</span>
                         <button class="logout-btn" id="logoutBtn" title="Keluar">&times;</button>
                     </div>
-                    <button class="btn-akun" id="akunBtn" title="Akun Saya">
-                        <svg viewBox="0 0 24 24" width="14" height="14"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        Akun
-                    </button>
-                    <!-- tombol upload di header telah dihapus -->
                 </div>
             </div>
 
@@ -1877,23 +1939,17 @@
         </main>
 
         <!-- MOBILE NAV -->
-        <nav class="mobile-nav">
-            <button class="active" data-nav="explore">
+        <nav class="mobile-nav" id="mobileNav">
+            <button class="active" data-nav="explore" data-nav-label="home">
                 <svg viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                Explore
+                Home
             </button>
-            <button data-nav="creators">
+            <button data-nav="creators" data-nav-label="creators">
                 <svg viewBox="0 0 24 24" width="18" height="18"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 Kreator
             </button>
-            <button id="mobileUploadBtn">
-                <svg viewBox="0 0 24 24" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Upload
-            </button>
-            <button id="mobileAkunBtn">
-                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Akun
-            </button>
+            <!-- Upload akan ditambahkan lewat JS (hanya untuk kreator) -->
+            <!-- Profile akan ditambahkan lewat JS (hanya untuk login) -->
         </nav>
 
         <!-- LOGIN MODAL -->
@@ -2040,7 +2096,7 @@
             </div>
         </div>
 
-        <!-- AKUN MODAL -->
+        <!-- AKUN MODAL (Profile) -->
         <div class="modal-overlay" id="akunModal">
             <div class="modal-sheet">
                 <div class="sheet-handle"></div>
@@ -2147,7 +2203,9 @@
                 sparkle: '<svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5L12 2z"/></svg>',
                 coin: '<svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>',
                 calendar: '<svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
-                users: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
+                users: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+                plus: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2.2"><line x1="12" y1="4" x2="12" y2="20"/><line x1="4" y1="12" x2="20" y2="12"/></svg>',
+                home: '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10"/></svg>',
             };
 
             // ===== FIREBASE KONFIGURASI =====
@@ -2186,7 +2244,7 @@
                                 .then(() => {
                                     firebaseInitialized = true;
                                     document.getElementById('setupGuideContainer').style.display =
-                                        'none';
+                                    'none';
                                     subscribeTemplates();
                                     subscribeCreators();
                                 })
@@ -2224,85 +2282,132 @@
             const searchInput = document.getElementById('searchInput');
             const searchInputMobile = document.getElementById('searchInputMobile');
             const contextLine = document.getElementById('contextLine');
+            const mainNav = document.getElementById('mainNav');
+            const mobileNav = document.getElementById('mobileNav');
 
-            function generateKode() {
-                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                let k = '';
-                for (let i = 0; i < 6; i++) k += chars.charAt(Math.floor(Math.random() * chars.length));
-                return k;
-            }
+            // ===== NAV BUILDER =====
+            function buildDesktopNav() {
+                // Hapus tombol selain Home & Kreator (yang statis)
+                const existingBtns = mainNav.querySelectorAll('button');
+                const homeBtn = existingBtns[0];
+                const kreatorBtn = existingBtns[1];
+                mainNav.innerHTML = '';
+                mainNav.appendChild(homeBtn);
+                mainNav.appendChild(kreatorBtn);
 
-            function getYoutubeId(url) {
-                if (!url) return null;
-                const patterns = [
-                    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?/]+)/,
-                    /youtube\.com\/shorts\/([^&\s?/]+)/
-                ];
-                for (const p of patterns) { const m = url.match(p);
-                    if (m) return m[1]; }
-                return null;
-            }
-
-            function embedYoutube(id) { return `https://www.youtube.com/embed/${id}?rel=0&autoplay=1`; }
-
-            function thumbYoutube(id) { return `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }
-
-            function formatNumber(n) {
-                n = n || 0;
-                if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
-                if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
-                return n.toString();
-            }
-
-            function formatRupiah(n) { return 'Rp' + formatNumber(n); }
-
-            function formatDate(timestamp) {
-                if (!timestamp) return '';
-                let date;
-                if (timestamp && typeof timestamp.toDate === 'function') {
-                    date = timestamp.toDate();
-                } else if (timestamp instanceof Date) {
-                    date = timestamp;
-                } else if (typeof timestamp === 'string') {
-                    date = new Date(timestamp);
-                } else if (timestamp && timestamp.seconds) {
-                    date = new Date(timestamp.seconds * 1000);
-                } else {
-                    return '';
+                // Upload (hanya jika kreator)
+                if (isCreator && currentUser) {
+                    const uploadBtn = document.createElement('button');
+                    uploadBtn.className = 'nav-upload';
+                    uploadBtn.dataset.view = 'upload';
+                    uploadBtn.dataset.navLabel = 'upload';
+                    uploadBtn.setAttribute('aria-label', 'Upload');
+                    uploadBtn.innerHTML = ICON.plus;
+                    uploadBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        openUploadFlow();
+                    });
+                    mainNav.appendChild(uploadBtn);
                 }
-                return date.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+
+                // Profile (hanya jika login)
+                if (currentUser) {
+                    const profileBtn = document.createElement('button');
+                    profileBtn.dataset.view = 'profile';
+                    profileBtn.dataset.navLabel = 'profile';
+                    profileBtn.textContent = 'Profile';
+                    profileBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (!currentUser) { showToast('Masuk dulu', 'warning'); return; }
+                        if (!isCreator) {
+                            showToast('Kamu belum terdaftar sebagai kreator', 'info');
+                            return;
+                        }
+                        currentAkunTab = 'profile';
+                        updateAkunTabsUI();
+                        renderAkunContent();
+                        document.getElementById('akunModal').classList.add('active');
+                    });
+                    mainNav.appendChild(profileBtn);
+                }
+
+                // set active
+                updateNavActiveState();
             }
 
-            function escapeHtml(t) {
-                if (!t) return '';
-                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-                return String(t).replace(/[&<>"']/g, m => map[m]);
+            function buildMobileNav() {
+                // Hapus semua tombol kecuali Home & Kreator
+                const existing = mobileNav.querySelectorAll('button');
+                let homeBtn = null;
+                let kreatorBtn = null;
+                existing.forEach(b => {
+                    const nav = b.dataset.nav;
+                    if (nav === 'explore') homeBtn = b;
+                    else if (nav === 'creators') kreatorBtn = b;
+                });
+                mobileNav.innerHTML = '';
+                if (homeBtn) mobileNav.appendChild(homeBtn);
+                if (kreatorBtn) mobileNav.appendChild(kreatorBtn);
+
+                // Upload (hanya jika kreator) — bundar dengan latar
+                if (isCreator && currentUser) {
+                    const uploadBtn = document.createElement('button');
+                    uploadBtn.className = 'nav-upload-mobile';
+                    uploadBtn.dataset.nav = 'upload';
+                    uploadBtn.dataset.navLabel = 'upload';
+                    uploadBtn.setAttribute('aria-label', 'Upload');
+                    uploadBtn.innerHTML = ICON.plus + '<span style="font-size:0.5rem;margin-top:2px;">Upload</span>';
+                    uploadBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        openUploadFlow();
+                    });
+                    mobileNav.appendChild(uploadBtn);
+                }
+
+                // Profile (hanya jika login)
+                if (currentUser) {
+                    const profileBtn = document.createElement('button');
+                    profileBtn.dataset.nav = 'profile';
+                    profileBtn.dataset.navLabel = 'profile';
+                    profileBtn.innerHTML = ICON.user + '<span>Profile</span>';
+                    profileBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (!currentUser) { showToast('Masuk dulu', 'warning'); return; }
+                        if (!isCreator) {
+                            showToast('Kamu belum terdaftar sebagai kreator', 'info');
+                            return;
+                        }
+                        currentAkunTab = 'profile';
+                        updateAkunTabsUI();
+                        renderAkunContent();
+                        document.getElementById('akunModal').classList.add('active');
+                    });
+                    mobileNav.appendChild(profileBtn);
+                }
+
+                updateNavActiveState();
             }
 
-            function getInitials(name) {
-                if (!name) return '?';
-                return name.trim().split(/\s+/).map(w => w[0]).join('').toUpperCase().slice(0, 2);
+            function updateNavActiveState() {
+                const navLabel = currentView === 'explore' ? 'home' :
+                    currentView === 'creators' ? 'creators' :
+                    currentView === 'upload' ? 'upload' :
+                    currentView === 'profile' ? 'profile' : 'home';
+
+                // Desktop
+                mainNav.querySelectorAll('button').forEach(b => {
+                    const label = b.dataset.navLabel || b.textContent.toLowerCase().trim();
+                    b.classList.toggle('active', label === navLabel);
+                });
+
+                // Mobile
+                mobileNav.querySelectorAll('button').forEach(b => {
+                    const label = b.dataset.navLabel || b.textContent.toLowerCase().trim();
+                    b.classList.toggle('active', label === navLabel);
+                });
             }
 
-            function ratioCss(r) { return (r || '16:9').replace(':', '/'); }
-
-            function showToast(msg, type) {
-                type = type || 'info';
-                const c = document.getElementById('toastContainer');
-                const t = document.createElement('div');
-                t.className = 'toast ' + type;
-                const icon = type === 'success' ? ICON.check : type === 'error' ? ICON.alert : ICON.check;
-                t.innerHTML = icon + '<span>' + msg + '</span>';
-                c.appendChild(t);
-                setTimeout(() => {
-                    t.style.opacity = '0';
-                    t.style.transform = 'translateY(6px)';
-                    t.style.transition = '0.2s';
-                    setTimeout(() => t.remove(), 220);
-                }, 2600);
-            }
-
-            // ===== FUNGSI CREATOR (UID sebagai document ID) =====
+            // ===== FUNGSI CREATOR =====
             function addCreator(data) {
                 if (!db) return Promise.reject('Firestore not ready');
                 const uid = data.uid;
@@ -2318,15 +2423,15 @@
                             isCreator = true;
                             currentUserCreator = doc.data();
                             currentUserCreatorId = uid;
-                            document.getElementById('akunBtn').style.display = 'inline-flex';
-                            document.getElementById('mobileAkunBtn').style.display = 'flex';
+                            buildDesktopNav();
+                            buildMobileNav();
                             return true;
                         } else {
                             isCreator = false;
                             currentUserCreator = null;
                             currentUserCreatorId = null;
-                            document.getElementById('akunBtn').style.display = 'none';
-                            document.getElementById('mobileAkunBtn').style.display = 'none';
+                            buildDesktopNav();
+                            buildMobileNav();
                             return false;
                         }
                     })
@@ -2334,6 +2439,8 @@
                         isCreator = false;
                         currentUserCreator = null;
                         currentUserCreatorId = null;
+                        buildDesktopNav();
+                        buildMobileNav();
                         return false;
                     });
             }
@@ -2386,7 +2493,6 @@
                     .then(doc => doc.exists);
             }
 
-            // ===== TOGGLE LIKE DENGAN TRANSACTION (ATOMIC) =====
             function toggleLike(templateId, userId) {
                 if (!db || !userId) return Promise.reject('Not logged in');
                 const templateRef = db.collection('templates').doc(templateId);
@@ -2399,14 +2505,12 @@
                     const currentLikes = doc.data().likes || 0;
 
                     if (likeDoc.exists) {
-                        // UNLIKE
                         transaction.delete(likeRef);
                         transaction.update(templateRef, {
                             likes: firebase.firestore.FieldValue.increment(-1)
                         });
                         return { action: 'unliked', newLikes: currentLikes - 1 };
                     } else {
-                        // LIKE
                         transaction.set(likeRef, {
                             likedAt: firebase.firestore.FieldValue.serverTimestamp(),
                             userId: userId
@@ -2522,9 +2626,10 @@
 
             function emptyStateHtml(kind) {
                 if (kind === 'creators') {
+                    const showRegister = currentUser && !isCreator;
                     return `<div class="empty-state">${ICON.userPlus}<div class="title">Belum ada kreator terdaftar</div>
                 <div class="sub">Jadilah kreator pertama yang bergabung di Preset Library.</div>
-                ${currentUser && !isCreator ? '<button class="btn-register-cta" id="emptyRegisterBtn">Daftar sebagai Kreator</button>' :
+                ${showRegister ? '<button class="btn-register-cta" id="emptyRegisterBtn">Daftar sebagai Kreator</button>' :
                 !currentUser ? '<button class="btn-register-cta" id="emptyLoginBtn">Masuk untuk Daftar</button>' : ''}</div>`;
                 }
                 if (kind === 'creator-profile') {
@@ -2539,20 +2644,17 @@
                 const total = allTemplates.length;
                 const creators = allCreators.length;
                 if (currentView === 'creators' && !currentCreator) {
+                    // Hanya tampilkan jumlah kreator, tanpa tombol daftar di context bar
                     contextLine.innerHTML =
-                        `<strong>${creators}</strong> kreator sudah membagikan karyanya di sini. ${!currentUser ? ' <button class="btn-register-creator" style="margin-left:0.5rem;padding:0.15rem 0.7rem;font-size:0.7rem;" id="contextLoginBtn">Masuk untuk daftar</button>' : (!isCreator ? ' <button class="btn-register-creator" style="margin-left:0.5rem;padding:0.15rem 0.7rem;font-size:0.7rem;" id="contextRegisterBtn">Daftar sebagai Kreator</button>' : '')}`;
-                    setTimeout(() => {
-                        const b = document.getElementById('contextLoginBtn');
-                        if (b) b.addEventListener('click', () => document.getElementById('loginBtn').click());
-                        const r = document.getElementById('contextRegisterBtn');
-                        if (r) r.addEventListener('click', openRegisterModal);
-                    }, 0);
-                } else if (currentView === 'creators' && currentCreator) {
-                    contextLine.innerHTML = `Karya dari <strong>${escapeHtml(currentCreator)}</strong>`;
-                } else {
-                    contextLine.innerHTML =
-                        `<strong>${total}</strong> template dari <strong>${creators}</strong> kreator Indonesia.`;
+                        `<strong>${creators}</strong> kreator sudah bergabung di Preset Library.`;
+                    return;
                 }
+                if (currentView === 'creators' && currentCreator) {
+                    contextLine.innerHTML = `Karya dari <strong>${escapeHtml(currentCreator)}</strong>`;
+                    return;
+                }
+                contextLine.innerHTML =
+                    `<strong>${total}</strong> template dari <strong>${creators}</strong> kreator Indonesia.`;
             }
 
             function render() {
@@ -2585,9 +2687,10 @@
             function renderCreatorDirectory() {
                 updateContextLine();
                 const creators = allCreators;
+                const showRegister = currentUser && !isCreator;
                 let html = `<div class="creator-directory-top">
               <span class="title">${ICON.users} Semua Kreator</span>
-              ${currentUser && !isCreator ? `<button class="btn-register-creator" id="dirRegisterBtn">${ICON.userPlus} Daftar sebagai Kreator</button>` :
+              ${showRegister ? `<button class="btn-register-creator" id="dirRegisterBtn">${ICON.userPlus} Daftar sebagai Kreator</button>` :
               !currentUser ? `<button class="btn-register-creator" id="dirLoginBtn">${ICON.userPlus} Masuk untuk Daftar</button>` : ''}
             </div>`;
                 if (creators.length === 0) {
@@ -2625,7 +2728,7 @@
                     el.addEventListener('click', function() {
                         currentCreator = this.dataset.creator;
                         currentView = 'creators';
-                        setActiveNav('creators');
+                        updateNavActiveState();
                         render();
                         updateUrl();
                     });
@@ -2687,7 +2790,7 @@
                 });
             }
 
-            // === AKUN ===
+            // ===== AKUN =====
             function renderAkunContent() {
                 const container = document.getElementById('akunTabContent');
                 if (currentAkunTab === 'profile') {
@@ -2845,37 +2948,6 @@
                 });
             }
 
-            document.getElementById('akunBtn').addEventListener('click', function() {
-                if (!currentUser || !isCreator) {
-                    showToast('Kamu belum terdaftar sebagai kreator', 'info');
-                    return;
-                }
-                currentAkunTab = 'profile';
-                updateAkunTabsUI();
-                renderAkunContent();
-                document.getElementById('akunModal').classList.add('active');
-            });
-            document.getElementById('mobileAkunBtn').addEventListener('click', function() {
-                if (!currentUser || !isCreator) {
-                    showToast('Kamu belum terdaftar sebagai kreator', 'info');
-                    return;
-                }
-                currentAkunTab = 'profile';
-                updateAkunTabsUI();
-                renderAkunContent();
-                document.getElementById('akunModal').classList.add('active');
-            });
-            document.getElementById('closeAkunModal').addEventListener('click', () => document.getElementById('akunModal')
-                .classList.remove('active'));
-
-            document.querySelectorAll('.akun-section-tabs button').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    currentAkunTab = this.dataset.akunTab;
-                    updateAkunTabsUI();
-                    renderAkunContent();
-                });
-            });
-
             // ===== DETAIL MODAL =====
             function openDetail(template) {
                 if (!template || !template.id) { showToast('Template tidak ditemukan', 'error'); return; }
@@ -2884,7 +2956,6 @@
                 const content = document.getElementById('detailContent');
                 const userId = currentUser ? currentUser.uid : null;
 
-                // ===== VIEW COUNT - SEMUA USER =====
                 const viewKey = userId ? `${userId}_${template.id}` : `anon_${template.id}`;
                 if (!viewedTemplates[viewKey]) {
                     viewedTemplates[viewKey] = true;
@@ -2914,7 +2985,6 @@
                     }
                 }
 
-                // ===== LINKS UNTUK GRATIS =====
                 let linksHtml = '';
                 if (isFree) {
                     let links = [];
@@ -2935,7 +3005,6 @@
                     }
                 }
 
-                // ===== KONTAK BERBAYAR =====
                 let contactHtml = '';
                 if (!isFree) {
                     const c = allCreators.find(cr => (cr.name || '').toLowerCase() === (template.creator || '')
@@ -2971,7 +3040,6 @@
                 const isOwner = currentUser && template.creatorUid === currentUser.uid;
                 const uploadDate = formatDate(template.createdAt);
 
-                // ===== CEK STATUS LIKE =====
                 let likedState = likedTemplateIds.has(template.id);
                 if (userId) {
                     hasUserLiked(template.id, userId).then(liked => {
@@ -3033,20 +3101,17 @@
 
                 document.getElementById('detailModal').classList.add('active');
 
-                // ===== EVENT CLOSE =====
                 document.getElementById('closeDetailModal').addEventListener('click', closeDetail);
 
-                // ===== KLIK KREATOR =====
                 document.getElementById('detailCreatorLine').addEventListener('click', function() {
                     closeDetail();
                     currentCreator = this.dataset.creator;
                     currentView = 'creators';
-                    setActiveNav('creators');
+                    updateNavActiveState();
                     render();
                     updateUrl();
                 });
 
-                // ===== LIKE BUTTON =====
                 const likeBtn = document.getElementById('likeBtn');
                 if (likeBtn) {
                     likeBtn.addEventListener('click', function(e) {
@@ -3061,7 +3126,6 @@
                         const currentCount = parseInt(countEl.textContent.replace(/\D/g, '')) || 0;
                         const isCurrentlyLiked = this.classList.contains('liked');
 
-                        // Optimistic update
                         if (isCurrentlyLiked) {
                             this.classList.remove('liked');
                             countEl.textContent = formatNumber(Math.max(0, currentCount - 1));
@@ -3076,10 +3140,8 @@
                             if (tpl) tpl.likes = (tpl.likes || 0) + 1;
                         }
 
-                        // Jalankan transaction
                         toggleLike(id, currentUser.uid)
                             .then(result => {
-                                // Pastikan UI sesuai dengan hasil sebenarnya
                                 const finalLikes = result.newLikes;
                                 countEl.textContent = formatNumber(finalLikes);
                                 if (result.action === 'liked') {
@@ -3089,12 +3151,10 @@
                                     this.classList.remove('liked');
                                     likedTemplateIds.delete(id);
                                 }
-                                // Update allTemplates
                                 const tpl = allTemplates.find(t => t.id === id);
                                 if (tpl) tpl.likes = finalLikes;
                             })
                             .catch(err => {
-                                // Rollback jika gagal
                                 showToast('Gagal: ' + err.message, 'error');
                                 const tpl = allTemplates.find(t => t.id === id);
                                 if (tpl) {
@@ -3109,7 +3169,6 @@
                     });
                 }
 
-                // ===== DELETE & EDIT =====
                 const deleteBtn = document.getElementById('deletePresetBtn');
                 if (deleteBtn) {
                     deleteBtn.addEventListener('click', function() {
@@ -3143,7 +3202,6 @@
                     });
                 }
 
-                // ===== USE COUNT (DOWNLOAD) =====
                 content.querySelectorAll('.detail-links a').forEach(link => {
                     link.addEventListener('click', function(e) {
                         const templateId = this.dataset.templateId;
@@ -3172,7 +3230,7 @@
                     currentView = 'explore';
                     currentCreator = null;
                     activeRatio = null;
-                    setActiveNav('explore');
+                    updateNavActiveState();
                     applyRatioChipUI();
                     render();
                     return;
@@ -3192,14 +3250,14 @@
                     if (tmpl) {
                         currentView = 'explore';
                         currentCreator = null;
-                        setActiveNav('explore');
+                        updateNavActiveState();
                         render();
                         setTimeout(() => openDetail(tmpl), 100);
                         return;
                     } else {
                         currentView = 'explore';
                         currentCreator = null;
-                        setActiveNav('explore');
+                        updateNavActiveState();
                         render();
                         showToast('Template tidak ditemukan', 'error');
                         return;
@@ -3208,20 +3266,20 @@
                 if (parts.length === 1 && parts[0] === 'kreator') {
                     currentView = 'creators';
                     currentCreator = null;
-                    setActiveNav('creators');
+                    updateNavActiveState();
                     renderCreatorDirectory();
                     return;
                 }
                 if (parts.length === 1 && parts[0] !== 'explore') {
                     currentView = 'creators';
                     currentCreator = decodeURIComponent(parts[0]);
-                    setActiveNav('creators');
+                    updateNavActiveState();
                     render();
                     return;
                 }
                 currentView = 'explore';
                 currentCreator = null;
-                setActiveNav('explore');
+                updateNavActiveState();
                 render();
             }
 
@@ -3243,12 +3301,6 @@
                 const hash = window.location.hash.slice(1);
                 if (!dataLoaded) { pendingHash = hash; return; }
                 processHash(hash);
-            }
-
-            function setActiveNav(view) {
-                document.querySelectorAll('#mainNav button, .mobile-nav button[data-nav]').forEach(b => {
-                    b.classList.toggle('active', (b.dataset.view || b.dataset.nav) === view);
-                });
             }
 
             function applyRatioChipUI() {
@@ -3311,14 +3363,31 @@
             function goToView(view) {
                 currentView = view;
                 currentCreator = null;
-                setActiveNav(view);
+                updateNavActiveState();
                 if (view === 'creators') renderCreatorDirectory();
                 else render();
                 updateUrl();
             }
-            document.querySelectorAll('#mainNav button, .mobile-nav button[data-nav]').forEach(btn => {
-                btn.addEventListener('click', function() { goToView(this.dataset.view || this.dataset.nav); });
-            });
+
+            // Home = explore
+            document.querySelectorAll('#mainNav button[data-view="explore"], .mobile-nav button[data-nav="explore"]')
+                .forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        goToView('explore');
+                        activeRatio = null;
+                        applyRatioChipUI();
+                    });
+                });
+
+            document.querySelectorAll('#mainNav button[data-view="creators"], .mobile-nav button[data-nav="creators"]')
+                .forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        goToView('creators');
+                    });
+                });
+
             document.getElementById('logoLink').addEventListener('click', function(e) {
                 e.preventDefault();
                 goToView('explore');
@@ -3326,7 +3395,7 @@
                 applyRatioChipUI();
             });
 
-            // ===== UPLOAD (tombol ada di mobile) =====
+            // ===== UPLOAD FLOW =====
             function openUploadFlow() {
                 if (!currentUser) { showToast('Silakan masuk terlebih dahulu', 'info');
                     document.getElementById('loginBtn').click(); return; }
@@ -3356,7 +3425,6 @@
                 }
             }
 
-            document.getElementById('mobileUploadBtn').addEventListener('click', openUploadFlow);
             document.getElementById('closeUploadModal').addEventListener('click', () => document.getElementById('uploadModal')
                 .classList.remove('active'));
 
@@ -3525,8 +3593,8 @@
                         isCreator = true;
                         currentUserCreator = data;
                         currentUserCreatorId = currentUser.uid;
-                        document.getElementById('akunBtn').style.display = 'inline-flex';
-                        document.getElementById('mobileAkunBtn').style.display = 'flex';
+                        buildDesktopNav();
+                        buildMobileNav();
                         if (unsubscribeCreators) unsubscribeCreators();
                         subscribeCreators();
                         if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
@@ -3795,8 +3863,6 @@
                 currentUser = user;
                 const badge = document.getElementById('userBadge');
                 const loginBtn = document.getElementById('loginBtn');
-                const akunBtn = document.getElementById('akunBtn');
-                const mobileAkunBtn = document.getElementById('mobileAkunBtn');
 
                 if (user) {
                     badge.style.display = 'flex';
@@ -3805,23 +3871,107 @@
                     document.getElementById('userName').textContent = displayName;
                     document.getElementById('userAvatar').textContent = (displayName)[0].toUpperCase();
                     if (firebaseInitialized && db) {
-                        checkIfCreator(user.uid);
+                        checkIfCreator(user.uid).then(() => {
+                            buildDesktopNav();
+                            buildMobileNav();
+                        });
                     }
                 } else {
                     badge.style.display = 'none';
                     loginBtn.style.display = 'inline-flex';
-                    akunBtn.style.display = 'none';
-                    mobileAkunBtn.style.display = 'none';
                     isCreator = false;
                     currentUserCreator = null;
                     currentUserCreatorId = null;
                     viewedTemplates = {};
                     likedTemplateIds = new Set();
+                    buildDesktopNav();
+                    buildMobileNav();
                 }
+                // Rebuild nav setiap auth berubah
+                buildDesktopNav();
+                buildMobileNav();
             }
 
             if (auth) {
                 auth.onAuthStateChanged(user => updateAuthUI(user));
+            }
+
+            // ===== UTILITY FUNCTIONS =====
+            function generateKode() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let k = '';
+                for (let i = 0; i < 6; i++) k += chars.charAt(Math.floor(Math.random() * chars.length));
+                return k;
+            }
+
+            function getYoutubeId(url) {
+                if (!url) return null;
+                const patterns = [
+                    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?/]+)/,
+                    /youtube\.com\/shorts\/([^&\s?/]+)/
+                ];
+                for (const p of patterns) { const m = url.match(p);
+                    if (m) return m[1]; }
+                return null;
+            }
+
+            function embedYoutube(id) { return `https://www.youtube.com/embed/${id}?rel=0&autoplay=1`; }
+
+            function thumbYoutube(id) { return `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }
+
+            function formatNumber(n) {
+                n = n || 0;
+                if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+                if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+                return n.toString();
+            }
+
+            function formatRupiah(n) { return 'Rp' + formatNumber(n); }
+
+            function formatDate(timestamp) {
+                if (!timestamp) return '';
+                let date;
+                if (timestamp && typeof timestamp.toDate === 'function') {
+                    date = timestamp.toDate();
+                } else if (timestamp instanceof Date) {
+                    date = timestamp;
+                } else if (typeof timestamp === 'string') {
+                    date = new Date(timestamp);
+                } else if (timestamp && timestamp.seconds) {
+                    date = new Date(timestamp.seconds * 1000);
+                } else {
+                    return '';
+                }
+                return date.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            function escapeHtml(t) {
+                if (!t) return '';
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+                return String(t).replace(/[&<>"']/g, m => map[m]);
+            }
+
+            function getInitials(name) {
+                if (!name) return '?';
+                return name.trim().split(/\s+/).map(w => w[0]).join('').toUpperCase().slice(0, 2);
+            }
+
+            function ratioCss(r) { return (r || '16:9').replace(':', '/'); }
+
+            function showToast(msg, type) {
+                type = type || 'info';
+                const c = document.getElementById('toastContainer');
+                const t = document.createElement('div');
+                t.className = 'toast ' + type;
+                const icon = type === 'success' ? ICON.check : type === 'error' ? ICON.alert : ICON.check;
+                t.innerHTML = icon + '<span>' + msg + '</span>';
+                c.appendChild(t);
+                setTimeout(() => {
+                    t.style.opacity = '0';
+                    t.style.transform = 'translateY(6px)';
+                    t.style.transition = '0.2s';
+                    setTimeout(() => t.remove(), 220);
+                }, 2600);
             }
 
             // ===== INIT =====
