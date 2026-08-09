@@ -2208,59 +2208,155 @@
                 home: '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10"/></svg>',
             };
 
-            // ===== FIREBASE KONFIGURASI =====
-            const firebaseConfig = {
-                apiKey: "AIzaSyDTqzvWQUcR4piWnprU7baAp-CRgbWRFxE",
-                authDomain: "preset-lbry.firebaseapp.com",
-                projectId: "preset-lbry",
-                storageBucket: "preset-lbry.firebasestorage.app",
-                messagingSenderId: "753769822591",
-                appId: "1:753769822591:web:7cd6eae45f4a8c4936c24a",
-                measurementId: "G-CCT5VC473G"
-            };
+            // ===== SAMPLE DATA (FALLBACK) =====
+            const SAMPLE_TEMPLATES = [
+                {
+                    id: 'sample-1',
+                    judul: 'Cinematic Teal & Orange Grade',
+                    kategori: 'Preset',
+                    deskripsi: 'Preset warna sinematik dengan gradasi Teal & Orange hangat untuk video travel & vlog VLOG CapCut & Premiere Pro.',
+                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                    aspectRatio: '16:9',
+                    license: 'free',
+                    harga: 0,
+                    linkProject: 'https://drive.google.com',
+                    linkDrive: 'https://drive.google.com',
+                    creator: 'rosmeri',
+                    creatorUid: 'sample-creator-1',
+                    kode: 'A1B2C3',
+                    likes: 128,
+                    uses: 450,
+                    views: 1200,
+                    createdAt: new Date('2024-01-15')
+                },
+                {
+                    id: 'sample-2',
+                    judul: 'Minimalist Instagram Reels Pack',
+                    kategori: 'Preset',
+                    deskripsi: 'Kumpulan 5 template Reel estetik dengan tipografi bersih dan transisi halus.',
+                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                    aspectRatio: '9:16',
+                    license: 'free',
+                    harga: 0,
+                    linkDrive: 'https://drive.google.com',
+                    creator: 'rosmeri',
+                    creatorUid: 'sample-creator-1',
+                    kode: 'M3N4O5',
+                    likes: 85,
+                    uses: 310,
+                    views: 890,
+                    createdAt: new Date('2024-02-01')
+                },
+                {
+                    id: 'sample-3',
+                    judul: 'Retro VHS Glitch & Overlay Pack',
+                    kategori: 'Assets',
+                    deskripsi: 'Overlay efek pita kaset VHS vintage 90-an lengkap dengan efek suara static audio.',
+                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                    aspectRatio: '4:3',
+                    license: 'paid',
+                    harga: 25000,
+                    creator: 'alex_edit',
+                    creatorUid: 'sample-creator-2',
+                    kode: 'V7H8S9',
+                    likes: 210,
+                    uses: 620,
+                    views: 2400,
+                    createdAt: new Date('2024-02-10')
+                },
+                {
+                    id: 'sample-4',
+                    judul: 'Cyberpunk Neon Glow Preset',
+                    kategori: 'Preset',
+                    deskripsi: 'Tone malam hari dengan warna neon biru dan ungu tajam, sangat cocok untuk sinematik perkotaan.',
+                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                    aspectRatio: '1:1',
+                    license: 'free',
+                    harga: 0,
+                    linkProject: 'https://drive.google.com',
+                    creator: 'alex_edit',
+                    creatorUid: 'sample-creator-2',
+                    kode: 'C9Y8P7',
+                    likes: 94,
+                    uses: 280,
+                    views: 750,
+                    createdAt: new Date('2024-02-14')
+                },
+                {
+                    id: 'sample-5',
+                    judul: 'Moody Film Grain Matte Look',
+                    kategori: 'Preset',
+                    deskripsi: 'Tone matte ala film seluloid 35mm lembut dengan tekstur grain alami.',
+                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                    aspectRatio: '16:9',
+                    license: 'free',
+                    harga: 0,
+                    linkProject: 'https://drive.google.com',
+                    creator: 'rosmeri',
+                    creatorUid: 'sample-creator-1',
+                    kode: 'F5I6L7',
+                    likes: 142,
+                    uses: 530,
+                    views: 1600,
+                    createdAt: new Date('2024-02-20')
+                },
+                {
+                    id: 'sample-6',
+                    judul: '3D Text Motion Title Templates',
+                    kategori: 'Assets',
+                    deskripsi: 'Animasi judul teks 3D bergaya modern untuk pembuka video YouTube atau klip promo.',
+                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                    aspectRatio: '9:16',
+                    license: 'paid',
+                    harga: 35000,
+                    creator: 'sarah_design',
+                    creatorUid: 'sample-creator-3',
+                    kode: 'T3X7M9',
+                    likes: 175,
+                    uses: 410,
+                    views: 1850,
+                    createdAt: new Date('2024-03-01')
+                }
+            ];
 
+            const SAMPLE_CREATORS = [
+                {
+                    id: 'sample-creator-1',
+                    name: 'rosmeri',
+                    displayName: 'Rosmeri Ann',
+                    bio: 'Video editor & colorist passionate about cinematic tones and mobile workflow.',
+                    software: 'CapCut, Premiere Pro',
+                    wa: '6281234567890',
+                    email: 'rosmeri@example.com',
+                    portfolio: 'https://instagram.com'
+                },
+                {
+                    id: 'sample-creator-2',
+                    name: 'alex_edit',
+                    displayName: 'Alex Visuals',
+                    bio: 'Creating cyberpunk, retro VHS overlays and LUTs for creator community.',
+                    software: 'After Effects, DaVinci Resolve',
+                    wa: '6289876543210',
+                    email: 'alex@example.com',
+                    portfolio: 'https://youtube.com'
+                },
+                {
+                    id: 'sample-creator-3',
+                    name: 'sarah_design',
+                    displayName: 'Sarah Motion',
+                    bio: 'Motion graphics artist & 3D title designer.',
+                    software: 'Blender, After Effects',
+                    wa: '628555666777',
+                    email: 'sarah@example.com',
+                    portfolio: 'https://behance.net'
+                }
+            ];
+
+            // ===== STATE VARIABLES =====
             let firebaseInitialized = false;
             let db = null;
             let auth = null;
             let dataLoaded = false;
-
-            try {
-                firebase.initializeApp(firebaseConfig);
-                auth = firebase.auth();
-                db = firebase.firestore();
-                db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
-                db.collection('templates').limit(1).get()
-                    .then(() => {
-                        firebaseInitialized = true;
-                        document.getElementById('setupGuideContainer').style.display = 'none';
-                        subscribeTemplates();
-                        subscribeCreators();
-                    })
-                    .catch(err => {
-                        console.warn('Firestore connection error:', err.message);
-                        document.getElementById('setupGuideContainer').style.display = 'block';
-                        setTimeout(() => {
-                            db.collection('templates').limit(1).get()
-                                .then(() => {
-                                    firebaseInitialized = true;
-                                    document.getElementById('setupGuideContainer').style.display =
-                                    'none';
-                                    subscribeTemplates();
-                                    subscribeCreators();
-                                })
-                                .catch(() => {});
-                        }, 5000);
-                    });
-                firebaseInitialized = true;
-            } catch (e) {
-                console.error('Firebase init error:', e.message);
-                document.getElementById('setupGuideContainer').style.display = 'block';
-            }
-
-            document.getElementById('closeSetupGuide').addEventListener('click', function() {
-                this.closest('.setup-guide').style.display = 'none';
-            });
-
             let allTemplates = [];
             let allCreators = [];
             let currentView = 'explore';
@@ -2277,6 +2373,36 @@
             let likedTemplateIds = new Set();
             let pendingHash = null;
             let currentAkunTab = 'profile';
+
+            // ===== FIREBASE KONFIGURASI =====
+            const firebaseConfig = {
+                apiKey: "AIzaSyDTqzvWQUcR4piWnprU7baAp-CRgbWRFxE",
+                authDomain: "preset-lbry.firebaseapp.com",
+                projectId: "preset-lbry",
+                storageBucket: "preset-lbry.firebasestorage.app",
+                messagingSenderId: "753769822591",
+                appId: "1:753769822591:web:7cd6eae45f4a8c4936c24a",
+                measurementId: "G-CCT5VC473G"
+            };
+
+            try {
+                firebase.initializeApp(firebaseConfig);
+                auth = firebase.auth();
+                db = firebase.firestore();
+                db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+                firebaseInitialized = true;
+                subscribeTemplates();
+                subscribeCreators();
+            } catch (e) {
+                console.error('Firebase init error:', e.message);
+                allTemplates = [...SAMPLE_TEMPLATES];
+                allCreators = [...SAMPLE_CREATORS];
+                dataLoaded = true;
+            }
+
+            document.getElementById('closeSetupGuide').addEventListener('click', function() {
+                this.closest('.setup-guide').style.display = 'none';
+            });
 
             const cardGrid = document.getElementById('cardGrid');
             const searchInput = document.getElementById('searchInput');
@@ -2525,17 +2651,23 @@
 
             // ===== SUBSCRIBE =====
             function subscribeTemplates() {
-                if (!db) return;
+                if (!db) {
+                    if (allTemplates.length === 0) allTemplates = [...SAMPLE_TEMPLATES];
+                    dataLoaded = true;
+                    render();
+                    return;
+                }
                 if (unsubscribeTemplates) unsubscribeTemplates();
                 unsubscribeTemplates = db.collection('templates')
                     .orderBy('createdAt', 'desc')
                     .onSnapshot(snapshot => {
-                        allTemplates = [];
+                        const list = [];
                         snapshot.forEach(doc => {
                             const data = doc.data();
                             data.id = doc.id;
-                            allTemplates.push(data);
+                            list.push(data);
                         });
+                        allTemplates = list.length > 0 ? list : [...SAMPLE_TEMPLATES];
                         dataLoaded = true;
                         render();
                         if (pendingHash) {
@@ -2545,22 +2677,30 @@
                         }
                     }, err => {
                         console.warn('Templates subscription error:', err.message);
-                        setTimeout(() => { if (db) subscribeTemplates(); }, 5000);
+                        if (allTemplates.length === 0) allTemplates = [...SAMPLE_TEMPLATES];
+                        dataLoaded = true;
+                        render();
                     });
             }
 
             function subscribeCreators() {
-                if (!db) return;
+                if (!db) {
+                    if (allCreators.length === 0) allCreators = [...SAMPLE_CREATORS];
+                    if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
+                    else render();
+                    return;
+                }
                 if (unsubscribeCreators) unsubscribeCreators();
                 unsubscribeCreators = db.collection('creators')
                     .orderBy('name')
                     .onSnapshot(snapshot => {
-                        allCreators = [];
+                        const list = [];
                         snapshot.forEach(doc => {
                             const data = doc.data();
                             data.id = doc.id;
-                            allCreators.push(data);
+                            list.push(data);
                         });
+                        allCreators = list.length > 0 ? list : [...SAMPLE_CREATORS];
                         if (currentUser && currentUserCreatorId) {
                             const updated = allCreators.find(c => c.id === currentUserCreatorId);
                             if (updated) currentUserCreator = updated;
@@ -2569,7 +2709,9 @@
                         else render();
                     }, err => {
                         console.warn('Creators subscription error:', err.message);
-                        setTimeout(() => { if (db) subscribeCreators(); }, 5000);
+                        if (allCreators.length === 0) allCreators = [...SAMPLE_CREATORS];
+                        if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
+                        else render();
                     });
             }
 
@@ -3843,6 +3985,41 @@
             document.getElementById('cancelRegisterAuth').addEventListener('click', () => document.getElementById(
                 'loginModal').classList.remove('active'));
 
+            const closeAkunBtn = document.getElementById('closeAkunModal');
+            if (closeAkunBtn) {
+                closeAkunBtn.addEventListener('click', () => document.getElementById('akunModal').classList.remove('active'));
+            }
+
+            // Close modal when tapping backdrop outside modal content
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                    }
+                });
+            });
+
+            // Handle Akun Section Tabs
+            document.querySelectorAll('.akun-section-tabs button').forEach(tabBtn => {
+                tabBtn.addEventListener('click', function() {
+                    document.querySelectorAll('.akun-section-tabs button').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const targetTab = this.dataset.tab;
+                    const tabProfil = document.getElementById('tabProfileContent');
+                    const tabLiked = document.getElementById('tabLikedContent');
+                    if (tabProfil && tabLiked) {
+                        if (targetTab === 'liked') {
+                            tabProfil.style.display = 'none';
+                            tabLiked.style.display = 'block';
+                            renderLikedTab();
+                        } else {
+                            tabProfil.style.display = 'block';
+                            tabLiked.style.display = 'none';
+                        }
+                    }
+                });
+            });
+
             document.getElementById('switchToRegister').addEventListener('click', function() {
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('registerAuthForm').style.display = 'block';
@@ -3920,13 +4097,17 @@
             function thumbYoutube(id) { return `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }
 
             function formatNumber(n) {
-                n = n || 0;
-                if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
-                if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+                n = Number(n) || 0;
+                if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+                if (n >= 1e3) return (n / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
                 return n.toString();
             }
 
-            function formatRupiah(n) { return 'Rp' + formatNumber(n); }
+            function formatRupiah(n) {
+                const val = Number(n) || 0;
+                if (val === 0) return 'Gratis';
+                return 'Rp ' + val.toLocaleString('id-ID');
+            }
 
             function formatDate(timestamp) {
                 if (!timestamp) return '';
@@ -3979,15 +4160,11 @@
                 cardGrid.innerHTML =
                     `<div class="grid is-loading">${Array(6).fill('<div><div class="thumb skel" style="aspect-ratio:4/5"></div><div class="skel-line skel w60"></div><div class="skel-line skel w40"></div></div>').join('')}</div>`;
                 setTimeout(() => {
-                    if (firebaseInitialized) {
-                        const hash = window.location.hash.slice(1);
-                        if (hash) {
-                            if (dataLoaded) { processHash(hash); } else { pendingHash = hash; }
-                        } else {
-                            processHash('');
-                        }
+                    const hash = window.location.hash.slice(1);
+                    if (hash) {
+                        if (dataLoaded) { processHash(hash); } else { pendingHash = hash; }
                     } else {
-                        document.getElementById('setupGuideContainer').style.display = 'block';
+                        processHash('');
                     }
                 }, 300);
             }
