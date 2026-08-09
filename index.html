@@ -1540,6 +1540,7 @@
             font-weight: 500;
             transition: border-color 0.15s, background 0.15s;
             text-decoration: none;
+            cursor: pointer;
         }
         .detail-links a:hover {
             border-color: var(--border);
@@ -1780,8 +1781,6 @@
                 height: 40px;
             }
         }
-
-        /* ===== tombol upload di header sudah dihapus ===== */
     </style>
 </head>
 <body>
@@ -2151,7 +2150,7 @@
                 users: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
             };
 
-            // ===== FIREBASE KONFIGURASI LENGKAP =====
+            // ===== FIREBASE KONFIGURASI (ganti dengan milik Anda) =====
             const firebaseConfig = {
                 apiKey: "AIzaSyDTqzvWQUcR4piWnprU7baAp-CRgbWRFxE",
                 authDomain: "preset-lbry.firebaseapp.com",
@@ -2361,7 +2360,7 @@
                 auth.onAuthStateChanged(user => updateAuthUI(user));
             }
 
-            // === LOGIN / REGISTER (sama seperti sebelumnya, tidak diubah) ===
+            // === LOGIN / REGISTER ===
             document.getElementById('loginForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 if (!auth) { showToast('Firebase belum siap.', 'error'); return; }
@@ -2989,7 +2988,7 @@
                 });
             });
 
-            // === DETAIL MODAL + COUNT DOWNLOAD ===
+            // ===== DETAIL MODAL + COUNT DOWNLOAD (diperbaiki) =====
             function openDetail(template) {
                 if (!template || !template.id) { showToast('Template tidak ditemukan', 'error'); return; }
                 const ytId = template.linkYoutube ? getYoutubeId(template.linkYoutube) : null;
@@ -2997,6 +2996,7 @@
                 const content = document.getElementById('detailContent');
                 const userId = currentUser ? currentUser.uid : null;
 
+                // View counter (tetap seperti sebelumnya)
                 if (userId && !viewedTemplates[template.id]) {
                     hasUserViewed(template.id, userId).then(exists => {
                         if (!exists) {
@@ -3014,6 +3014,7 @@
                     incrementField(template.id, 'views', 1).catch(() => {});
                 }
 
+                // Links untuk template gratis (dengan event listener khusus untuk count download)
                 let linksHtml = '';
                 if (isFree) {
                     let links = [];
@@ -3025,9 +3026,13 @@
                         icon: ICON.link });
                     if (template.linkAsset2) links.push({ label: 'Asset tambahan 2', url: template.linkAsset2,
                         icon: ICON.link });
-                    linksHtml = links.length ?
-                        `<div class="detail-links">${links.map(l => `<a href="${l.url}" target="_blank" rel="noopener">${l.icon}${l.label}</a>`).join('')}</div>` :
-                        '';
+                    if (links.length) {
+                        linksHtml = `<div class="detail-links">`;
+                        links.forEach(l => {
+                            linksHtml += `<a href="${l.url}" target="_blank" rel="noopener" data-template-id="${template.id}">${l.icon}${l.label}</a>`;
+                        });
+                        linksHtml += `</div>`;
+                    }
                 }
 
                 let contactHtml = '';
@@ -3201,29 +3206,31 @@
                 // ===== COUNT DOWNLOAD: setiap kali link di detail-links diklik, tambah uses =====
                 content.querySelectorAll('.detail-links a').forEach(link => {
                     link.addEventListener('click', function(e) {
-                        const templateId = template.id;
+                        const templateId = this.dataset.templateId;
                         if (templateId) {
+                            // Increment uses di Firestore
                             incrementField(templateId, 'uses', 1).catch(() => {});
-                            // update UI
+                            // Update UI
                             const usesEl = document.getElementById('detailUsesCount');
                             if (usesEl) {
                                 const curr = parseInt(usesEl.textContent.replace(/\D/g, '')) || 0;
                                 usesEl.textContent = formatNumber(curr + 1);
                             }
-                            // update juga di card grid (dari allTemplates)
+                            // Update data lokal agar sinkron saat render ulang
                             const tpl = allTemplates.find(t => t.id === templateId);
                             if (tpl) tpl.uses = (tpl.uses || 0) + 1;
                         }
                     });
                 });
-            }
+            } // akhir function openDetail
 
+            // ===== FUNGSI TUTUP DETAIL =====
             function closeDetail() {
                 document.getElementById('detailModal').classList.remove('active');
                 document.getElementById('detailContent').innerHTML = '';
             }
 
-            // === HASH ROUTING ===
+            // ===== HASH ROUTING =====
             function processHash(hash) {
                 if (!hash || hash === '/') {
                     currentView = 'explore';
@@ -3244,8 +3251,7 @@
                     const username = decodeURIComponent(parts[0]);
                     const kode = parts[1];
                     const tmpl = allTemplates.find(t =>
-                        (t.creator || '').toLowerCase() === username.toLowerCase() && (t.kode || '') ===
-                        kode
+                        (t.creator || '').toLowerCase() === username.toLowerCase() && (t.kode || '') === kode
                     );
                     if (tmpl) {
                         currentView = 'explore';
@@ -3314,7 +3320,7 @@
                     activeRatio));
             }
 
-            // === EVENT BINDINGS ===
+            // ===== EVENT BINDINGS =====
             cardGrid.addEventListener('click', function(e) {
                 const card = e.target.closest('.card');
                 if (!card) return;
@@ -3384,7 +3390,7 @@
                 applyRatioChipUI();
             });
 
-            // === UPLOAD (tetap ada di mobile, diakses via mobileUploadBtn) ===
+            // ===== UPLOAD (tombol ada di mobile) =====
             function openUploadFlow() {
                 if (!currentUser) { showToast('Silakan masuk terlebih dahulu', 'info');
                     document.getElementById('loginBtn').click(); return; }
@@ -3512,7 +3518,7 @@
                     .catch(err => { showToast('Gagal upload: ' + err.message, 'error'); });
             });
 
-            // === REGISTER CREATOR ===
+            // ===== REGISTER CREATOR =====
             function openRegisterModal() {
                 if (!currentUser) { showToast('Silakan masuk terlebih dahulu', 'info');
                     document.getElementById('loginBtn').click(); return; }
@@ -3598,7 +3604,7 @@
 
             window.openRegisterModal = openRegisterModal;
 
-            // === EDIT TEMPLATE ===
+            // ===== EDIT TEMPLATE =====
             function openEditTemplateModal(template) {
                 if (!template) return;
                 document.getElementById('eTEditId').value = template.id;
@@ -3732,7 +3738,7 @@
             document.getElementById('cancelEditTemplate').addEventListener('click', () => document.getElementById(
                 'editTemplateModal').classList.remove('active'));
 
-            // === KEYBOARD SHORTCUTS ===
+            // ===== KEYBOARD SHORTCUTS =====
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList
                     .remove('active'));
@@ -3741,7 +3747,7 @@
             });
             window.addEventListener('hashchange', handleHashChange);
 
-            // === INIT ===
+            // ===== INIT =====
             function init() {
                 cardGrid.innerHTML =
                     `<div class="grid is-loading">${Array(6).fill('<div><div class="thumb skel" style="aspect-ratio:4/5"></div><div class="skel-line skel w60"></div><div class="skel-line skel w40"></div></div>').join('')}</div>`;
