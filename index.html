@@ -632,15 +632,24 @@
         .grid .card .card-foot .price.paid {
             color: var(--accent-dark);
         }
-        .grid .card .card-foot .uses {
+        .grid .card .card-foot .card-stats {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-shrink: 0;
+        }
+        .grid .card .card-foot .uses,
+        .grid .card .card-foot .likes {
             display: flex;
             align-items: center;
             gap: 0.2rem;
             font-family: var(--font-mono);
             font-size: 0.65rem;
             flex-shrink: 0;
+            color: var(--text-muted);
         }
-        .grid .card .card-foot .uses svg {
+        .grid .card .card-foot .uses svg,
+        .grid .card .card-foot .likes svg {
             width: 11px;
             height: 11px;
             stroke: currentColor;
@@ -3247,7 +3256,10 @@
                   <div class="card-creator">${escapeHtml(t.creator || 'Anonim')}</div>
                   <div class="card-foot">
                     <span class="price ${isFree ? 'free' : 'paid'}">${priceLabel}</span>
-                    <span class="uses">${ICON.download}${formatNumber(t.uses || 0)}</span>
+                    <div class="card-stats">
+                      <span class="likes" title="Suka">${ICON.heart}${formatNumber(t.likes || 0)}</span>
+                      <span class="uses" title="Unduhan">${ICON.download}${formatNumber(t.uses || 0)}</span>
+                    </div>
                   </div>
                 </div>
               </article>
