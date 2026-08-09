@@ -2215,7 +2215,6 @@
             let isCreator = false;
             let unsubscribeTemplates = null;
             let unsubscribeCreators = null;
-            // viewedTemplates: key = userId_templateId atau anon_templateId untuk mencegah duplicate count dalam satu sesi
             let viewedTemplates = {};
             let likedTemplateIds = new Set();
             let pendingHash = null;
@@ -2303,7 +2302,7 @@
                 }, 2600);
             }
 
-            // ===== FUNGSI CREATOR (diubah untuk menggunakan UID sebagai document ID) =====
+            // ===== FUNGSI CREATOR (UID sebagai document ID) =====
             function addCreator(data) {
                 if (!db) return Promise.reject('Firestore not ready');
                 const uid = data.uid;
@@ -2387,17 +2386,35 @@
                     .then(doc => doc.exists);
             }
 
+            // ===== TOGGLE LIKE DENGAN TRANSACTION (ATOMIC) =====
             function toggleLike(templateId, userId) {
                 if (!db || !userId) return Promise.reject('Not logged in');
-                const likeRef = db.collection('templates').doc(templateId).collection('likes').doc(userId);
-                return likeRef.get().then(doc => {
-                    if (doc.exists) {
-                        return likeRef.delete().then(() => ({ action: 'unliked' }));
+                const templateRef = db.collection('templates').doc(templateId);
+                const likeRef = templateRef.collection('likes').doc(userId);
+
+                return db.runTransaction(async (transaction) => {
+                    const doc = await transaction.get(templateRef);
+                    if (!doc.exists) throw new Error('Template tidak ditemukan');
+                    const likeDoc = await transaction.get(likeRef);
+                    const currentLikes = doc.data().likes || 0;
+
+                    if (likeDoc.exists) {
+                        // UNLIKE
+                        transaction.delete(likeRef);
+                        transaction.update(templateRef, {
+                            likes: firebase.firestore.FieldValue.increment(-1)
+                        });
+                        return { action: 'unliked', newLikes: currentLikes - 1 };
                     } else {
-                        return likeRef.set({
+                        // LIKE
+                        transaction.set(likeRef, {
                             likedAt: firebase.firestore.FieldValue.serverTimestamp(),
                             userId: userId
-                        }).then(() => ({ action: 'liked' }));
+                        });
+                        transaction.update(templateRef, {
+                            likes: firebase.firestore.FieldValue.increment(1)
+                        });
+                        return { action: 'liked', newLikes: currentLikes + 1 };
                     }
                 });
             }
@@ -2867,44 +2884,37 @@
                 const content = document.getElementById('detailContent');
                 const userId = currentUser ? currentUser.uid : null;
 
-                // ===== VIEW COUNT - SEMUA USER (login maupun tidak) =====
+                // ===== VIEW COUNT - SEMUA USER =====
                 const viewKey = userId ? `${userId}_${template.id}` : `anon_${template.id}`;
                 if (!viewedTemplates[viewKey]) {
                     viewedTemplates[viewKey] = true;
-
                     if (userId) {
-                        // User login: cek apakah sudah pernah melihat sebelumnya (di Firestore)
                         hasUserViewed(template.id, userId).then(exists => {
                             if (!exists) {
                                 incrementField(template.id, 'views', 1).catch(() => {});
                                 recordView(template.id, userId).catch(() => {});
-                                // Update UI
                                 const viewEl = document.getElementById('detailViewCount');
                                 if (viewEl) {
                                     const curr = parseInt(viewEl.textContent.replace(/\D/g, '')) || 0;
                                     viewEl.textContent = formatNumber(curr + 1);
                                 }
-                                // Update data lokal
                                 const tpl = allTemplates.find(t => t.id === template.id);
                                 if (tpl) tpl.views = (tpl.views || 0) + 1;
                             }
                         }).catch(() => {});
                     } else {
-                        // User tidak login: langsung increment
                         incrementField(template.id, 'views', 1).catch(() => {});
-                        // Update UI
                         const viewEl = document.getElementById('detailViewCount');
                         if (viewEl) {
                             const curr = parseInt(viewEl.textContent.replace(/\D/g, '')) || 0;
                             viewEl.textContent = formatNumber(curr + 1);
                         }
-                        // Update data lokal
                         const tpl = allTemplates.find(t => t.id === template.id);
                         if (tpl) tpl.views = (tpl.views || 0) + 1;
                     }
                 }
 
-                // Links untuk template gratis
+                // ===== LINKS UNTUK GRATIS =====
                 let linksHtml = '';
                 if (isFree) {
                     let links = [];
@@ -2925,6 +2935,7 @@
                     }
                 }
 
+                // ===== KONTAK BERBAYAR =====
                 let contactHtml = '';
                 if (!isFree) {
                     const c = allCreators.find(cr => (cr.name || '').toLowerCase() === (template.creator || '')
@@ -2960,18 +2971,21 @@
                 const isOwner = currentUser && template.creatorUid === currentUser.uid;
                 const uploadDate = formatDate(template.createdAt);
 
+                // ===== CEK STATUS LIKE =====
                 let likedState = likedTemplateIds.has(template.id);
-                const likeCheck = userId ? hasUserLiked(template.id, userId) : Promise.resolve(false);
-                likeCheck.then(liked => {
-                    likedState = liked;
-                    if (liked) likedTemplateIds.add(template.id);
-                    else likedTemplateIds.delete(template.id);
-                    const btn = document.getElementById('likeBtn');
-                    if (btn) {
-                        if (likedState) btn.classList.add('liked');
-                        else btn.classList.remove('liked');
-                    }
-                }).catch(() => {});
+                if (userId) {
+                    hasUserLiked(template.id, userId).then(liked => {
+                        likedState = liked;
+                        if (liked) likedTemplateIds.add(template.id);
+                        else likedTemplateIds.delete(template.id);
+                        const btn = document.getElementById('likeBtn');
+                        if (btn) {
+                            btn.classList.toggle('liked', liked);
+                        }
+                    }).catch(() => {});
+                } else {
+                    likedState = false;
+                }
 
                 let ownerActions = '';
                 if (isOwner) {
@@ -3019,8 +3033,10 @@
 
                 document.getElementById('detailModal').classList.add('active');
 
+                // ===== EVENT CLOSE =====
                 document.getElementById('closeDetailModal').addEventListener('click', closeDetail);
 
+                // ===== KLIK KREATOR =====
                 document.getElementById('detailCreatorLine').addEventListener('click', function() {
                     closeDetail();
                     currentCreator = this.dataset.creator;
@@ -3030,36 +3046,70 @@
                     updateUrl();
                 });
 
+                // ===== LIKE BUTTON =====
                 const likeBtn = document.getElementById('likeBtn');
                 if (likeBtn) {
                     likeBtn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         const id = this.dataset.id;
                         if (!id || !db) return;
-                        if (!currentUser) { showToast('Masuk dulu untuk like', 'warning'); return; }
+                        if (!currentUser) {
+                            showToast('Masuk dulu untuk like', 'warning');
+                            return;
+                        }
                         const countEl = document.getElementById('detailLikeCount');
                         const currentCount = parseInt(countEl.textContent.replace(/\D/g, '')) || 0;
+                        const isCurrentlyLiked = this.classList.contains('liked');
+
+                        // Optimistic update
+                        if (isCurrentlyLiked) {
+                            this.classList.remove('liked');
+                            countEl.textContent = formatNumber(Math.max(0, currentCount - 1));
+                            likedTemplateIds.delete(id);
+                            const tpl = allTemplates.find(t => t.id === id);
+                            if (tpl) tpl.likes = Math.max(0, (tpl.likes || 0) - 1);
+                        } else {
+                            this.classList.add('liked');
+                            countEl.textContent = formatNumber(currentCount + 1);
+                            likedTemplateIds.add(id);
+                            const tpl = allTemplates.find(t => t.id === id);
+                            if (tpl) tpl.likes = (tpl.likes || 0) + 1;
+                        }
+
+                        // Jalankan transaction
                         toggleLike(id, currentUser.uid)
                             .then(result => {
+                                // Pastikan UI sesuai dengan hasil sebenarnya
+                                const finalLikes = result.newLikes;
+                                countEl.textContent = formatNumber(finalLikes);
                                 if (result.action === 'liked') {
                                     this.classList.add('liked');
-                                    countEl.textContent = formatNumber(currentCount + 1);
                                     likedTemplateIds.add(id);
-                                    const tpl = allTemplates.find(t => t.id === id);
-                                    if (tpl) tpl.likes = (tpl.likes || 0) + 1;
                                 } else {
                                     this.classList.remove('liked');
-                                    countEl.textContent = formatNumber(Math.max(0,
-                                        currentCount - 1));
                                     likedTemplateIds.delete(id);
-                                    const tpl = allTemplates.find(t => t.id === id);
-                                    if (tpl) tpl.likes = Math.max(0, (tpl.likes || 0) - 1);
                                 }
+                                // Update allTemplates
+                                const tpl = allTemplates.find(t => t.id === id);
+                                if (tpl) tpl.likes = finalLikes;
                             })
-                            .catch(err => { showToast('Gagal: ' + err.message, 'error'); });
+                            .catch(err => {
+                                // Rollback jika gagal
+                                showToast('Gagal: ' + err.message, 'error');
+                                const tpl = allTemplates.find(t => t.id === id);
+                                if (tpl) {
+                                    countEl.textContent = formatNumber(tpl.likes || 0);
+                                    if (likedTemplateIds.has(id)) {
+                                        this.classList.add('liked');
+                                    } else {
+                                        this.classList.remove('liked');
+                                    }
+                                }
+                            });
                     });
                 }
 
+                // ===== DELETE & EDIT =====
                 const deleteBtn = document.getElementById('deletePresetBtn');
                 if (deleteBtn) {
                     deleteBtn.addEventListener('click', function() {
@@ -3093,20 +3143,17 @@
                     });
                 }
 
-                // ===== USE COUNT - SEMUA USER (login maupun tidak) =====
+                // ===== USE COUNT (DOWNLOAD) =====
                 content.querySelectorAll('.detail-links a').forEach(link => {
                     link.addEventListener('click', function(e) {
                         const templateId = this.dataset.templateId;
                         if (templateId) {
-                            // Increment uses
                             incrementField(templateId, 'uses', 1).catch(() => {});
-                            // Update UI
                             const usesEl = document.getElementById('detailUsesCount');
                             if (usesEl) {
                                 const curr = parseInt(usesEl.textContent.replace(/\D/g, '')) || 0;
                                 usesEl.textContent = formatNumber(curr + 1);
                             }
-                            // Update data lokal
                             const tpl = allTemplates.find(t => t.id === templateId);
                             if (tpl) tpl.uses = (tpl.uses || 0) + 1;
                         }
@@ -3480,7 +3527,6 @@
                         currentUserCreatorId = currentUser.uid;
                         document.getElementById('akunBtn').style.display = 'inline-flex';
                         document.getElementById('mobileAkunBtn').style.display = 'flex';
-                        // Refresh data
                         if (unsubscribeCreators) unsubscribeCreators();
                         subscribeCreators();
                         if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
