@@ -190,7 +190,7 @@
         /* === NAV UTAMA DESKTOP === */
         .main-nav {
             display: none;
-            gap: 0.1rem;
+            gap: 0.2rem;
             align-items: center;
         }
         .main-nav button {
@@ -200,7 +200,7 @@
             font-size: 0.82rem;
             font-weight: 500;
             color: var(--text-secondary);
-            padding: 0.3rem 0.6rem;
+            padding: 0.35rem 0.7rem;
             border-radius: var(--radius-sm);
             transition: color 0.15s, background 0.15s;
             white-space: nowrap;
@@ -213,36 +213,34 @@
         .main-nav button.active {
             color: var(--text);
             font-weight: 600;
+            background: var(--surface-sunk);
         }
-        .main-nav button.nav-upload {
-            background: var(--nav-upload-bg);
-            color: var(--nav-upload-color);
-            border-radius: 50%;
-            width: 34px;
-            height: 34px;
-            padding: 0;
+        .main-nav button.nav-upload-desktop {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
+            gap: 0.35rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: #ffffff;
+            border-radius: var(--radius-pill);
+            padding: 0.35rem 0.9rem;
             font-weight: 600;
-            transition: transform 0.15s, background 0.15s;
-            margin-left: 0.1rem;
+            font-size: 0.8rem;
+            transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+            margin-left: 0.2rem;
+            box-shadow: 0 2px 8px rgba(168, 103, 43, 0.25);
         }
-        .main-nav button.nav-upload:hover {
-            background: var(--accent-dark);
-            transform: scale(1.05);
+        .main-nav button.nav-upload-desktop:hover {
+            background: linear-gradient(135deg, var(--accent-dark) 0%, #733f13 100%);
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(168, 103, 43, 0.35);
         }
-        .main-nav button.nav-upload svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
+        .main-nav button.nav-upload-desktop svg {
+            width: 15px;
+            height: 15px;
+            stroke: #ffffff;
             fill: none;
             stroke-width: 2.2;
-        }
-        .main-nav button.nav-upload.active {
-            background: var(--accent-dark);
-            color: #fff;
         }
 
         .header-actions {
@@ -1032,34 +1030,271 @@
         }
         .mobile-nav button.active {
             color: var(--accent-dark);
+            font-weight: 600;
         }
 
-        /* Tombol Upload di mobile — bundar dengan latar */
+        /* Tombol Upload di tengah bawah mobile — Modern elevated gradient button */
         .mobile-nav button.nav-upload-mobile {
-            background: var(--nav-upload-bg);
-            color: var(--nav-upload-color);
-            border-radius: 50%;
-            width: 48px;
-            height: 48px;
-            min-width: 48px;
-            max-width: 48px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            color: #ffffff;
+            border-radius: 14px;
+            width: 46px;
+            height: 46px;
+            min-width: 46px;
+            max-width: 46px;
             padding: 0;
             flex: none;
-            margin-top: -6px;
-            box-shadow: 0 4px 12px rgba(168, 103, 43, 0.3);
-            transition: transform 0.15s, background 0.15s;
+            margin: -10px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(168, 103, 43, 0.38);
+            transition: transform 0.15s, box-shadow 0.15s;
+            border: 2px solid #ffffff;
         }
         .mobile-nav button.nav-upload-mobile svg {
-            stroke: currentColor;
+            stroke: #ffffff;
             width: 22px;
             height: 22px;
+            flex-shrink: 0;
         }
         .mobile-nav button.nav-upload-mobile:active {
             transform: scale(0.92);
+            box-shadow: 0 2px 8px rgba(168, 103, 43, 0.25);
         }
         .mobile-nav button.nav-upload-mobile.active {
-            background: var(--accent-dark);
+            background: linear-gradient(135deg, var(--accent-dark) 0%, #733f13 100%);
             color: #fff;
+        }
+
+        /* === EXPLORE / CARI VIEW STYLES === */
+        .explore-hero-search {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+        }
+        .explore-search-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--surface-sunk);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            padding: 0.5rem 0.9rem;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .explore-search-input-wrap:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+        .explore-search-input-wrap svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--text-muted);
+            fill: none;
+            flex-shrink: 0;
+        }
+        .explore-search-input-wrap input {
+            border: none;
+            background: none;
+            outline: none;
+            width: 100%;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+        .explore-search-input-wrap .clear-search-btn {
+            border: none;
+            background: none;
+            font-size: 1.2rem;
+            line-height: 1;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0 0.2rem;
+        }
+        .explore-search-input-wrap .clear-search-btn:hover {
+            color: var(--text);
+        }
+
+        .hashtag-scroll {
+            display: flex;
+            gap: 0.4rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            margin-top: 0.75rem;
+            padding-bottom: 0.1rem;
+            -webkit-overflow-scrolling: touch;
+        }
+        .hashtag-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hashtag-pill {
+            flex-shrink: 0;
+            border: 1px solid var(--border-soft);
+            background: var(--surface);
+            color: var(--text-secondary);
+            font-size: 0.74rem;
+            font-weight: 500;
+            padding: 0.28rem 0.75rem;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .hashtag-pill:hover {
+            border-color: var(--accent);
+            color: var(--accent-dark);
+        }
+        .hashtag-pill.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .explore-section {
+            margin-bottom: 1.5rem;
+        }
+        .explore-section .section-header {
+            margin-bottom: 0.7rem;
+        }
+        .explore-section .section-header h3 {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .explore-section .section-header h3 svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+        }
+        .explore-section .section-header .sub-text {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+        }
+
+        /* Topic Grid (Pinterest/TikTok category cards) */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 0.7rem;
+        }
+        @media (max-width: 480px) {
+            .topic-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+        }
+        .topic-card {
+            border-radius: var(--radius);
+            padding: 1rem 0.8rem;
+            color: #ffffff;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-height: 85px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+        .topic-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .topic-card:active {
+            transform: scale(0.97);
+        }
+        .topic-card h4 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 0.2rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        .topic-card p {
+            font-size: 0.68rem;
+            opacity: 0.88;
+            line-height: 1.2;
+        }
+        .topic-card .topic-arrow {
+            align-self: flex-end;
+            transform: rotate(180deg);
+            opacity: 0.7;
+            transition: opacity 0.15s, transform 0.15s;
+        }
+        .topic-card:hover .topic-arrow {
+            opacity: 1;
+            transform: rotate(180deg) translateX(-3px);
+        }
+        .topic-card .topic-arrow svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        /* Creator Mini Row */
+        .creator-mini-row {
+            display: flex;
+            gap: 0.6rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 0.2rem;
+            -webkit-overflow-scrolling: touch;
+        }
+        .creator-mini-row::-webkit-scrollbar {
+            display: none;
+        }
+        .creator-mini-chip {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border-soft);
+            padding: 0.45rem 0.8rem;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: border-color 0.15s, transform 0.15s;
+        }
+        .creator-mini-chip:hover {
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+        .creator-mini-chip .mini-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            color: var(--accent-dark);
+            font-weight: 700;
+            font-size: 0.72rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .creator-mini-chip .mini-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .creator-mini-chip .mini-name {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+        }
+        .creator-mini-chip .mini-sub {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            white-space: nowrap;
         }
 
         /* Sembunyikan tombol yang tidak perlu */
@@ -1867,7 +2102,8 @@
 
                 <!-- DESKTOP NAV -->
                 <nav class="main-nav" id="mainNav">
-                    <button class="active" data-view="explore" data-nav-label="home">Home</button>
+                    <button class="active" data-view="home" data-nav-label="home">Home</button>
+                    <button data-view="cari" data-nav-label="cari">Jelajah</button>
                     <button data-view="creators" data-nav-label="creators">Kreator</button>
                     <!-- Upload & Profile akan ditambahkan lewat JS -->
                 </nav>
@@ -1940,16 +2176,25 @@
 
         <!-- MOBILE NAV -->
         <nav class="mobile-nav" id="mobileNav">
-            <button class="active" data-nav="explore" data-nav-label="home">
-                <svg viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                Home
+            <button class="active" data-nav="home" data-nav-label="home">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10"/></svg>
+                <span>Home</span>
+            </button>
+            <button data-nav="cari" data-nav-label="cari">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                <span>Cari</span>
+            </button>
+            <button class="nav-upload-mobile" data-nav="upload" data-nav-label="upload" aria-label="Upload Template">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             </button>
             <button data-nav="creators" data-nav-label="creators">
-                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Kreator
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Kreator</span>
             </button>
-            <!-- Upload akan ditambahkan lewat JS (hanya untuk kreator) -->
-            <!-- Profile akan ditambahkan lewat JS (hanya untuk login) -->
+            <button data-nav="profile" data-nav-label="profile">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Masuk</span>
+            </button>
         </nav>
 
         <!-- LOGIN MODAL -->
@@ -2206,6 +2451,9 @@
                 users: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
                 plus: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2.2"><line x1="12" y1="4" x2="12" y2="20"/><line x1="4" y1="12" x2="20" y2="12"/></svg>',
                 home: '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10"/></svg>',
+                compass: '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
+                plusBox: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
+                trend: '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
             };
 
             // ===== SAMPLE DATA (FALLBACK) =====
@@ -2413,40 +2661,65 @@
 
             // ===== NAV BUILDER =====
             function buildDesktopNav() {
-                // Hapus tombol selain Home & Kreator (yang statis)
-                const existingBtns = mainNav.querySelectorAll('button');
-                const homeBtn = existingBtns[0];
-                const kreatorBtn = existingBtns[1];
                 mainNav.innerHTML = '';
+
+                // 1. Home
+                const homeBtn = document.createElement('button');
+                homeBtn.dataset.view = 'home';
+                homeBtn.dataset.navLabel = 'home';
+                homeBtn.textContent = 'Home';
+                homeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    goToView('home');
+                    activeRatio = null;
+                    applyRatioChipUI();
+                });
                 mainNav.appendChild(homeBtn);
+
+                // 2. Jelajah (Cari)
+                const cariBtn = document.createElement('button');
+                cariBtn.dataset.view = 'cari';
+                cariBtn.dataset.navLabel = 'cari';
+                cariBtn.textContent = 'Jelajah';
+                cariBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    goToView('cari');
+                });
+                mainNav.appendChild(cariBtn);
+
+                // 3. Kreator
+                const kreatorBtn = document.createElement('button');
+                kreatorBtn.dataset.view = 'creators';
+                kreatorBtn.dataset.navLabel = 'creators';
+                kreatorBtn.textContent = 'Kreator';
+                kreatorBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    goToView('creators');
+                });
                 mainNav.appendChild(kreatorBtn);
 
-                // Upload (hanya jika kreator)
-                if (isCreator && currentUser) {
-                    const uploadBtn = document.createElement('button');
-                    uploadBtn.className = 'nav-upload';
-                    uploadBtn.dataset.view = 'upload';
-                    uploadBtn.dataset.navLabel = 'upload';
-                    uploadBtn.setAttribute('aria-label', 'Upload');
-                    uploadBtn.innerHTML = ICON.plus;
-                    uploadBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        openUploadFlow();
-                    });
-                    mainNav.appendChild(uploadBtn);
-                }
+                // 4. Upload
+                const uploadBtn = document.createElement('button');
+                uploadBtn.className = 'nav-upload-desktop';
+                uploadBtn.dataset.view = 'upload';
+                uploadBtn.dataset.navLabel = 'upload';
+                uploadBtn.innerHTML = ICON.plusBox + '<span>Upload</span>';
+                uploadBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openUploadFlow();
+                });
+                mainNav.appendChild(uploadBtn);
 
-                // Profile (hanya jika login)
+                // 5. Profile / Masuk
                 if (currentUser) {
                     const profileBtn = document.createElement('button');
                     profileBtn.dataset.view = 'profile';
                     profileBtn.dataset.navLabel = 'profile';
                     profileBtn.textContent = 'Profile';
-                    profileBtn.addEventListener('click', function(e) {
+                    profileBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        if (!currentUser) { showToast('Masuk dulu', 'warning'); return; }
                         if (!isCreator) {
-                            showToast('Kamu belum terdaftar sebagai kreator', 'info');
+                            openRegisterModal();
                             return;
                         }
                         currentAkunTab = 'profile';
@@ -2457,50 +2730,70 @@
                     mainNav.appendChild(profileBtn);
                 }
 
-                // set active
                 updateNavActiveState();
             }
 
             function buildMobileNav() {
-                // Hapus semua tombol kecuali Home & Kreator
-                const existing = mobileNav.querySelectorAll('button');
-                let homeBtn = null;
-                let kreatorBtn = null;
-                existing.forEach(b => {
-                    const nav = b.dataset.nav;
-                    if (nav === 'explore') homeBtn = b;
-                    else if (nav === 'creators') kreatorBtn = b;
-                });
                 mobileNav.innerHTML = '';
-                if (homeBtn) mobileNav.appendChild(homeBtn);
-                if (kreatorBtn) mobileNav.appendChild(kreatorBtn);
 
-                // Upload (hanya jika kreator) — bundar dengan latar
-                if (isCreator && currentUser) {
-                    const uploadBtn = document.createElement('button');
-                    uploadBtn.className = 'nav-upload-mobile';
-                    uploadBtn.dataset.nav = 'upload';
-                    uploadBtn.dataset.navLabel = 'upload';
-                    uploadBtn.setAttribute('aria-label', 'Upload');
-                    uploadBtn.innerHTML = ICON.plus + '<span style="font-size:0.5rem;margin-top:2px;">Upload</span>';
-                    uploadBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        openUploadFlow();
-                    });
-                    mobileNav.appendChild(uploadBtn);
-                }
+                // 1. Home
+                const homeBtn = document.createElement('button');
+                homeBtn.dataset.nav = 'home';
+                homeBtn.dataset.navLabel = 'home';
+                homeBtn.innerHTML = ICON.home + '<span>Home</span>';
+                homeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    goToView('home');
+                    activeRatio = null;
+                    applyRatioChipUI();
+                });
+                mobileNav.appendChild(homeBtn);
 
-                // Profile (hanya jika login)
+                // 2. Cari (Explore)
+                const cariBtn = document.createElement('button');
+                cariBtn.dataset.nav = 'cari';
+                cariBtn.dataset.navLabel = 'cari';
+                cariBtn.innerHTML = ICON.compass + '<span>Cari</span>';
+                cariBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    goToView('cari');
+                });
+                mobileNav.appendChild(cariBtn);
+
+                // 3. Upload (CENTER BOTTOM!) - Modern SVG
+                const uploadBtn = document.createElement('button');
+                uploadBtn.className = 'nav-upload-mobile';
+                uploadBtn.dataset.nav = 'upload';
+                uploadBtn.dataset.navLabel = 'upload';
+                uploadBtn.setAttribute('aria-label', 'Upload Template');
+                uploadBtn.innerHTML = ICON.plusBox;
+                uploadBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openUploadFlow();
+                });
+                mobileNav.appendChild(uploadBtn);
+
+                // 4. Kreator
+                const kreatorBtn = document.createElement('button');
+                kreatorBtn.dataset.nav = 'creators';
+                kreatorBtn.dataset.navLabel = 'creators';
+                kreatorBtn.innerHTML = ICON.users + '<span>Kreator</span>';
+                kreatorBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    goToView('creators');
+                });
+                mobileNav.appendChild(kreatorBtn);
+
+                // 5. Profile / Masuk
+                const profileBtn = document.createElement('button');
+                profileBtn.dataset.nav = 'profile';
+                profileBtn.dataset.navLabel = 'profile';
                 if (currentUser) {
-                    const profileBtn = document.createElement('button');
-                    profileBtn.dataset.nav = 'profile';
-                    profileBtn.dataset.navLabel = 'profile';
                     profileBtn.innerHTML = ICON.user + '<span>Profile</span>';
-                    profileBtn.addEventListener('click', function(e) {
+                    profileBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        if (!currentUser) { showToast('Masuk dulu', 'warning'); return; }
                         if (!isCreator) {
-                            showToast('Kamu belum terdaftar sebagai kreator', 'info');
+                            openRegisterModal();
                             return;
                         }
                         currentAkunTab = 'profile';
@@ -2508,27 +2801,32 @@
                         renderAkunContent();
                         document.getElementById('akunModal').classList.add('active');
                     });
-                    mobileNav.appendChild(profileBtn);
+                } else {
+                    profileBtn.innerHTML = ICON.user + '<span>Masuk</span>';
+                    profileBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        document.getElementById('loginBtn').click();
+                    });
                 }
+                mobileNav.appendChild(profileBtn);
 
                 updateNavActiveState();
             }
 
             function updateNavActiveState() {
-                const navLabel = currentView === 'explore' ? 'home' :
-                    currentView === 'creators' ? 'creators' :
-                    currentView === 'upload' ? 'upload' :
-                    currentView === 'profile' ? 'profile' : 'home';
+                const navLabel = (currentView === 'home' || currentView === 'explore') ? 'home' :
+                    (currentView === 'cari' || currentView === 'search') ? 'cari' :
+                    (currentView === 'creators') ? 'creators' :
+                    (currentView === 'upload') ? 'upload' :
+                    (currentView === 'profile') ? 'profile' : 'home';
 
-                // Desktop
                 mainNav.querySelectorAll('button').forEach(b => {
-                    const label = b.dataset.navLabel || b.textContent.toLowerCase().trim();
+                    const label = b.dataset.navLabel || b.dataset.view || b.textContent.toLowerCase().trim();
                     b.classList.toggle('active', label === navLabel);
                 });
 
-                // Mobile
                 mobileNav.querySelectorAll('button').forEach(b => {
-                    const label = b.dataset.navLabel || b.textContent.toLowerCase().trim();
+                    const label = b.dataset.navLabel || b.dataset.nav;
                     b.classList.toggle('active', label === navLabel);
                 });
             }
@@ -2799,8 +3097,176 @@
                     `<strong>${total}</strong> template dari <strong>${creators}</strong> kreator Indonesia.`;
             }
 
+            let cariSearchQuery = '';
+
+            function renderCariView() {
+                updateContextLine();
+
+                const query = (cariSearchQuery || searchInput.value || searchInputMobile.value || '').toLowerCase().trim();
+
+                let templates = allTemplates.slice();
+                if (query) {
+                    templates = templates.filter(t =>
+                        (t.judul || '').toLowerCase().includes(query) ||
+                        (t.kode || '').toLowerCase().includes(query) ||
+                        (t.kategori || '').toLowerCase().includes(query) ||
+                        (t.creator || '').toLowerCase().includes(query) ||
+                        (t.deskripsi || '').toLowerCase().includes(query)
+                    );
+                }
+
+                const hashtags = [
+                    'CinematicTeal', 'CapCutPreset', 'Reels9:16', 'AlightMotion',
+                    'CyberpunkNeon', 'VintageFilm', 'PresetGratis', '3DMotion'
+                ];
+
+                const topicCards = [
+                    { id: 'viral', label: '🔥 Viral & Tren', desc: 'Paling banyak digunakan', filter: 'preset', bg: 'linear-gradient(135deg, #1e1b4b, #312e81)' },
+                    { id: 'cinematic', label: '🎬 Cinematic Tone', desc: 'Teal & Orange, Moody Film', filter: 'preset', bg: 'linear-gradient(135deg, #0f172a, #1e293b)' },
+                    { id: 'reels', label: '📱 Reels & TikTok', desc: 'Format Vertikal 9:16', ratio: '9:16', bg: 'linear-gradient(135deg, #2e1065, #4c1d95)' },
+                    { id: 'glitch', label: '⚡ Glitch & Overlay', desc: 'Efek VHS, Static & Textures', filter: 'assets', bg: 'linear-gradient(135deg, #3f0712, #881337)' },
+                    { id: 'free', label: '✨ Template Gratis', desc: 'Unduh & pakai tanpa bayar', filter: 'free', bg: 'linear-gradient(135deg, #064e3b, #047857)' },
+                    { id: '3d', label: '🎨 Motion & 3D Title', desc: 'Animasi judul & teks', filter: 'assets', bg: 'linear-gradient(135deg, #1a2e05, #365314)' }
+                ];
+
+                let html = `
+                <div class="explore-hero-search">
+                  <div class="explore-search-input-wrap">
+                    ${ICON.search}
+                    <input type="text" id="explorePageSearch" placeholder="Cari preset, efek, hashtag, atau kreator..." value="${escapeHtml(query)}" />
+                    ${query ? `<button class="clear-search-btn" id="clearExploreSearch">&times;</button>` : ''}
+                  </div>
+
+                  <div class="hashtag-scroll">
+                    ${hashtags.map(tag => `
+                      <button class="hashtag-pill ${query.includes(tag.toLowerCase()) ? 'active' : ''}" data-tag="${tag}">
+                        #${tag}
+                      </button>
+                    `).join('')}
+                  </div>
+                </div>
+
+                ${!query ? `
+                <div class="explore-section">
+                  <div class="section-header">
+                    <h3>${ICON.sparkle} Kategori Populer</h3>
+                    <span class="sub-text">Temukan inspirasi sesuai gayamu</span>
+                  </div>
+                  <div class="topic-grid">
+                    ${topicCards.map(tc => `
+                      <div class="topic-card" style="background:${tc.bg};" data-filter="${tc.filter || ''}" data-ratio="${tc.ratio || ''}">
+                        <div class="topic-card-content">
+                          <h4>${tc.label}</h4>
+                          <p>${tc.desc}</p>
+                        </div>
+                        <span class="topic-arrow">${ICON.arrowLeft}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+
+                <div class="explore-section">
+                  <div class="section-header">
+                    <h3>${ICON.users} Kreator Pilihan</h3>
+                    <span class="sub-text">Editor berbakat yang aktif berbagi</span>
+                  </div>
+                  <div class="creator-mini-row">
+                    ${allCreators.slice(0, 8).map(c => `
+                      <div class="creator-mini-chip" data-creator="${escapeHtml(c.name || '')}">
+                        <div class="mini-avatar">${getInitials(c.displayName || c.name || '')}</div>
+                        <div class="mini-info">
+                          <span class="mini-name">${escapeHtml(c.displayName || c.name || '')}</span>
+                          <span class="mini-sub">${escapeHtml(c.software || 'Video Editor')}</span>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+                ` : ''}
+
+                <div class="explore-section">
+                  <div class="section-header">
+                    <h3>${query ? `Hasil Pencarian "${escapeHtml(query)}"` : `${ICON.trend} Jelajah Terbaru`}</h3>
+                    <span class="sub-text">${templates.length} template ditemukan</span>
+                  </div>
+                  ${templates.length === 0 ? emptyStateHtml('search') : `
+                    <div class="grid">${templates.map(renderCard).join('')}</div>
+                  `}
+                </div>
+                `;
+
+                cardGrid.innerHTML = html;
+                bindCariEvents();
+            }
+
+            function bindCariEvents() {
+                const input = document.getElementById('explorePageSearch');
+                if (input) {
+                    input.addEventListener('input', function() {
+                        cariSearchQuery = this.value;
+                        searchInput.value = this.value;
+                        searchInputMobile.value = this.value;
+                        renderCariView();
+                    });
+                }
+
+                const clearBtn = document.getElementById('clearExploreSearch');
+                if (clearBtn) {
+                    clearBtn.addEventListener('click', function() {
+                        cariSearchQuery = '';
+                        searchInput.value = '';
+                        searchInputMobile.value = '';
+                        renderCariView();
+                    });
+                }
+
+                document.querySelectorAll('.hashtag-pill').forEach(pill => {
+                    pill.addEventListener('click', function() {
+                        const tag = this.dataset.tag;
+                        cariSearchQuery = '#' + tag;
+                        searchInput.value = '#' + tag;
+                        searchInputMobile.value = '#' + tag;
+                        renderCariView();
+                    });
+                });
+
+                document.querySelectorAll('.topic-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const filter = this.dataset.filter;
+                        const ratio = this.dataset.ratio;
+                        if (ratio) {
+                            activeRatio = ratio;
+                            applyRatioChipUI();
+                        }
+                        if (filter) {
+                            activeFilter = filter;
+                            document.querySelectorAll('.cat-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === filter));
+                        }
+                        goToView('home');
+                    });
+                });
+
+                document.querySelectorAll('.creator-mini-chip').forEach(chip => {
+                    chip.addEventListener('click', function() {
+                        currentCreator = this.dataset.creator;
+                        goToView('creators');
+                    });
+                });
+            }
+
             function render() {
                 updateContextLine();
+
+                const filterBar = document.querySelector('.filter-bar');
+                if (filterBar) {
+                    filterBar.style.display = (currentView === 'home' || currentView === 'explore') ? 'block' : 'none';
+                }
+
+                if (currentView === 'cari' || currentView === 'search') {
+                    renderCariView();
+                    return;
+                }
+
                 const filtered = getFiltered();
                 let html = '';
                 if (currentView === 'creators' && currentCreator) {
@@ -3368,8 +3834,8 @@
 
             // ===== HASH ROUTING =====
             function processHash(hash) {
-                if (!hash || hash === '/') {
-                    currentView = 'explore';
+                if (!hash || hash === '/' || hash === 'home' || hash === 'explore') {
+                    currentView = 'home';
                     currentCreator = null;
                     activeRatio = null;
                     updateNavActiveState();
@@ -3390,14 +3856,14 @@
                         (t.creator || '').toLowerCase() === username.toLowerCase() && (t.kode || '') === kode
                     );
                     if (tmpl) {
-                        currentView = 'explore';
+                        currentView = 'home';
                         currentCreator = null;
                         updateNavActiveState();
                         render();
                         setTimeout(() => openDetail(tmpl), 100);
                         return;
                     } else {
-                        currentView = 'explore';
+                        currentView = 'home';
                         currentCreator = null;
                         updateNavActiveState();
                         render();
@@ -3405,21 +3871,36 @@
                         return;
                     }
                 }
-                if (parts.length === 1 && parts[0] === 'kreator') {
-                    currentView = 'creators';
-                    currentCreator = null;
-                    updateNavActiveState();
-                    renderCreatorDirectory();
-                    return;
-                }
-                if (parts.length === 1 && parts[0] !== 'explore') {
+                if (parts.length === 1) {
+                    const route = parts[0].toLowerCase();
+                    if (route === 'kreator' || route === 'creators') {
+                        currentView = 'creators';
+                        currentCreator = null;
+                        updateNavActiveState();
+                        renderCreatorDirectory();
+                        return;
+                    }
+                    if (route === 'cari' || route === 'search' || route === 'jelajah') {
+                        currentView = 'cari';
+                        currentCreator = null;
+                        updateNavActiveState();
+                        render();
+                        return;
+                    }
+                    if (route === 'home' || route === 'explore' || route === 'beranda') {
+                        currentView = 'home';
+                        currentCreator = null;
+                        updateNavActiveState();
+                        render();
+                        return;
+                    }
                     currentView = 'creators';
                     currentCreator = decodeURIComponent(parts[0]);
                     updateNavActiveState();
                     render();
                     return;
                 }
-                currentView = 'explore';
+                currentView = 'home';
                 currentCreator = null;
                 updateNavActiveState();
                 render();
@@ -3431,8 +3912,10 @@
                     path = `/${encodeURIComponent(currentCreator)}`;
                 } else if (currentView === 'creators') {
                     path = '/kreator';
+                } else if (currentView === 'cari') {
+                    path = '/cari';
                 } else {
-                    path = '/explore';
+                    path = '/home';
                 }
                 let query = (activeRatio) ? `?ratio=${encodeURIComponent(activeRatio)}` : '';
                 const newHash = '#' + path + query;
