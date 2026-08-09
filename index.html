@@ -47,7 +47,6 @@
             text-decoration: none;
         }
 
-        /* ===== VARIABLES ===== */
         :root {
             --bg: #f2f0ea;
             --surface: #ffffff;
@@ -89,7 +88,6 @@
             border-radius: 10px;
         }
 
-        /* ===== APP ===== */
         .app {
             min-height: 100%;
             min-height: 100dvh;
@@ -109,7 +107,6 @@
             white-space: nowrap;
         }
 
-        /* ===== HEADER ===== */
         .site-header {
             position: sticky;
             top: 0;
@@ -242,33 +239,6 @@
             stroke-width: 1.8;
         }
 
-        .btn-upload {
-            display: none;
-            align-items: center;
-            gap: 0.3rem;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            color: var(--text);
-            font-weight: 600;
-            font-size: 0.78rem;
-            padding: 0.35rem 0.7rem;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: border-color 0.15s, background 0.15s;
-            white-space: nowrap;
-        }
-        .btn-upload:hover {
-            border-color: var(--accent);
-            background: var(--accent-soft);
-        }
-        .btn-upload svg {
-            width: 14px;
-            height: 14px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-        }
-
         .btn-akun {
             display: none;
             align-items: center;
@@ -354,7 +324,6 @@
         .mobile-search-toggle {
             display: flex;
         }
-
         .mobile-search-bar {
             display: block;
             overflow: hidden;
@@ -398,9 +367,6 @@
             .main-nav {
                 display: flex;
             }
-            .btn-upload {
-                display: inline-flex;
-            }
             .btn-akun {
                 display: inline-flex;
             }
@@ -416,7 +382,6 @@
             }
         }
 
-        /* ===== CONTEXT BAR ===== */
         .context-bar {
             max-width: var(--container-max);
             margin: 0 auto;
@@ -436,7 +401,6 @@
             }
         }
 
-        /* ===== FILTER BAR ===== */
         .filter-bar {
             max-width: var(--container-max);
             margin: 0 auto;
@@ -510,7 +474,6 @@
             color: #fff;
         }
 
-        /* ===== MAIN ===== */
         .main {
             max-width: var(--container-max);
             margin: 0 auto;
@@ -527,13 +490,11 @@
             margin-bottom: 0.6rem;
         }
 
-        /* ===== MASONRY GRID ===== */
         .grid {
             column-count: 2;
             column-gap: var(--gap);
             padding: 0;
         }
-
         .grid .card {
             break-inside: avoid;
             -webkit-column-break-inside: avoid;
@@ -550,16 +511,13 @@
         .grid .card:active {
             transform: scale(0.98);
         }
-
         .grid .card .thumb {
             position: relative;
             width: 100%;
             border-radius: var(--radius);
             overflow: hidden;
             background: var(--surface-sunk);
-            /* aspect-ratio di-set inline dari data template */
         }
-
         .grid .card .thumb .thumb-fallback {
             position: absolute;
             inset: 0;
@@ -623,7 +581,6 @@
             border-radius: var(--radius-sm);
             letter-spacing: 0.01em;
         }
-
         .grid .card .card-info {
             padding: 0.45rem 0.1rem 0;
             width: 100%;
@@ -686,8 +643,6 @@
             stroke-width: 2;
         }
 
-        /* ===== RESPONSIVE COLUMNS (mobile-first masonry) ===== */
-        /* base: <380px phones -> 2 columns, tight gap already via clamp() */
         @media (min-width: 480px) {
             .grid {
                 column-count: 2;
@@ -722,7 +677,6 @@
             }
         }
 
-        /* ===== SKELETON ===== */
         .grid.is-loading .card {
             pointer-events: none;
         }
@@ -759,7 +713,6 @@
             width: 40%;
         }
 
-        /* ===== EMPTY ===== */
         .empty-state {
             text-align: center;
             padding: 2.5rem 1rem;
@@ -800,7 +753,6 @@
             background: #000;
         }
 
-        /* ===== CREATOR DIRECTORY ===== */
         .creator-directory-top {
             display: flex;
             align-items: center;
@@ -912,7 +864,6 @@
             margin-top: 0.25rem;
         }
 
-        /* ===== PROFILE HEADER ===== */
         .profile-header {
             display: flex;
             align-items: center;
@@ -1027,7 +978,6 @@
             stroke-width: 2;
         }
 
-        /* ===== MOBILE NAV ===== */
         .mobile-nav {
             position: fixed;
             bottom: 0;
@@ -1102,7 +1052,6 @@
             }
         }
 
-        /* ===== MODAL ===== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -1215,7 +1164,6 @@
             stroke-width: 1.8;
         }
 
-        /* ===== FORM ===== */
         .form-section {
             margin-bottom: 0.9rem;
         }
@@ -1349,7 +1297,6 @@
             cursor: not-allowed;
         }
 
-        /* ===== TOAST ===== */
         .toast-container {
             position: fixed;
             bottom: calc(68px + var(--safe-bottom));
@@ -1407,7 +1354,6 @@
             }
         }
 
-        /* ===== DETAIL MODAL ===== */
         .detail-preview {
             width: 100%;
             border-radius: var(--radius);
@@ -1593,6 +1539,7 @@
             font-size: 0.8rem;
             font-weight: 500;
             transition: border-color 0.15s, background 0.15s;
+            text-decoration: none;
         }
         .detail-links a:hover {
             border-color: var(--border);
@@ -1619,7 +1566,6 @@
             min-height: 36px;
         }
 
-        /* ===== AUTH TOGGLE ===== */
         .auth-toggle {
             text-align: center;
             font-size: 0.78rem;
@@ -1638,7 +1584,6 @@
             color: var(--accent);
         }
 
-        /* ===== SETUP GUIDE ===== */
         .setup-guide {
             background: #fff3cd;
             border: 1px solid #ffc107;
@@ -1678,7 +1623,6 @@
             padding: 0 0.2rem;
         }
 
-        /* ===== AKUN TABS ===== */
         .akun-section-tabs {
             display: flex;
             gap: 0.3rem;
@@ -1708,7 +1652,6 @@
             background: var(--surface-sunk);
         }
 
-        /* ===== LIKED MINI GRID (responsive) ===== */
         .liked-mini-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -1755,7 +1698,6 @@
             white-space: nowrap;
         }
 
-        /* ===== RESPONSIVE TWEAKS ===== */
         @media (max-width: 380px) {
             .header-inner {
                 gap: 0.4rem;
@@ -1769,7 +1711,6 @@
                 height: 18px;
             }
         }
-
         .app,
         .main,
         .filter-bar,
@@ -1777,14 +1718,12 @@
             width: 100%;
             overflow-x: hidden;
         }
-
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation-duration: 0.01ms !important;
                 transition-duration: 0.01ms !important;
             }
         }
-
         .username-hint {
             font-size: 0.68rem;
             color: var(--text-muted);
@@ -1799,7 +1738,6 @@
             font-weight: 600;
         }
 
-        /* fix svg container in buttons */
         .btn svg,
         .icon-btn svg,
         .mobile-nav button svg,
@@ -1821,44 +1759,36 @@
             flex-shrink: 0;
         }
 
-        /* ===== FORCE CARD WIDTH INSIDE COLUMNS ===== */
         .grid .card {
             display: inline-block;
             width: 100%;
             box-sizing: border-box;
         }
-
-        /* ===== SKELETON FIX FOR MASONRY ===== */
         .grid.is-loading .card .thumb {
             aspect-ratio: 4/5 !important;
         }
-        .grid.is-loading .card .thumb .thumb-fallback {
-            display: none;
-        }
-        .grid.is-loading .card .thumb .ratio-tag {
-            display: none;
-        }
-        .grid.is-loading .card .thumb .play-badge {
-            display: none;
-        }
+        .grid.is-loading .card .thumb .thumb-fallback,
+        .grid.is-loading .card .thumb .ratio-tag,
+        .grid.is-loading .card .thumb .play-badge,
         .grid.is-loading .card .thumb .thumb-img {
             display: none;
         }
 
-        /* Larger tap targets for icon buttons on touch devices */
         @media (hover: none) and (pointer: coarse) {
             .icon-btn {
                 width: 40px;
                 height: 40px;
             }
         }
+
+        /* ===== tombol upload di header sudah dihapus ===== */
     </style>
 </head>
 <body>
 
     <div class="app">
 
-        <!-- HEADER -->
+        <!-- HEADER (tanpa tombol Upload) -->
         <header class="site-header">
             <div class="header-inner">
                 <a href="#/explore" class="logo" id="logoLink">
@@ -1890,10 +1820,7 @@
                         <svg viewBox="0 0 24 24" width="14" height="14"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         Akun
                     </button>
-                    <button class="btn-upload" id="uploadBtn">
-                        <svg viewBox="0 0 24 24" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        Upload
-                    </button>
+                    <!-- tombol upload di header telah dihapus -->
                 </div>
             </div>
 
@@ -1905,7 +1832,6 @@
             </div>
         </header>
 
-        <!-- CONTEXT -->
         <div class="context-bar">
             <p id="contextLine">Memuat&hellip;</p>
         </div>
@@ -2225,6 +2151,7 @@
                 users: '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
             };
 
+            // ===== FIREBASE KONFIGURASI LENGKAP =====
             const firebaseConfig = {
                 apiKey: "AIzaSyDTqzvWQUcR4piWnprU7baAp-CRgbWRFxE",
                 authDomain: "preset-lbry.firebaseapp.com",
@@ -2380,16 +2307,12 @@
                 currentUser = user;
                 const badge = document.getElementById('userBadge');
                 const loginBtn = document.getElementById('loginBtn');
-                const uploadBtn = document.getElementById('uploadBtn');
                 const akunBtn = document.getElementById('akunBtn');
-                const mobileUploadBtn = document.getElementById('mobileUploadBtn');
                 const mobileAkunBtn = document.getElementById('mobileAkunBtn');
 
                 if (user) {
                     badge.style.display = 'flex';
                     loginBtn.style.display = 'none';
-                    uploadBtn.style.display = 'inline-flex';
-                    mobileUploadBtn.style.display = 'flex';
                     const displayName = user.displayName || user.email || 'User';
                     document.getElementById('userName').textContent = displayName;
                     document.getElementById('userAvatar').textContent = (displayName)[0].toUpperCase();
@@ -2397,9 +2320,7 @@
                 } else {
                     badge.style.display = 'none';
                     loginBtn.style.display = 'inline-flex';
-                    uploadBtn.style.display = 'none';
                     akunBtn.style.display = 'none';
-                    mobileUploadBtn.style.display = 'none';
                     mobileAkunBtn.style.display = 'none';
                     isCreator = false;
                     currentUserCreator = null;
@@ -2440,6 +2361,7 @@
                 auth.onAuthStateChanged(user => updateAuthUI(user));
             }
 
+            // === LOGIN / REGISTER (sama seperti sebelumnya, tidak diubah) ===
             document.getElementById('loginForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 if (!auth) { showToast('Firebase belum siap.', 'error'); return; }
@@ -2544,6 +2466,7 @@
                 document.getElementById('registerError').style.display = 'none';
             });
 
+            // === SUBSCRIBE ===
             function subscribeTemplates() {
                 if (!db) return;
                 if (unsubscribeTemplates) unsubscribeTemplates();
@@ -2593,6 +2516,7 @@
                     });
             }
 
+            // === FIRESTORE OPERATIONS ===
             function addTemplate(data) {
                 if (!db) return Promise.reject('Firestore not ready');
                 return db.collection('templates').add(data);
@@ -2658,6 +2582,7 @@
                 });
             }
 
+            // === FILTER & RENDER ===
             function getFiltered() {
                 let result = allTemplates.slice();
                 const q = (searchInput.value || '').toLowerCase().trim();
@@ -2875,6 +2800,7 @@
                 });
             }
 
+            // === AKUN ===
             function renderAkunContent() {
                 const container = document.getElementById('akunTabContent');
                 if (currentAkunTab === 'profile') {
@@ -3063,6 +2989,7 @@
                 });
             });
 
+            // === DETAIL MODAL + COUNT DOWNLOAD ===
             function openDetail(template) {
                 if (!template || !template.id) { showToast('Template tidak ditemukan', 'error'); return; }
                 const ytId = template.linkYoutube ? getYoutubeId(template.linkYoutube) : null;
@@ -3270,6 +3197,25 @@
                         openEditTemplateModal(tpl);
                     });
                 }
+
+                // ===== COUNT DOWNLOAD: setiap kali link di detail-links diklik, tambah uses =====
+                content.querySelectorAll('.detail-links a').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        const templateId = template.id;
+                        if (templateId) {
+                            incrementField(templateId, 'uses', 1).catch(() => {});
+                            // update UI
+                            const usesEl = document.getElementById('detailUsesCount');
+                            if (usesEl) {
+                                const curr = parseInt(usesEl.textContent.replace(/\D/g, '')) || 0;
+                                usesEl.textContent = formatNumber(curr + 1);
+                            }
+                            // update juga di card grid (dari allTemplates)
+                            const tpl = allTemplates.find(t => t.id === templateId);
+                            if (tpl) tpl.uses = (tpl.uses || 0) + 1;
+                        }
+                    });
+                });
             }
 
             function closeDetail() {
@@ -3277,6 +3223,7 @@
                 document.getElementById('detailContent').innerHTML = '';
             }
 
+            // === HASH ROUTING ===
             function processHash(hash) {
                 if (!hash || hash === '/') {
                     currentView = 'explore';
@@ -3367,6 +3314,7 @@
                     activeRatio));
             }
 
+            // === EVENT BINDINGS ===
             cardGrid.addEventListener('click', function(e) {
                 const card = e.target.closest('.card');
                 if (!card) return;
@@ -3436,6 +3384,7 @@
                 applyRatioChipUI();
             });
 
+            // === UPLOAD (tetap ada di mobile, diakses via mobileUploadBtn) ===
             function openUploadFlow() {
                 if (!currentUser) { showToast('Silakan masuk terlebih dahulu', 'info');
                     document.getElementById('loginBtn').click(); return; }
@@ -3465,7 +3414,6 @@
                 }
             }
 
-            document.getElementById('uploadBtn').addEventListener('click', openUploadFlow);
             document.getElementById('mobileUploadBtn').addEventListener('click', openUploadFlow);
             document.getElementById('closeUploadModal').addEventListener('click', () => document.getElementById('uploadModal')
                 .classList.remove('active'));
@@ -3564,6 +3512,7 @@
                     .catch(err => { showToast('Gagal upload: ' + err.message, 'error'); });
             });
 
+            // === REGISTER CREATOR ===
             function openRegisterModal() {
                 if (!currentUser) { showToast('Silakan masuk terlebih dahulu', 'info');
                     document.getElementById('loginBtn').click(); return; }
@@ -3649,6 +3598,7 @@
 
             window.openRegisterModal = openRegisterModal;
 
+            // === EDIT TEMPLATE ===
             function openEditTemplateModal(template) {
                 if (!template) return;
                 document.getElementById('eTEditId').value = template.id;
@@ -3782,9 +3732,7 @@
             document.getElementById('cancelEditTemplate').addEventListener('click', () => document.getElementById(
                 'editTemplateModal').classList.remove('active'));
 
-            const notifBtn = document.getElementById('notifBtn');
-            if (notifBtn) notifBtn.style.display = 'none';
-
+            // === KEYBOARD SHORTCUTS ===
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList
                     .remove('active'));
@@ -3793,8 +3741,8 @@
             });
             window.addEventListener('hashchange', handleHashChange);
 
+            // === INIT ===
             function init() {
-                // Skeleton with varied aspect ratios for visual preview
                 cardGrid.innerHTML =
                     `<div class="grid is-loading">${Array(6).fill('<div><div class="thumb skel" style="aspect-ratio:4/5"></div><div class="skel-line skel w60"></div><div class="skel-line skel w40"></div></div>').join('')}</div>`;
                 setTimeout(() => {
