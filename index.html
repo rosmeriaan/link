@@ -5,6 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
     <meta name="theme-color" content="#f2f0ea" />
     <title>Preset Library — Komunitas Kreator</title>
+    <script>
+        // Circular-safe JSON stringify polyfill/interceptor to prevent sandbox iframe serialization crashes
+        (function() {
+            var nativeStringify = JSON.stringify;
+            JSON.stringify = function(value, replacer, space) {
+                var seen = new WeakSet();
+                function safeReplacer(key, val) {
+                    if (typeof val === 'object' && val !== null) {
+                        if (val instanceof Node || (val.nodeType && typeof val.nodeName === 'string')) {
+                            return '[DOM ' + (val.nodeName || 'Element') + ']';
+                        }
+                        if (seen.has(val)) {
+                            return '[Circular]';
+                        }
+                        seen.add(val);
+                    }
+                    if (typeof replacer === 'function') {
+                        return replacer.call(this, key, val);
+                    }
+                    return val;
+                }
+                try {
+                    return nativeStringify(value, typeof replacer === 'function' ? safeReplacer : (Array.isArray(replacer) ? replacer : safeReplacer), space);
+                } catch (e) {
+                    try {
+                        return nativeStringify(value, safeReplacer, space);
+                    } catch (e2) {
+                        return '"[Circular/Unserializable]"';
+                    }
+                }
+            };
+        })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.cdnfonts.com/css/alte-haas-grotesk" rel="stylesheet" />
@@ -861,10 +894,26 @@
         .grid .card .card-creator {
             font-size: 0.73rem;
             color: var(--text-secondary);
-            margin-top: 0.1rem;
+            margin-top: 0.15rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+        .card-creator-avatar {
+            width: 16px;
+            height: 16px;
+            min-width: 16px;
+            min-height: 16px;
+            border-radius: 50%;
+            font-size: 0.55rem;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
         .grid .card .card-foot {
             display: flex;
@@ -2150,35 +2199,67 @@
         .software-checkbox-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.4rem;
+            gap: 0.45rem;
             margin-top: 0.4rem;
         }
         .software-chip {
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
-            padding: 0.35rem 0.75rem;
-            border: 1px solid var(--border);
+            gap: 0.45rem;
+            padding: 0.4rem 0.8rem;
+            border: 1.5px solid var(--border);
             border-radius: var(--radius-full, 999px);
             background: var(--surface);
-            font-size: 0.8rem;
-            color: var(--text-primary);
+            font-size: 0.82rem;
+            color: var(--text);
             cursor: pointer;
             user-select: none;
-            transition: all 0.15s ease;
+            transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .software-chip:hover {
+            border-color: var(--text-muted);
+            background: var(--surface-sunk, rgba(255, 255, 255, 0.04));
         }
         .software-chip input[type="checkbox"] {
-            accent-color: var(--accent);
-            width: 14px;
-            height: 14px;
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
             margin: 0;
-            cursor: pointer;
         }
+        .software-chip .chip-check {
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface-sunk);
+            transition: all 0.18s ease;
+            flex-shrink: 0;
+            color: transparent;
+        }
+        .software-chip.checked,
         .software-chip:has(input:checked) {
             border-color: var(--accent);
-            background: rgba(var(--accent-rgb, 99, 102, 241), 0.08);
+            background: rgba(var(--accent-rgb, 99, 102, 241), 0.12);
             color: var(--accent);
-            font-weight: 500;
+            font-weight: 600;
+            box-shadow: 0 0 0 1px var(--accent-soft, rgba(99, 102, 241, 0.25));
+        }
+        .software-chip.checked .chip-check,
+        .software-chip:has(input:checked) .chip-check {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+        .software-chip.checked .chip-check svg,
+        .software-chip:has(input:checked) .chip-check svg {
+            display: block;
         }
         .form-hint {
             font-size: 0.7rem;
@@ -3300,78 +3381,6 @@
             </div>
         </header>
 
-        <div class="context-bar">
-            <p id="contextLine">Memuat&hellip;</p>
-        </div>
-
-        <!-- HOME SEARCH HERO CONTAINER -->
-        <div class="home-search-container" id="homeSearchSection" style="display:none;">
-            <div class="search-hero-card">
-                <div class="search-hero-title">
-                    <span><svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" style="vertical-align:-2px;margin-right:4px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Cari Preset &amp; Template Video</span>
-                    <span class="hint-text">Cari kata kunci atau tag</span>
-                </div>
-                <div class="explore-search-input-wrap">
-                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7.5"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>
-                    <input type="text" id="homeSearchInput" placeholder="Ketik nama preset, gaya edit, atau @kreator..." autocomplete="off" />
-                    <button type="button" class="clear-search-btn" id="clearHomeSearch" style="display:none;" aria-label="Hapus pencarian">&times;</button>
-                </div>
-                <div class="hashtag-scroll">
-                    <button type="button" class="hashtag-pill" data-tag="CinematicTeal">#CinematicTeal</button>
-                    <button type="button" class="hashtag-pill" data-tag="CapCutPreset">#CapCutPreset</button>
-                    <button type="button" class="hashtag-pill" data-tag="Reels9:16">#Reels9:16</button>
-                    <button type="button" class="hashtag-pill" data-tag="AlightMotion">#AlightMotion</button>
-                    <button type="button" class="hashtag-pill" data-tag="CyberpunkNeon">#CyberpunkNeon</button>
-                    <button type="button" class="hashtag-pill" data-tag="PresetGratis">#PresetGratis</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- SETUP GUIDE -->
-        <div class="main" id="setupGuideContainer" style="display:none;">
-            <div class="setup-guide">
-                <button class="btn-close-guide" id="closeSetupGuide">&times;</button>
-                <h3><svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16" r="0.6"/></svg>Setup Firebase Diperlukan</h3>
-                <p><strong>API Firestore belum diaktifkan atau konfigurasi belum benar.</strong></p>
-                <p>Ikuti langkah-langkah berikut:</p>
-                <ol style="padding-left:1.2rem;margin:0.3rem 0;color:#856404;">
-                    <li>Buka <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a></li>
-                    <li>Pilih project kamu &rarr; <strong>Firestore Database</strong> &rarr; <strong>Buat database</strong></li>
-                    <li>Buka <strong>Authentication</strong> &rarr; aktifkan <strong>Email/Password</strong></li>
-                    <li>Pastikan konfigurasi Firebase sudah benar</li>
-                </ol>
-                <p style="font-size:0.78rem;margin-top:0.2rem;">Setelah setup, refresh halaman.</p>
-            </div>
-        </div>
-
-        <!-- FILTERS -->
-        <div class="filter-bar">
-            <div class="filter-row" id="categoryFilters">
-                <button class="cat-chip active" data-filter="all">Semua</button>
-                <button class="cat-chip" data-filter="preset">Preset</button>
-                <button class="cat-chip" data-filter="assets">Assets</button>
-                <button class="cat-chip" data-filter="lainnya">Lainnya</button>
-                <button class="cat-chip" data-filter="free">Gratis</button>
-                <button class="cat-chip" data-filter="paid">Berbayar</button>
-            </div>
-            <div class="filter-row ratio-row">
-                <div class="ratio-chips" id="ratioFilters">
-                    <button class="ratio-chip" data-ratio="9:16">9:16</button>
-                    <button class="ratio-chip" data-ratio="16:9">16:9</button>
-                    <button class="ratio-chip" data-ratio="1:1">1:1</button>
-                    <button class="ratio-chip" data-ratio="4:3">4:3</button>
-                    <button class="ratio-chip" data-ratio="3:4">3:4</button>
-                </div>
-                <div class="sort-select-wrap">
-                    <select id="sortSelect" class="sort-select" aria-label="Urutkan Template">
-                        <option value="terbaru">Terbaru</option>
-                        <option value="populer">Paling Disukai</option>
-                        <option value="terbanyak">Paling Banyak Diunduh</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
         <!-- MAIN -->
         <main class="main">
             <div id="cardGrid"></div>
@@ -3580,16 +3589,16 @@
                                     <div class="form-group"><label>Bio</label><textarea id="rBio" rows="2" placeholder="Sedikit tentang kamu sebagai kreator"></textarea></div>
                                     <div class="form-group"><label>Software yang Digunakan * <span style="font-size:0.72rem;font-weight:normal;color:var(--text-muted);">(Bisa pilih lebih dari 1)</span></label>
                                         <div class="software-checkbox-grid" id="rSoftwareGroup">
-                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Alight Motion" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span>Alight Motion</span></label>
-                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="CapCut" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span>CapCut</span></label>
-                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Node Video" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span>Node Video</span></label>
-                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Premiere Pro" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span>Premiere Pro</span></label>
-                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="After Effects" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span>After Effects</span></label>
-                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="DaVinci Resolve" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span>DaVinci Resolve</span></label>
-                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="KineMaster" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span>KineMaster</span></label>
-                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Canva" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span>Canva</span></label>
-                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Photoshop / Illustrator" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span>Photoshop / Illustrator</span></label>
-                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Lainnya" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span>Lainnya</span></label>
+                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Alight Motion" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">Alight Motion</span></label>
+                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="CapCut" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">CapCut</span></label>
+                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Node Video" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">Node Video</span></label>
+                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Premiere Pro" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">Premiere Pro</span></label>
+                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="After Effects" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">After Effects</span></label>
+                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="DaVinci Resolve" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">DaVinci Resolve</span></label>
+                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="KineMaster" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">KineMaster</span></label>
+                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Canva" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">Canva</span></label>
+                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Photoshop / Illustrator" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">Photoshop / Illustrator</span></label>
+                                            <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Lainnya" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">Lainnya</span></label>
                                         </div>
                                         <input type="text" id="rSoftwareCustom" class="form-control" placeholder="Tulis software lainnya (pisahkan koma)..." style="display:none;margin-top:0.5rem;" />
                                     </div>
@@ -3954,14 +3963,29 @@
             ];
             window.SOFTWARE_OPTIONS = SOFTWARE_OPTIONS;
 
+            function updateSoftwareChipState(group) {
+                if (!group) return;
+                group.querySelectorAll('.software-chip').forEach(function(chip) {
+                    var cb = chip.querySelector('input[type="checkbox"]');
+                    if (cb) {
+                        chip.classList.toggle('checked', cb.checked);
+                    }
+                });
+            }
+            window.updateSoftwareChipState = updateSoftwareChipState;
+
             function toggleSoftwareCustomInput(prefix) {
                 const group = document.getElementById(prefix + 'SoftwareGroup');
                 const customInput = document.getElementById(prefix + 'SoftwareCustom');
+                if (group) {
+                    updateSoftwareChipState(group);
+                }
                 if (!group || !customInput) return;
                 const checkboxes = group.querySelectorAll('input[type="checkbox"]:checked');
                 const values = Array.from(checkboxes).map(cb => cb.value);
                 if (values.includes('Lainnya')) {
                     customInput.style.display = 'block';
+                    customInput.focus();
                 } else {
                     customInput.style.display = 'none';
                 }
@@ -3977,7 +4001,11 @@
 
                 SOFTWARE_OPTIONS.forEach(function(opt) {
                     var isChecked = selectedList.indexOf(opt) !== -1;
-                    html += '<label class="software-chip"><input type="checkbox" name="' + prefix + 'SoftwareOption" value="' + escapeHtml(opt) + '"' + (isChecked ? ' checked' : '') + ' onchange="window.toggleSoftwareCustomInput(\'' + prefix + '\')"><span>' + escapeHtml(opt) + '</span></label>';
+                    html += '<label class="software-chip' + (isChecked ? ' checked' : '') + '">';
+                    html += '<input type="checkbox" name="' + prefix + 'SoftwareOption" value="' + escapeHtml(opt) + '"' + (isChecked ? ' checked' : '') + ' onchange="window.toggleSoftwareCustomInput(\'' + prefix + '\')">';
+                    html += '<span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>';
+                    html += '<span class="chip-label">' + escapeHtml(opt) + '</span>';
+                    html += '</label>';
                 });
 
                 var customItems = selectedList.filter(function(s) { return SOFTWARE_OPTIONS.indexOf(s) === -1; });
@@ -4011,6 +4039,7 @@
                 var group = document.getElementById(prefix + 'SoftwareGroup');
                 if (group) {
                     group.querySelectorAll('input[type="checkbox"]').forEach(function(cb) { cb.checked = false; });
+                    updateSoftwareChipState(group);
                 }
                 var customInput = document.getElementById(prefix + 'SoftwareCustom');
                 if (customInput) {
@@ -4077,168 +4106,6 @@
                 bell: '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>'
             };
 
-            // ===== SAMPLE DATA (FALLBACK) =====
-            var SAMPLE_TEMPLATES = [
-                {
-                    id: 'sample-1',
-                    judul: 'Cinematic Teal & Orange Grade',
-                    kategori: 'Preset',
-                    deskripsi: 'Preset warna sinematik dengan gradasi Teal & Orange hangat untuk video travel & vlog VLOG CapCut & Premiere Pro.',
-                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                    aspectRatio: '16:9',
-                    license: 'free',
-                    harga: 0,
-                    linkProject: 'https://drive.google.com',
-                    linkDrive: 'https://drive.google.com',
-                    creator: 'rosmeri',
-                    creatorUid: 'sample-creator-1',
-                    kode: 'A1B2C3',
-                    likes: 128,
-                    uses: 450,
-                    views: 1200,
-                    createdAt: new Date('2024-01-15')
-                },
-                {
-                    id: 'sample-2',
-                    judul: 'Minimalist Instagram Reels Pack',
-                    kategori: 'Preset',
-                    deskripsi: 'Kumpulan 5 template Reel estetik dengan tipografi bersih dan transisi halus.',
-                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                    aspectRatio: '9:16',
-                    license: 'free',
-                    harga: 0,
-                    linkDrive: 'https://drive.google.com',
-                    creator: 'rosmeri',
-                    creatorUid: 'sample-creator-1',
-                    kode: 'M3N4O5',
-                    likes: 85,
-                    uses: 310,
-                    views: 890,
-                    createdAt: new Date('2024-02-01')
-                },
-                {
-                    id: 'sample-3',
-                    judul: 'Retro VHS Glitch & Overlay Pack',
-                    kategori: 'Assets',
-                    deskripsi: 'Overlay efek pita kaset VHS vintage 90-an lengkap dengan efek suara static audio.',
-                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                    aspectRatio: '4:3',
-                    license: 'paid',
-                    harga: 25000,
-                    creator: 'alex_edit',
-                    creatorUid: 'sample-creator-2',
-                    kode: 'V7H8S9',
-                    likes: 210,
-                    uses: 620,
-                    views: 2400,
-                    createdAt: new Date('2024-02-10')
-                },
-                {
-                    id: 'sample-4',
-                    judul: 'Cyberpunk Neon Glow Preset',
-                    kategori: 'Preset',
-                    deskripsi: 'Tone malam hari dengan warna neon biru dan ungu tajam, sangat cocok untuk sinematik perkotaan.',
-                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                    aspectRatio: '1:1',
-                    license: 'free',
-                    harga: 0,
-                    linkProject: 'https://drive.google.com',
-                    creator: 'alex_edit',
-                    creatorUid: 'sample-creator-2',
-                    kode: 'C9Y8P7',
-                    likes: 94,
-                    uses: 280,
-                    views: 750,
-                    createdAt: new Date('2024-02-14')
-                },
-                {
-                    id: 'sample-5',
-                    judul: 'Moody Film Grain Matte Look',
-                    kategori: 'Preset',
-                    deskripsi: 'Tone matte ala film seluloid 35mm lembut dengan tekstur grain alami.',
-                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                    aspectRatio: '16:9',
-                    license: 'free',
-                    harga: 0,
-                    linkProject: 'https://drive.google.com',
-                    creator: 'rosmeri',
-                    creatorUid: 'sample-creator-1',
-                    kode: 'F5I6L7',
-                    likes: 142,
-                    uses: 530,
-                    views: 1600,
-                    createdAt: new Date('2024-02-20')
-                },
-                {
-                    id: 'sample-6',
-                    judul: '3D Text Motion Title Templates',
-                    kategori: 'Assets',
-                    deskripsi: 'Animasi judul teks 3D bergaya modern untuk pembuka video YouTube atau klip promo.',
-                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                    aspectRatio: '9:16',
-                    license: 'paid',
-                    harga: 35000,
-                    creator: 'sarah_design',
-                    creatorUid: 'sample-creator-3',
-                    kode: 'T3X7M9',
-                    likes: 175,
-                    uses: 410,
-                    views: 1850,
-                    createdAt: new Date('2024-03-01')
-                },
-                {
-                    id: 'sample-7',
-                    judul: 'Urban Portrait Street Color Grade',
-                    kategori: 'Preset',
-                    deskripsi: 'Preset potret foto & video gaya streetwear urban dengan tonal hangat dan kontras lembut.',
-                    linkYoutube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                    aspectRatio: '4:5',
-                    license: 'free',
-                    harga: 0,
-                    linkDrive: 'https://drive.google.com',
-                    creator: 'alex_edit',
-                    creatorUid: 'sample-creator-2',
-                    kode: 'U8P4S5',
-                    likes: 215,
-                    uses: 580,
-                    views: 2100,
-                    createdAt: new Date('2024-03-05')
-                }
-            ];
-
-            var SAMPLE_CREATORS = [
-                {
-                    id: 'sample-creator-1',
-                    name: 'rosmeri',
-                    displayName: 'Rosmeri Ann',
-                    bio: 'Video editor & colorist passionate about cinematic tones and mobile workflow.',
-                    software: 'CapCut, Premiere Pro',
-                    wa: '6281234567890',
-                    email: 'rosmeri@example.com',
-                    portfolio: 'https://instagram.com'
-                },
-                {
-                    id: 'sample-creator-2',
-                    name: 'alex_edit',
-                    displayName: 'Alex Visuals',
-                    bio: 'Creating cyberpunk, retro VHS overlays and LUTs for creator community.',
-                    software: 'After Effects, DaVinci Resolve',
-                    wa: '6289876543210',
-                    email: 'alex@example.com',
-                    portfolio: 'https://youtube.com'
-                },
-                {
-                    id: 'sample-creator-3',
-                    name: 'sarah_design',
-                    displayName: 'Sarah Motion',
-                    bio: 'Motion graphics artist & 3D title designer.',
-                    software: 'Blender, After Effects',
-                    wa: '628555666777',
-                    email: 'sarah@example.com',
-                    portfolio: 'https://behance.net'
-                }
-            ];
-
             // ===== STATE VARIABLES =====
             var firebaseInitialized = false;
             var db = null;
@@ -4295,8 +4162,8 @@
                 subscribeCreators();
             } catch (e) {
                 console.error('Firebase init error:', e.message);
-                allTemplates = SAMPLE_TEMPLATES.slice();
-                allCreators = SAMPLE_CREATORS.slice();
+                allTemplates = [];
+                allCreators = [];
                 dataLoaded = true;
             }
 
@@ -4408,31 +4275,56 @@
                 if (userOrCreatorOrName && typeof userOrCreatorOrName === 'object' && userOrCreatorOrName !== null) {
                     obj = userOrCreatorOrName;
                     name = obj.displayName || obj.name || obj.email || 'User';
-                    photoURL = obj.photoURL || '';
-                    if (!photoURL && currentUser && (currentUser.uid === obj.uid || currentUser.email === obj.email)) {
+                    photoURL = obj.photoURL || obj.photoUrl || obj.avatarUrl || obj.avatar || '';
+                    if (!photoURL) {
+                        var matched = allCreators.find(function(c) {
+                            return (obj.uid && (c.uid === obj.uid || c.id === obj.uid)) ||
+                                   (obj.creatorUid && (c.uid === obj.creatorUid || c.id === obj.creatorUid)) ||
+                                   (obj.name && (c.name || '').toLowerCase() === (obj.name || '').toLowerCase()) ||
+                                   (obj.creator && (c.name || '').toLowerCase() === (obj.creator || '').toLowerCase()) ||
+                                   (obj.displayName && (c.displayName || '').toLowerCase() === (obj.displayName || '').toLowerCase());
+                        });
+                        if (matched) {
+                            photoURL = matched.photoURL || matched.photoUrl || '';
+                        }
+                    }
+                    if (!photoURL && currentUser && (
+                        (obj.uid && currentUser.uid === obj.uid) ||
+                        (obj.email && currentUser.email === obj.email) ||
+                        (obj.name && currentUser.displayName && currentUser.displayName.toLowerCase() === (obj.name || '').toLowerCase())
+                    )) {
                         photoURL = currentUser.photoURL || '';
                     }
                 } else if (typeof userOrCreatorOrName === 'string') {
                     name = userOrCreatorOrName;
-                    if (currentUser && ((currentUser.displayName && currentUser.displayName.toLowerCase() === name.toLowerCase()) || (currentUser.email && currentUser.email.toLowerCase() === name.toLowerCase()))) {
+                    var matched = allCreators.find(function(c) {
+                        return (c.name || '').toLowerCase() === name.toLowerCase() ||
+                               (c.displayName || '').toLowerCase() === name.toLowerCase() ||
+                               c.uid === name ||
+                               c.id === name;
+                    });
+                    if (matched) {
+                        photoURL = matched.photoURL || matched.photoUrl || '';
+                    }
+                    if (!photoURL && currentUser && (
+                        (currentUser.displayName && currentUser.displayName.toLowerCase() === name.toLowerCase()) ||
+                        (currentUser.email && currentUser.email.toLowerCase() === name.toLowerCase()) ||
+                        currentUser.uid === name ||
+                        (currentUserCreator && (currentUserCreator.name || '').toLowerCase() === name.toLowerCase())
+                    )) {
                         photoURL = currentUser.photoURL || '';
-                    } else {
-                        var matched = allCreators.find(function(c) { return (c.name || '').toLowerCase() === name.toLowerCase() || (c.displayName || '').toLowerCase() === name.toLowerCase(); });
-                        if (matched) {
-                            photoURL = matched.photoURL || (currentUser && currentUser.uid === matched.uid ? currentUser.photoURL : '');
-                        }
                     }
                 }
                 var safeName = escapeHtml(name || 'User');
                 var initials = getInitials(name || 'User');
-                var sizeStyle = sizePx ? 'width:' + sizePx + 'px;height:' + sizePx + 'px;' : '';
+                var sizeStyle = sizePx ? 'width:' + sizePx + 'px;height:' + sizePx + 'px;min-width:' + sizePx + 'px;min-height:' + sizePx + 'px;' : '';
+                var fallbackBg = getAvatarStyle(obj || name);
+
                 if (photoURL && typeof photoURL === 'string' && photoURL.trim() !== '') {
                     var safeUrl = escapeHtml(photoURL.trim());
-                    var fallbackBg = getAvatarStyle(obj || name);
-                    return '<div class="avatar ' + extraClass + '" style="' + sizeStyle + '"><img src="' + safeUrl + '" alt="' + safeName + '" class="avatar-img" onerror="this.style.display=\'none\'; if(this.nextElementSibling) this.nextElementSibling.style.display=\'flex\';" /><div class="avatar-fallback" style="' + fallbackBg + '; display:none; width:100%; height:100%; border-radius:50%; align-items:center; justify-content:center; font-weight:600; font-size: 0.8em;">' + initials + '</div></div>';
+                    return '<div class="avatar ' + extraClass + '" style="' + sizeStyle + ';overflow:hidden;position:relative;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;"><img src="' + safeUrl + '" alt="' + safeName + '" class="avatar-img" referrerpolicy="no-referrer" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;" onerror="this.style.display=\'none\'; if(this.nextElementSibling) this.nextElementSibling.style.display=\'flex\';" /><div class="avatar-fallback" style="' + fallbackBg + ';display:none;width:100%;height:100%;border-radius:50%;align-items:center;justify-content:center;font-weight:600;font-size:0.8em;">' + initials + '</div></div>';
                 }
-                var fallbackBg = getAvatarStyle(obj || name);
-                return '<div class="avatar ' + extraClass + '" style="' + fallbackBg + ' ' + sizeStyle + '">' + initials + '</div>';
+                return '<div class="avatar ' + extraClass + '" style="' + fallbackBg + ';' + sizeStyle + ';border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:600;">' + initials + '</div>';
             }
 
             function signInWithGoogle() {
@@ -4750,7 +4642,13 @@
                     .then(function(doc) {
                         if (doc.exists) {
                             isCreator = true;
-                            currentUserCreator = doc.data();
+                            var creatorData = doc.data() || {};
+                            creatorData.id = doc.id;
+                            if (currentUser && currentUser.photoURL && creatorData.photoURL !== currentUser.photoURL) {
+                                creatorData.photoURL = currentUser.photoURL;
+                                db.collection('creators').doc(uid).update({ photoURL: currentUser.photoURL }).catch(function() {});
+                            }
+                            currentUserCreator = creatorData;
                             currentUserCreatorId = uid;
                             buildDesktopNav();
                             buildMobileNav();
@@ -4851,7 +4749,7 @@
             // ===== SUBSCRIBE =====
             function subscribeTemplates() {
                 if (!db) {
-                    if (allTemplates.length === 0) allTemplates = SAMPLE_TEMPLATES.slice();
+                    allTemplates = [];
                     dataLoaded = true;
                     render();
                     return;
@@ -4866,7 +4764,7 @@
                             data.id = doc.id;
                             list.push(data);
                         });
-                        allTemplates = list.length > 0 ? list : SAMPLE_TEMPLATES.slice();
+                        allTemplates = list;
                         dataLoaded = true;
                         render();
                         if (pendingHash) {
@@ -4876,7 +4774,7 @@
                         }
                     }, function(err) {
                         console.warn('Templates subscription error:', err.message);
-                        if (allTemplates.length === 0) allTemplates = SAMPLE_TEMPLATES.slice();
+                        allTemplates = [];
                         dataLoaded = true;
                         render();
                     });
@@ -4884,7 +4782,7 @@
 
             function subscribeCreators() {
                 if (!db) {
-                    if (allCreators.length === 0) allCreators = SAMPLE_CREATORS.slice();
+                    allCreators = [];
                     if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
                     else render();
                     return;
@@ -4899,16 +4797,21 @@
                             data.id = doc.id;
                             list.push(data);
                         });
-                        allCreators = list.length > 0 ? list : SAMPLE_CREATORS.slice();
+                        allCreators = list;
                         if (currentUser && currentUserCreatorId) {
-                            var updated = allCreators.find(function(c) { return c.id === currentUserCreatorId; });
-                            if (updated) currentUserCreator = updated;
+                            var updated = allCreators.find(function(c) { return c.id === currentUserCreatorId || c.uid === currentUserCreatorId; });
+                            if (updated) {
+                                if (currentUser.photoURL && !updated.photoURL) {
+                                    updated.photoURL = currentUser.photoURL;
+                                }
+                                currentUserCreator = updated;
+                            }
                         }
                         if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
                         else render();
                     }, function(err) {
                         console.warn('Creators subscription error:', err.message);
-                        if (allCreators.length === 0) allCreators = SAMPLE_CREATORS.slice();
+                        allCreators = [];
                         if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
                         else render();
                     });
@@ -4958,20 +4861,26 @@
                 var isFree = t.license === 'free';
                 var priceLabel = isFree ? 'Gratis' : formatRupiah(t.harga || 0);
                 var ratio = t.aspectRatio || '16:9';
-                return '<article class="card" data-id="' + t.id + '" data-creator="' + escapeHtml(t.creator || '') + '" data-kode="' + escapeHtml(t.kode || '') + '" tabindex="0" role="button" aria-label="' + escapeHtml(t.judul || '') + '"><div class="thumb" style="aspect-ratio:' + ratioCss(ratio) + '"><div class="thumb-fallback">' + ICON.noVideo + '</div>' + (ytId ? '<img class="thumb-img" src="' + thumbYoutube(ytId) + '" alt="" loading="lazy" onerror="this.remove()"><span class="play-badge">' + ICON.play + '</span>' : '') + '<span class="ratio-tag">' + ratio + '</span>' + (t.kode ? '<button class="card-quick-code" data-kode="' + escapeHtml(t.kode) + '" title="Salin Kode Preset">' + ICON.copy + ' ' + escapeHtml(t.kode) + '</button>' : '') + '</div><div class="card-info"><h3 class="card-title">' + escapeHtml(t.judul || 'Tanpa judul') + '</h3><div class="card-creator">' + escapeHtml(t.creator || 'Anonim') + '</div><div class="card-foot"><span class="price ' + (isFree ? 'free' : 'paid') + '">' + priceLabel + '</span><div class="card-stats"><span class="likes" title="Suka">' + ICON.heart + formatNumber(t.likes || 0) + '</span><span class="uses" title="Unduhan">' + ICON.download + formatNumber(t.uses || 0) + '</span></div></div></div></article>';
+                var creatorAvatar = renderAvatarHtml(t.creatorUid ? { uid: t.creatorUid, name: t.creator } : t.creator, 'card-creator-avatar', 16);
+                return '<article class="card" data-id="' + t.id + '" data-creator="' + escapeHtml(t.creator || '') + '" data-kode="' + escapeHtml(t.kode || '') + '" tabindex="0" role="button" aria-label="' + escapeHtml(t.judul || '') + '"><div class="thumb" style="aspect-ratio:' + ratioCss(ratio) + '"><div class="thumb-fallback">' + ICON.noVideo + '</div>' + (ytId ? '<img class="thumb-img" src="' + thumbYoutube(ytId) + '" alt="" loading="lazy" onerror="this.remove()"><span class="play-badge">' + ICON.play + '</span>' : '') + '<span class="ratio-tag">' + ratio + '</span>' + (t.kode ? '<button class="card-quick-code" data-kode="' + escapeHtml(t.kode) + '" title="Salin Kode Preset">' + ICON.copy + ' ' + escapeHtml(t.kode) + '</button>' : '') + '</div><div class="card-info"><h3 class="card-title">' + escapeHtml(t.judul || 'Tanpa judul') + '</h3><div class="card-creator">' + creatorAvatar + '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(t.creator || 'Anonim') + '</span></div><div class="card-foot"><span class="price ' + (isFree ? 'free' : 'paid') + '">' + priceLabel + '</span><div class="card-stats"><span class="likes" title="Suka">' + ICON.heart + formatNumber(t.likes || 0) + '</span><span class="uses" title="Unduhan">' + ICON.download + formatNumber(t.uses || 0) + '</span></div></div></div></article>';
             }
 
             function emptyStateHtml(kind) {
                 if (kind === 'creators') {
-                    return '<div class="empty-state">' + (ICON.users || '') + '<div class="title">Belum ada kreator terdaftar</div><div class="sub">Belum ada profil kreator yang dipublikasikan.</div></div>';
+                    return '<div class="empty-state" style="padding:3.5rem 1rem;text-align:center;">' + (ICON.users || '') + '<div class="title" style="font-size:1.15rem;font-weight:700;margin-top:0.5rem;color:var(--text);">Belum ada kreator terdaftar</div><div class="sub" style="font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem;">Jadilah kreator pertama yang mempublikasikan preset di komunitas.</div></div>';
                 }
                 if (kind === 'creator-profile') {
-                    return '<div class="empty-state">' + ICON.noVideo + '<div class="title">Belum ada karya</div><div class="sub">Kreator ini belum membagikan template apapun.</div></div>';
+                    return '<div class="empty-state" style="padding:3.5rem 1rem;text-align:center;">' + ICON.noVideo + '<div class="title" style="font-size:1.15rem;font-weight:700;margin-top:0.5rem;color:var(--text);">Belum ada karya</div><div class="sub" style="font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem;">Kreator ini belum membagikan template apapun.</div></div>';
                 }
-                return '<div class="empty-state">' + ICON.search + '<div class="title">Tidak menemukan yang kamu cari</div><div class="sub">Coba kata kunci lain atau ubah filter.</div></div>';
+                if (kind === 'home') {
+                    return '<div class="empty-state" style="padding:3.5rem 1rem;text-align:center;">' + ICON.noVideo + '<div class="title" style="font-size:1.15rem;font-weight:700;margin-top:0.5rem;color:var(--text);">Belum ada preset yang diunggah</div><div class="sub" style="font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem;">Preset dari database Firebase akan otomatis tampil di sini.</div></div>';
+                }
+                return '<div class="empty-state" style="padding:3.5rem 1rem;text-align:center;">' + ICON.search + '<div class="title" style="font-size:1.15rem;font-weight:700;margin-top:0.5rem;color:var(--text);">Tidak menemukan hasil yang cocok</div><div class="sub" style="font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem;">Coba kata kunci lain atau cari nama kreator.</div></div>';
             }
 
             function updateContextLine() {
+                var contextLine = document.getElementById('contextLine');
+                if (!contextLine) return;
                 var total = allTemplates.length;
                 var creators = allCreators.length;
                 if (currentView === 'creators' && !currentCreator) {
@@ -5191,6 +5100,7 @@
                             email: document.getElementById('prEmail').value.trim(),
                             portfolio: document.getElementById('prPortfolio').value.trim(),
                             avatarColor: (document.getElementById('prAvatarColor') && document.getElementById('prAvatarColor').value) || AVATAR_PALETTE[0].bg,
+                            photoURL: (currentUser && currentUser.photoURL) || '',
                             uid: currentUser.uid,
                             registeredAt: firebase.firestore.FieldValue.serverTimestamp()
                         };
@@ -5215,39 +5125,9 @@
             function render() {
                 updateContextLine();
 
-                var desktopSearch = document.querySelector('.desktop-search');
-                var mobileSearchToggle = document.getElementById('mobileSearchToggle');
-                var mobileSearchBar = document.getElementById('mobileSearchBar');
-
-                var homeSearchSection = document.getElementById('homeSearchSection');
-                if (homeSearchSection) {
-                    homeSearchSection.style.display = 'none';
-                }
-
-                var contextBar = document.querySelector('.context-bar');
-                if (contextBar) {
-                    contextBar.style.display = 'none';
-                }
-
-                var setupGuideContainer = document.getElementById('setupGuideContainer');
-                if (setupGuideContainer) {
-                    setupGuideContainer.style.display = 'none';
-                }
-
                 if (currentView === 'cari' || currentView === 'search') {
-                    if (desktopSearch) desktopSearch.style.display = 'none';
-                    if (mobileSearchToggle) mobileSearchToggle.style.display = 'none';
-                    if (mobileSearchBar) mobileSearchBar.classList.remove('open');
                     renderCariView();
                     return;
-                } else {
-                    if (desktopSearch) desktopSearch.style.display = '';
-                    if (mobileSearchToggle) mobileSearchToggle.style.display = '';
-                }
-
-                var filterBar = document.querySelector('.filter-bar');
-                if (filterBar) {
-                    filterBar.style.display = 'none';
                 }
 
                 if (currentView === 'profile' || currentView === 'akun') {
@@ -5286,7 +5166,7 @@
                     return;
                 }
                 if (filtered.length === 0) {
-                    cardGrid.innerHTML = html + emptyStateHtml('search');
+                    cardGrid.innerHTML = html + emptyStateHtml(currentView === 'home' ? 'home' : 'search');
                     return;
                 }
                 if (currentView !== 'home') {
@@ -5334,7 +5214,12 @@
                 cardGrid.querySelectorAll('.creator-card').forEach(function(el) {
                     if (el.id === 'registerCreatorCardBtn') {
                         el.addEventListener('click', function() {
-                            openRegisterModal();
+                            if (!currentUser) {
+                                showToast('Silakan masuk terlebih dahulu untuk mendaftar sebagai kreator', 'info');
+                                openLoginModal();
+                                return;
+                            }
+                            goToView('profile');
                         });
                         return;
                     }
@@ -5435,7 +5320,8 @@
                         });
                         if (exists) { showToast('Username sudah digunakan', 'error'); return; }
                         var avatarColor = (document.getElementById('aAvatarColor') && document.getElementById('aAvatarColor').value) || AVATAR_PALETTE[0].bg;
-                        var data = { name: username, displayName: displayName, bio: bio, software: software, wa: wa, email: email, portfolio: portfolio, avatarColor: avatarColor };
+                        var photoURL = (currentUser && currentUser.photoURL) || (currentUserCreator && currentUserCreator.photoURL) || '';
+                        var data = { name: username, displayName: displayName, bio: bio, software: software, wa: wa, email: email, portfolio: portfolio, avatarColor: avatarColor, photoURL: photoURL };
                         updateCreator(currentUserCreatorId, data)
                             .then(function() {
                                 showToast('Profil berhasil diperbarui!', 'success');
@@ -5588,7 +5474,7 @@
                     ownerActions = '<div class="preset-owner-actions"><button class="btn btn-secondary" id="editPresetBtn" data-id="' + template.id + '">' + ICON.edit + ' Edit Preset</button><button class="btn btn-danger" id="deletePresetBtn" data-id="' + template.id + '">' + ICON.trash + ' Hapus Preset</button></div>';
                 }
 
-                content.innerHTML = '<div class="modal-head"><h2>' + escapeHtml(template.judul || '') + '</h2><button class="modal-close" id="closeDetailModal"><svg viewBox="0 0 24 24" width="17" height="17"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="detail-preview" style="aspect-ratio:' + ratioCss(template.aspectRatio || '16:9') + '">' + (ytId ? '<iframe src="' + embedYoutube(ytId) + '" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>' : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#8a8578;">' + ICON.noVideo + '</div>') + '</div><div class="detail-meta-row"><span class="tag ' + (isFree ? 'free' : 'paid') + '">' + (isFree ? 'Gratis' : formatRupiah(template.harga || 0)) + '</span><span class="tag">' + escapeHtml(template.kategori || '') + '</span>' + (template.style ? '<span class="tag style-tag">' + escapeHtml(template.style) + '</span>' : '') + (template.kode ? '<button class="tag mono tag-code-copy" id="copyCodeBtn" title="Klik untuk menyalin kode preset" data-kode="' + escapeHtml(template.kode) + '">' + ICON.copy + ' ' + escapeHtml(template.kode) + '</button>' : '') + '</div>' + (uploadDate ? '<div class="detail-date">' + ICON.calendar + ' Diunggah ' + uploadDate + '</div>' : '') + '<div class="detail-creator-line" id="detailCreatorLine" data-creator="' + escapeHtml(template.creator || '') + '">' + renderAvatarHtml(template.creator, 'detail-creator-avatar', 36) + '<div><div class="name">' + escapeHtml(template.creator || 'Anonim') + '</div><div class="role">Kreator</div></div></div>' + (template.deskripsi ? '<p class="detail-desc">' + escapeHtml(template.deskripsi) + '</p>' : '') + '<div class="detail-stats"><span class="stat">' + ICON.download + '<span id="detailUsesCount">' + formatNumber(template.uses || 0) + '</span> unduhan</span><span class="stat">' + ICON.eye + '<span id="detailViewCount">' + formatNumber(template.views || 0) + '</span> dilihat</span><span class="stat"><button class="stat-btn ' + (likedState ? 'liked' : '') + '" id="likeBtn" data-id="' + template.id + '">' + ICON.heart + ' <span id="detailLikeCount">' + formatNumber(template.likes || 0) + '</span></button></span></div>' + ownerActions + contactHtml + linksHtml;
+                content.innerHTML = '<div class="modal-head"><h2>' + escapeHtml(template.judul || '') + '</h2><button class="modal-close" id="closeDetailModal"><svg viewBox="0 0 24 24" width="17" height="17"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="detail-preview" style="aspect-ratio:' + ratioCss(template.aspectRatio || '16:9') + '">' + (ytId ? '<iframe src="' + embedYoutube(ytId) + '" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>' : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#8a8578;">' + ICON.noVideo + '</div>') + '</div><div class="detail-meta-row"><span class="tag ' + (isFree ? 'free' : 'paid') + '">' + (isFree ? 'Gratis' : formatRupiah(template.harga || 0)) + '</span><span class="tag">' + escapeHtml(template.kategori || '') + '</span>' + (template.style ? '<span class="tag style-tag">' + escapeHtml(template.style) + '</span>' : '') + (template.kode ? '<button class="tag mono tag-code-copy" id="copyCodeBtn" title="Klik untuk menyalin kode preset" data-kode="' + escapeHtml(template.kode) + '">' + ICON.copy + ' ' + escapeHtml(template.kode) + '</button>' : '') + '</div>' + (uploadDate ? '<div class="detail-date">' + ICON.calendar + ' Diunggah ' + uploadDate + '</div>' : '') + '<div class="detail-creator-line" id="detailCreatorLine" data-creator="' + escapeHtml(template.creator || '') + '">' + renderAvatarHtml(template.creatorUid ? { uid: template.creatorUid, name: template.creator } : template.creator, 'detail-creator-avatar', 36) + '<div><div class="name">' + escapeHtml(template.creator || 'Anonim') + '</div><div class="role">Kreator</div></div></div>' + (template.deskripsi ? '<p class="detail-desc">' + escapeHtml(template.deskripsi) + '</p>' : '') + '<div class="detail-stats"><span class="stat">' + ICON.download + '<span id="detailUsesCount">' + formatNumber(template.uses || 0) + '</span> unduhan</span><span class="stat">' + ICON.eye + '<span id="detailViewCount">' + formatNumber(template.views || 0) + '</span> dilihat</span><span class="stat"><button class="stat-btn ' + (likedState ? 'liked' : '') + '" id="likeBtn" data-id="' + template.id + '">' + ICON.heart + ' <span id="detailLikeCount">' + formatNumber(template.likes || 0) + '</span></button></span></div>' + ownerActions + contactHtml + linksHtml;
 
                 document.getElementById('detailModal').classList.add('active');
 
@@ -6226,7 +6112,7 @@
                             if (tpl2) tpl2.likes = (tpl2.likes || 0) + 1;
                         }
                         render();
-                        toggleLike(id, currentUser.uid).catch(function(err) { console.warn('Toggle like error:', err); });
+                        toggleLike(id, currentUser.uid).catch(function(err) { console.warn('Toggle like error:', (err && err.message) || String(err)); });
                     }
                     return;
                 }
@@ -6843,90 +6729,108 @@
             });
 
             function openRegisterModal() {
-                if (!currentUser) { showToast('Silakan masuk terlebih dahulu', 'info');
-                    openLoginModal(); return; }
-                if (isCreator) { showToast('Anda sudah terdaftar sebagai kreator', 'info'); return; }
-                document.getElementById('registerCreatorModal').classList.add('active');
-                document.getElementById('rUsername').value = '';
-                document.getElementById('rDisplayName').value = '';
-                document.getElementById('rBio').value = '';
-                resetSoftwareCheckboxes('r');
-                document.getElementById('rWa').value = '';
-                document.getElementById('rEmail').value = '';
-                document.getElementById('rPortfolio').value = '';
-                document.getElementById('rUsername').dataset.checked = 'false';
-                document.getElementById('usernameHint').innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="check">&check;</span> Tersedia';
-                if (modalMultiStep) modalMultiStep.reset();
+                if (!currentUser) {
+                    showToast('Silakan masuk terlebih dahulu', 'info');
+                    openLoginModal();
+                    return;
+                }
+                if (isCreator) {
+                    showToast('Anda sudah terdaftar sebagai kreator', 'info');
+                    return;
+                }
+                goToView('profile');
             }
 
-            document.getElementById('rUsername').addEventListener('input', function() {
-                var val = this.value.trim();
-                var hint = document.getElementById('usernameHint');
-                if (val.length < 3) {
-                    hint.innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">&cross;</span> Terlalu pendek';
-                    this.dataset.checked = 'false';
-                    return;
-                }
-                if (!/^[a-zA-Z0-9_]{3,20}$/.test(val)) {
-                    hint.innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">&cross;</span> Karakter tidak valid';
-                    this.dataset.checked = 'false';
-                    return;
-                }
-                var exists = allCreators.some(function(c) { return (c.name || '').toLowerCase() === val.toLowerCase(); });
-                if (exists) {
-                    hint.innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">&cross;</span> Username sudah dipakai';
-                    this.dataset.checked = 'false';
-                } else {
-                    hint.innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="check">&check;</span> Tersedia';
-                    this.dataset.checked = 'true';
-                }
-            });
+            var rUsernameEl = document.getElementById('rUsername');
+            if (rUsernameEl) {
+                rUsernameEl.addEventListener('input', function() {
+                    var val = this.value.trim();
+                    var hint = document.getElementById('usernameHint');
+                    if (val.length < 3) {
+                        if (hint) hint.innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">&cross;</span> Terlalu pendek';
+                        this.dataset.checked = 'false';
+                        return;
+                    }
+                    if (!/^[a-zA-Z0-9_]{3,20}$/.test(val)) {
+                        if (hint) hint.innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">&cross;</span> Karakter tidak valid';
+                        this.dataset.checked = 'false';
+                        return;
+                    }
+                    var exists = allCreators.some(function(c) { return (c.name || '').toLowerCase() === val.toLowerCase(); });
+                    if (exists) {
+                        if (hint) hint.innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="cross">&cross;</span> Username sudah dipakai';
+                        this.dataset.checked = 'false';
+                    } else {
+                        if (hint) hint.innerHTML = 'Min 3 karakter, hanya huruf/angka/garis bawah. <span class="check">&check;</span> Tersedia';
+                        this.dataset.checked = 'true';
+                    }
+                });
+            }
 
-            document.getElementById('registerCreatorForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                if (!currentUser || !db) { showToast('Firebase belum siap atau Anda belum login', 'error'); return; }
-                var name = document.getElementById('rUsername').value.trim();
-                var displayName = document.getElementById('rDisplayName').value.trim();
-                if (!name) { showToast('Username wajib diisi', 'error'); return; }
-                if (!/^[a-zA-Z0-9_]{3,20}$/.test(name)) { showToast('Username hanya huruf/angka/garis bawah, min 3 karakter', 'error'); return; }
-                if (!displayName) { showToast('Nama tampilan wajib diisi', 'error'); return; }
-                if (allCreators.some(function(c) { return (c.name || '').toLowerCase() === name.toLowerCase(); })) { showToast('Username sudah terdaftar', 'error'); return; }
-                var software = getSelectedSoftwareValues('r');
-                if (!software) { showToast('Pilih software yang digunakan', 'error'); return; }
-                var data = {
-                    name: name,
-                    displayName: displayName,
-                    bio: document.getElementById('rBio').value.trim(),
-                    software: software,
-                    wa: document.getElementById('rWa').value.trim(),
-                    email: document.getElementById('rEmail').value.trim(),
-                    portfolio: document.getElementById('rPortfolio').value.trim(),
-                    uid: currentUser.uid,
-                    registeredAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                addCreator(data)
-                    .then(function() {
-                        showToast('Selamat! Kamu sekarang kreator Preset Library', 'success');
-                        document.getElementById('registerCreatorForm').reset();
-                        document.getElementById('registerCreatorModal').classList.remove('active');
-                        isCreator = true;
-                        currentUserCreator = data;
-                        currentUserCreatorId = currentUser.uid;
-                        buildDesktopNav();
-                        buildMobileNav();
-                        if (unsubscribeCreators) unsubscribeCreators();
-                        subscribeCreators();
-                        if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
-                        else render();
-                    })
-                    .catch(function(err) { showToast('Gagal daftar: ' + err.message, 'error'); });
-            });
+            var regCreatorFormEl = document.getElementById('registerCreatorForm');
+            if (regCreatorFormEl) {
+                regCreatorFormEl.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (!currentUser || !db) { showToast('Firebase belum siap atau Anda belum login', 'error'); return; }
+                    var nameEl = document.getElementById('rUsername');
+                    var name = nameEl ? nameEl.value.trim() : '';
+                    var displayNameEl = document.getElementById('rDisplayName');
+                    var displayName = displayNameEl ? displayNameEl.value.trim() : '';
+                    if (!name) { showToast('Username wajib diisi', 'error'); return; }
+                    if (!/^[a-zA-Z0-9_]{3,20}$/.test(name)) { showToast('Username hanya huruf/angka/garis bawah, min 3 karakter', 'error'); return; }
+                    if (!displayName) { showToast('Nama tampilan wajib diisi', 'error'); return; }
+                    if (allCreators.some(function(c) { return (c.name || '').toLowerCase() === name.toLowerCase(); })) { showToast('Username sudah terdaftar', 'error'); return; }
+                    var software = getSelectedSoftwareValues('r');
+                    if (!software) { showToast('Pilih software yang digunakan', 'error'); return; }
+                    var bioEl = document.getElementById('rBio');
+                    var waEl = document.getElementById('rWa');
+                    var emailEl = document.getElementById('rEmail');
+                    var portEl = document.getElementById('rPortfolio');
+                    var data = {
+                        name: name,
+                        displayName: displayName,
+                        bio: bioEl ? bioEl.value.trim() : '',
+                        software: software,
+                        wa: waEl ? waEl.value.trim() : '',
+                        email: emailEl ? emailEl.value.trim() : '',
+                        portfolio: portEl ? portEl.value.trim() : '',
+                        uid: currentUser.uid,
+                        registeredAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    addCreator(data)
+                        .then(function() {
+                            showToast('Selamat! Kamu sekarang kreator Preset Library', 'success');
+                            regCreatorFormEl.reset();
+                            var modal = document.getElementById('registerCreatorModal');
+                            if (modal) modal.classList.remove('active');
+                            isCreator = true;
+                            currentUserCreator = data;
+                            currentUserCreatorId = currentUser.uid;
+                            buildDesktopNav();
+                            buildMobileNav();
+                            if (unsubscribeCreators) unsubscribeCreators();
+                            subscribeCreators();
+                            if (currentView === 'creators' && !currentCreator) renderCreatorDirectory();
+                            else render();
+                        })
+                        .catch(function(err) { showToast('Gagal daftar: ' + err.message, 'error'); });
+                });
+            }
 
             var cancelRegBtn = document.getElementById('cancelRegister');
             if (cancelRegBtn) {
-                cancelRegBtn.addEventListener('click', function() { document.getElementById('registerCreatorModal').classList.remove('active'); });
+                cancelRegBtn.addEventListener('click', function() {
+                    var modal = document.getElementById('registerCreatorModal');
+                    if (modal) modal.classList.remove('active');
+                });
             }
-            document.getElementById('closeRegisterModal').addEventListener('click', function() { document.getElementById('registerCreatorModal').classList.remove('active'); });
+            var closeRegBtn = document.getElementById('closeRegisterModal');
+            if (closeRegBtn) {
+                closeRegBtn.addEventListener('click', function() {
+                    var modal = document.getElementById('registerCreatorModal');
+                    if (modal) modal.classList.remove('active');
+                });
+            }
 
             window.openRegisterModal = openRegisterModal;
 
