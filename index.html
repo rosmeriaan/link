@@ -894,26 +894,32 @@
         .grid .card .card-creator {
             font-size: 0.73rem;
             color: var(--text-secondary);
-            margin-top: 0.15rem;
+            margin-top: 0.18rem;
             display: flex;
             align-items: center;
+            justify-content: flex-start;
+            text-align: left;
             gap: 0.35rem;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            width: 100%;
         }
+        .grid .card .card-creator .avatar,
         .card-creator-avatar {
-            width: 16px;
-            height: 16px;
-            min-width: 16px;
-            min-height: 16px;
-            border-radius: 50%;
-            font-size: 0.55rem;
-            flex-shrink: 0;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            width: 16px !important;
+            height: 16px !important;
+            min-width: 16px !important;
+            min-height: 16px !important;
+            border-radius: 50% !important;
+            font-size: 0.55rem !important;
+            flex-shrink: 0 !important;
+            margin: 0 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            overflow: hidden !important;
+            vertical-align: middle !important;
         }
         .grid .card .card-foot {
             display: flex;
@@ -1077,7 +1083,7 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 0.6rem;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.9rem;
         }
         .creator-directory-top .title {
             font-family: var(--font-display);
@@ -1085,7 +1091,7 @@
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.45rem;
         }
         .creator-directory-top .title svg {
             width: 20px;
@@ -1097,20 +1103,22 @@
         .btn-register-creator {
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
+            gap: 0.4rem;
             padding: 0.45rem 1rem;
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--accent, #14b8a6) 0%, #0d9488 100%);
             color: #fff;
             border: none;
             border-radius: var(--radius-pill);
             font-weight: 600;
             font-size: 0.76rem;
             cursor: pointer;
-            transition: background 0.15s, transform 0.1s;
+            transition: all 0.2s ease;
             white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(20, 184, 166, 0.25);
         }
         .btn-register-creator:hover {
-            background: var(--accent-dark);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.35);
+            transform: translateY(-1px);
         }
         .btn-register-creator:active {
             transform: scale(0.97);
@@ -1121,6 +1129,216 @@
             stroke: currentColor;
             fill: none;
             stroke-width: 2;
+        }
+
+        /* ===== SHOWCASE REGISTRATION BANNER WITH SVGS ===== */
+        .creator-register-banner {
+            position: relative;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.08) 0%, rgba(99, 102, 241, 0.05) 50%, rgba(20, 184, 166, 0.04) 100%);
+            border: 1px solid rgba(20, 184, 166, 0.35);
+            border-radius: var(--radius-lg, 16px);
+            padding: 1.25rem 1.4rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.2rem;
+            overflow: hidden;
+            box-shadow: 0 4px 20px -2px rgba(20, 184, 166, 0.08);
+            transition: all 0.25s ease;
+        }
+        .creator-register-banner::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 130px;
+            height: 130px;
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .creator-register-banner:hover {
+            border-color: var(--accent, #14b8a6);
+            box-shadow: 0 6px 24px -2px rgba(20, 184, 166, 0.16);
+            transform: translateY(-1px);
+        }
+        .creator-register-banner-left {
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            flex: 1;
+            min-width: 0;
+        }
+        .creator-register-icon-wrap {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent, #14b8a6) 0%, #0d9488 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 14px rgba(20, 184, 166, 0.35);
+            color: #ffffff;
+        }
+        .creator-register-icon-wrap svg {
+            width: 28px;
+            height: 28px;
+        }
+        .creator-register-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .creator-register-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.2rem 0.6rem;
+            background: rgba(20, 184, 166, 0.15);
+            color: var(--accent-dark, #0d9488);
+            border-radius: var(--radius-pill, 9999px);
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+        .creator-register-badge svg {
+            width: 13px;
+            height: 13px;
+        }
+        .creator-register-title {
+            font-family: var(--font-display);
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: var(--text, #0f172a);
+            margin: 0 0 0.25rem;
+            line-height: 1.3;
+        }
+        .creator-register-desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary, #64748b);
+            margin: 0 0 0.65rem;
+            line-height: 1.45;
+        }
+        .creator-register-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+        .creator-register-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text, #334155);
+            background: var(--surface, #ffffff);
+            border: 1px solid var(--border-soft, #e2e8f0);
+            padding: 0.2rem 0.55rem;
+            border-radius: var(--radius-sm, 8px);
+        }
+        .creator-register-pill svg {
+            color: var(--accent, #14b8a6);
+            flex-shrink: 0;
+            width: 13px;
+            height: 13px;
+        }
+        .creator-register-btn-wrap {
+            flex-shrink: 0;
+        }
+        .btn-banner-register {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--accent, #14b8a6) 0%, #0d9488 100%);
+            color: #ffffff;
+            padding: 0.65rem 1.3rem;
+            border-radius: var(--radius-pill, 9999px);
+            font-size: 0.84rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 4px 16px rgba(20, 184, 166, 0.32);
+            transition: all 0.2s ease;
+        }
+        .btn-banner-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(20, 184, 166, 0.42);
+            filter: brightness(1.05);
+        }
+        .btn-banner-register:active {
+            transform: scale(0.98);
+        }
+        .btn-banner-register svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2.2;
+            transition: transform 0.2s ease;
+        }
+        .btn-banner-register:hover svg {
+            transform: translateX(3px);
+        }
+        @media (max-width: 768px) {
+            .creator-register-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1.1rem;
+                gap: 1rem;
+            }
+            .creator-register-banner-left {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+                width: 100%;
+            }
+            .creator-register-btn-wrap {
+                width: 100%;
+            }
+            .btn-banner-register {
+                width: 100%;
+            }
+        }
+
+        /* ===== ACTIVE CREATOR STATUS BANNER ===== */
+        .creator-active-banner {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.06) 0%, rgba(99, 102, 241, 0.04) 100%);
+            border: 1px solid rgba(20, 184, 166, 0.25);
+            border-radius: var(--radius-lg, 16px);
+            padding: 0.85rem 1.2rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        .creator-active-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .creator-active-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(20, 184, 166, 0.15);
+            color: var(--accent, #14b8a6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .creator-active-badge svg {
+            width: 20px;
+            height: 20px;
+        }
+        .creator-active-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .creator-grid {
@@ -1150,51 +1368,111 @@
             transform: scale(0.98);
         }
         .creator-card.register-creator-card {
-            background: var(--bg-alt, #f8fafc);
-            border: 2px dashed var(--accent, #14b8a6);
+            background: linear-gradient(180deg, var(--surface, #ffffff) 0%, rgba(20, 184, 166, 0.04) 100%);
+            border: 1.5px dashed var(--accent, #14b8a6);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 1.1rem 0.65rem;
+            position: relative;
+            overflow: hidden;
             transition: all 0.2s ease;
         }
         .creator-card.register-creator-card:hover {
             background: var(--surface, #ffffff);
             border-color: var(--accent, #14b8a6);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
+            border-style: solid;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px -4px rgba(20, 184, 166, 0.25);
         }
-        .creator-card.register-creator-card .avatar {
-            background: var(--accent-light, rgba(20, 184, 166, 0.12));
+        .creator-card.register-creator-card .register-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(99, 102, 241, 0.1) 100%);
             color: var(--accent, #14b8a6);
-            border: 1.5px dashed var(--accent, #14b8a6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.45rem;
+            transition: all 0.25s ease;
+        }
+        .creator-card.register-creator-card .register-card-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke-width: 2.2;
+        }
+        .creator-card.register-creator-card:hover .register-card-icon {
+            transform: scale(1.1) rotate(6deg);
+            background: linear-gradient(135deg, var(--accent, #14b8a6) 0%, #0d9488 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.35);
         }
         .creator-card.register-creator-card .name {
             color: var(--accent, #14b8a6);
             font-weight: 700;
+            font-size: 0.85rem;
+            line-height: 1.2;
+        }
+        .creator-card.register-creator-card .sub {
+            font-size: 0.72rem;
+            color: var(--text-muted, #94a3b8);
+            margin-top: 0.2rem;
+            line-height: 1.3;
         }
         .creator-card.register-creator-card .count {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
             background: var(--accent, #14b8a6);
             color: #ffffff;
-            font-weight: 600;
-            padding: 0.15rem 0.55rem;
-            border-radius: var(--radius-sm);
-            margin-top: 0.25rem;
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 0.22rem 0.65rem;
+            border-radius: var(--radius-pill, 9999px);
+            margin-top: 0.45rem;
+            box-shadow: 0 2px 8px rgba(20, 184, 166, 0.25);
+            transition: all 0.2s ease;
+        }
+        .creator-card.register-creator-card .count svg {
+            width: 11px;
+            height: 11px;
+            stroke-width: 2.4;
+        }
+        .creator-card.register-creator-card:hover .count {
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
+            transform: scale(1.05);
         }
         .avatar {
-            width: 44px;
-            height: 44px;
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            min-height: 36px;
             border-radius: 50%;
-            margin: 0 auto 0.45rem;
+            margin: 0;
+            padding: 0;
             background: var(--accent-soft);
             color: var(--accent-dark);
             font-family: var(--font-display);
             font-weight: 600;
-            font-size: 1rem;
-            display: flex;
+            font-size: 0.9rem;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            vertical-align: middle;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .creator-card .avatar {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            min-height: 44px;
+            border-radius: 50%;
+            margin: 0 auto 0.45rem !important;
+            display: flex !important;
         }
         .creator-card .name {
             font-weight: 600;
@@ -1217,19 +1495,24 @@
         .profile-header {
             display: flex;
             align-items: center;
-            gap: 0.9rem;
+            justify-content: flex-start;
+            text-align: left;
+            gap: 1rem;
             padding: 0.2rem 0 1.2rem;
             border-bottom: 1px solid var(--border-soft);
             margin-bottom: 1rem;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             column-span: all;
         }
         .profile-header .avatar {
-            width: 56px;
-            height: 56px;
-            font-size: 1.3rem;
-            margin: 0;
-            flex-shrink: 0;
+            width: 64px !important;
+            height: 64px !important;
+            min-width: 64px !important;
+            min-height: 64px !important;
+            font-size: 1.4rem !important;
+            margin: 0 !important;
+            flex-shrink: 0 !important;
+            display: inline-flex !important;
         }
         .profile-header .info {
             flex: 1;
@@ -1532,12 +1815,121 @@
             box-shadow: 0 2px 8px rgba(168, 103, 43, 0.25);
         }
 
-        /* Avatar Color Picker in Forms */
-        .avatar-color-picker {
+        /* Avatar Selection, Live Preview & RGB Color Picker */
+        .avatar-selection-wrapper {
+            background: var(--surface-soft, rgba(0, 0, 0, 0.02));
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius);
+            padding: 0.95rem;
+            margin-bottom: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .avatar-live-preview-box {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding-bottom: 0.65rem;
+            border-bottom: 1px solid var(--border-soft);
+        }
+        .avatar-live-preview-circle {
+            width: 52px;
+            height: 52px;
+            min-width: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: #ffffff;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+        }
+        .avatar-live-preview-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .avatar-live-preview-circle:hover {
+            transform: scale(1.06);
+        }
+        .avatar-live-preview-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+        .avatar-preview-title {
+            font-weight: 600;
+            font-size: 0.86rem;
+            color: var(--text);
+        }
+        .avatar-preview-sub {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+        .avatar-source-options {
             display: flex;
             flex-wrap: wrap;
             gap: 0.45rem;
-            margin-top: 0.35rem;
+        }
+        .avatar-source-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.75rem;
+            border-radius: var(--radius-pill);
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .avatar-source-chip input[type="radio"] {
+            display: none;
+        }
+        .avatar-source-chip:hover {
+            border-color: var(--accent);
+            color: var(--text);
+            background: var(--surface);
+        }
+        .avatar-source-chip.active {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            color: var(--accent-dark);
+            font-weight: 600;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+        .chip-google-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .avatar-color-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: opacity 0.2s ease;
+        }
+        .avatar-color-label {
+            font-size: 0.74rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .avatar-color-picker {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
         }
         .color-swatch {
             width: 32px;
@@ -1549,18 +1941,19 @@
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 700;
-            transition: transform 0.15s, box-shadow 0.15s;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
             padding: 0;
             outline: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .color-swatch:hover {
-            transform: scale(1.12);
+            transform: scale(1.15);
         }
         .color-swatch.selected {
-            box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
-            transform: scale(1.12);
+            box-shadow: 0 0 0 2px var(--surface), 0 0 0 4.5px var(--accent);
+            transform: scale(1.15);
         }
         .color-swatch .swatch-check {
             display: none;
@@ -1568,9 +1961,68 @@
         .color-swatch.selected .swatch-check {
             display: inline;
         }
+        /* Interactive RGB Color Selector button */
+        .rgb-picker-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .rgb-native-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            left: 0;
+            top: 0;
+            z-index: 2;
+        }
+        .btn-custom-rgb {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.32rem 0.65rem;
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-pill);
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .btn-custom-rgb:hover,
+        .btn-custom-rgb.active {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            color: var(--accent-dark);
+            transform: translateY(-1px);
+        }
+        .rgb-color-preview-pill {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 1.5px solid var(--surface);
+            box-shadow: 0 0 0 1px var(--border);
+            display: inline-block;
+            transition: background-color 0.2s ease;
+        }
+        .rgb-val-indicator {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .rgb-val-indicator strong {
+            color: var(--accent);
+            letter-spacing: 0.5px;
+        }
 
         /* ==========================================================================
-           MULTI-STEP FORM STYLES
+           MULTI-STEP FORM STYLES (Clean & Elegant)
            ========================================================================== */
         .multistep-progress {
             display: flex;
@@ -1649,7 +2101,7 @@
         .multistep-track {
             display: flex;
             width: 100%;
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
             align-items: flex-start;
         }
         .multistep-slide {
@@ -2005,48 +2457,71 @@
             position: fixed;
             inset: 0;
             z-index: 200;
-            background: rgba(20, 18, 14, 0.4);
+            background: rgba(16, 14, 12, 0.46);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             display: none;
             align-items: flex-end;
             justify-content: center;
             padding: 0;
+            animation: overlaySmoothFade 0.22s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .modal-overlay.active {
             display: flex;
         }
-        /* Modal centered style (e.g. Login / Auth popup) */
+        @keyframes overlaySmoothFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* Modal centered style (e.g. Login / Auth popup / Detail Preset Modal) */
         .modal-overlay.modal-centered,
-        #loginModal {
+        #loginModal,
+        #detailModal {
             z-index: 2500 !important;
             align-items: center !important;
-            padding: 1rem !important;
+            justify-content: center !important;
+            padding: 0.85rem !important;
         }
         .modal-overlay.modal-centered .modal-sheet,
-        #loginModal .modal-sheet {
-            border-radius: 16px !important;
-            max-width: 440px !important;
+        #loginModal .modal-sheet,
+        #detailModal .modal-sheet {
+            border-radius: 18px !important;
+            max-width: 580px !important;
+            width: 100% !important;
             margin: auto;
+            max-height: 90vh !important;
+            max-height: 90dvh !important;
+            padding: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden !important;
+            animation: modalCenterPop 0.24s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+            border: 1px solid var(--border);
+        }
+        #loginModal .modal-sheet {
+            max-width: 440px !important;
             padding: 1.25rem 1.25rem calc(1.25rem + var(--safe-bottom)) !important;
-            animation: modalCenterPop 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16);
+            overflow-y: auto !important;
         }
         .modal-overlay.modal-centered .sheet-handle,
-        #loginModal .sheet-handle {
+        #loginModal .sheet-handle,
+        #detailModal .sheet-handle {
             display: none !important;
         }
         @keyframes modalCenterPop {
             from {
                 opacity: 0;
-                transform: scale(0.92);
+                transform: scale(0.94) translateY(8px);
             }
             to {
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(1) translateY(0);
             }
         }
         .modal-sheet {
             background: var(--surface);
-            border-radius: 14px 14px 0 0;
+            border-radius: 18px 18px 0 0;
             max-width: 640px;
             width: 100%;
             max-height: 90vh;
@@ -2054,12 +2529,13 @@
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             overscroll-behavior: contain;
-            padding: 0.7rem 1rem calc(1.2rem + var(--safe-bottom));
-            animation: sheetUp 0.22s ease;
+            padding: 0.85rem 1.15rem calc(1.25rem + var(--safe-bottom));
+            animation: sheetSmoothUp 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.12);
         }
-        @keyframes sheetUp {
+        @keyframes sheetSmoothUp {
             from {
-                transform: translateY(16px);
+                transform: translateY(24px);
                 opacity: 0;
             }
             to {
@@ -2068,11 +2544,11 @@
             }
         }
         .sheet-handle {
-            width: 30px;
+            width: 36px;
             height: 4px;
             background: var(--border);
             border-radius: 4px;
-            margin: 0 auto 0.7rem;
+            margin: 0 auto 0.8rem;
         }
         @media (min-width: 768px) {
             .modal-overlay {
@@ -2080,28 +2556,29 @@
                 padding: 2rem;
             }
             .modal-sheet {
-                border-radius: 14px;
+                border-radius: 16px;
                 max-height: 88vh;
                 max-height: 88dvh;
-                animation: modalIn 0.18s ease;
+                animation: modalSmoothIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: 0 16px 48px rgba(0, 0, 0, 0.14);
             }
             .sheet-handle {
                 display: none;
             }
-            @keyframes modalIn {
+            @keyframes modalSmoothIn {
                 from {
-                    transform: translateY(8px) scale(0.985);
+                    transform: translateY(10px) scale(0.98);
                     opacity: 0;
                 }
                 to {
-                    transform: none;
+                    transform: translateY(0) scale(1);
                     opacity: 1;
                 }
             }
         }
         @media (max-width: 480px) {
             .modal-sheet {
-                padding: 0.7rem 0.85rem calc(1.2rem + var(--safe-bottom));
+                padding: 0.75rem 0.95rem calc(1.2rem + var(--safe-bottom));
             }
         }
         .modal-head {
@@ -2109,7 +2586,7 @@
             justify-content: space-between;
             align-items: flex-start;
             gap: 0.6rem;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.75rem;
         }
         .modal-head h2 {
             font-family: var(--font-display);
@@ -2130,10 +2607,12 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            transition: all 0.15s ease;
         }
         .modal-close:hover {
             background: var(--surface-sunk);
             color: var(--text);
+            transform: scale(1.05);
         }
         .modal-close svg {
             width: 17px;
@@ -2143,8 +2622,49 @@
             stroke-width: 1.8;
         }
 
+        /* View navigation transition */
+        .view-transition-in {
+            animation: viewSmoothIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes viewSmoothIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .form-section {
             margin-bottom: 0.9rem;
+        }
+        .form-section-card {
+            background: var(--surface-soft, rgba(0, 0, 0, 0.02));
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius);
+            padding: 0.95rem 1rem;
+            margin-bottom: 0.85rem;
+            transition: border-color 0.15s ease;
+        }
+        .form-section-card .section-card-title {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.45rem;
+            border-bottom: 1px solid var(--border-soft);
+        }
+        .form-section-card .section-card-title svg {
+            width: 15px;
+            height: 15px;
+            stroke: var(--accent);
+            stroke-width: 2;
+            fill: none;
         }
         .form-section .section-label {
             font-family: var(--font-mono);
@@ -2426,12 +2946,135 @@
             }
         }
 
+        /* ===== DETAIL MODAL 3-SLIDE STYLING ===== */
+        .detail-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.15rem 0.6rem;
+            border-bottom: 1px solid var(--border-soft);
+            background: var(--surface);
+            gap: 0.65rem;
+            flex-shrink: 0;
+        }
+        .detail-modal-header .title-wrap {
+            flex: 1;
+            min-width: 0;
+        }
+        .detail-modal-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.02rem;
+            font-weight: 700;
+            line-height: 1.25;
+            color: var(--text);
+            margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .detail-modal-header .sub-meta {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 0.12rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        /* 3-Slide Tabs Navigation Bar */
+        .detail-slide-tabs {
+            display: flex;
+            align-items: center;
+            background: var(--surface-sunk);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius-pill);
+            padding: 3px;
+            margin: 0.55rem 1.15rem 0.35rem;
+            gap: 3px;
+            flex-shrink: 0;
+        }
+        .detail-tab-btn {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.42rem 0.4rem;
+            font-size: 0.73rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            white-space: nowrap;
+            user-select: none;
+        }
+        .detail-tab-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+        .detail-tab-btn:hover {
+            color: var(--text);
+        }
+        .detail-tab-btn.active {
+            background: var(--surface);
+            color: var(--text);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .detail-tab-btn.active svg {
+            color: var(--accent);
+        }
+        .detail-tab-btn .tab-badge {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.06rem 0.35rem;
+            border-radius: 99px;
+            background: var(--accent-soft);
+            color: var(--accent-dark);
+            line-height: 1.2;
+        }
+        .detail-tab-btn.active .tab-badge {
+            background: var(--accent);
+            color: #ffffff;
+        }
+
+        /* 3-Slide Viewport & Track */
+        .detail-viewport {
+            width: 100%;
+            overflow: hidden;
+            flex: 1;
+            position: relative;
+        }
+        .detail-slides-track {
+            display: flex;
+            width: 300%;
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+            align-items: flex-start;
+        }
+        .detail-slide-pane {
+            width: 33.3333%;
+            flex: 0 0 33.3333%;
+            box-sizing: border-box;
+            padding: 0.4rem 1.15rem 1.2rem;
+            max-height: calc(90vh - 135px);
+            max-height: calc(90dvh - 135px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+
+        /* Slide 1: Video Preview & Creator */
         .detail-preview {
             width: 100%;
             border-radius: var(--radius);
             overflow: hidden;
             background: #151310;
             position: relative;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         }
         .detail-preview iframe {
             width: 100%;
@@ -2439,12 +3082,22 @@
             border: 0;
             display: block;
         }
+        .detail-caption-box {
+            margin-top: 0.75rem;
+        }
+        .detail-caption-title {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.35;
+        }
         .detail-meta-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.4rem;
+            gap: 0.38rem;
             align-items: center;
-            margin: 0.7rem 0 0.15rem;
+            margin: 0.55rem 0 0.2rem;
         }
         .tag {
             font-size: 0.7rem;
@@ -2457,10 +3110,12 @@
         .tag.free {
             background: var(--green-soft);
             color: var(--green);
+            font-weight: 600;
         }
         .tag.paid {
             background: var(--accent-soft);
             color: var(--accent-dark);
+            font-weight: 600;
         }
         .tag.mono {
             font-family: var(--font-mono);
@@ -2480,165 +3135,402 @@
             color: var(--accent-dark);
             border-color: var(--accent);
         }
-        .detail-creator-line {
+
+        /* Slide 1 Creator Card */
+        .detail-creator-card {
             display: flex;
             align-items: center;
-            gap: 0.4rem;
-            margin-top: 0.5rem;
+            justify-content: space-between;
+            gap: 0.75rem;
+            background: var(--surface-sunk);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius);
+            padding: 0.65rem 0.85rem;
+            margin-top: 0.75rem;
             cursor: pointer;
-            padding: 0.2rem 0;
+            transition: all 0.18s ease;
         }
-        .detail-creator-line .avatar {
-            width: 28px;
-            height: 28px;
-            font-size: 0.7rem;
-            margin: 0;
+        .detail-creator-card:hover {
+            background: var(--surface);
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        .detail-creator-line .name {
-            font-size: var(--font-sm);
-            font-weight: 600;
-            overflow-wrap: anywhere;
-        }
-        .detail-creator-line .role {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
-        .detail-desc {
-            font-size: 0.84rem;
-            color: var(--text-secondary);
-            margin: 0.7rem 0;
-            line-height: 1.6;
-            overflow-wrap: anywhere;
-        }
-        .detail-date {
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            margin-top: -0.2rem;
-            margin-bottom: 0.4rem;
+        .detail-creator-left {
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.65rem;
+            min-width: 0;
+            flex: 1;
         }
-        .detail-date svg {
-            width: 13px;
-            height: 13px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.8;
+        .detail-creator-avatar {
+            width: 38px !important;
+            height: 38px !important;
+            min-width: 38px !important;
+            min-height: 38px !important;
+            font-size: 0.85rem !important;
+            margin: 0 !important;
+            flex-shrink: 0 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 50% !important;
         }
-        .detail-stats {
+        .detail-creator-info {
+            min-width: 0;
+            flex: 1;
+        }
+        .detail-creator-info .name {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+        .detail-creator-info .creator-meta {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.12rem;
             display: flex;
-            gap: 0.9rem;
-            margin: 0.5rem 0 0.7rem;
-            padding-top: 0.6rem;
-            border-top: 1px solid var(--border-soft);
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.35rem;
         }
-        .stat {
+        .detail-creator-right {
             display: flex;
             align-items: center;
             gap: 0.25rem;
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--accent-dark);
+            flex-shrink: 0;
+        }
+        .detail-creator-right svg {
+            width: 14px;
+            height: 14px;
+            stroke-width: 2;
+        }
+
+        /* Engagement Bar */
+        .detail-engagement-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding-top: 0.7rem;
+            border-top: 1px solid var(--border-soft);
+            flex-wrap: wrap;
+        }
+        .detail-stats-group {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .detail-stat-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.28rem;
             font-size: 0.75rem;
             color: var(--text-secondary);
         }
-        .stat svg {
+        .detail-stat-item svg {
             width: 14px;
             height: 14px;
             stroke: currentColor;
             fill: none;
             stroke-width: 1.8;
         }
-        .stat .stat-btn {
-            border: none;
-            background: none;
+        .detail-stat-btn {
+            border: 1px solid var(--border-soft);
+            background: var(--surface-sunk);
             cursor: pointer;
             color: var(--text-secondary);
             display: inline-flex;
             align-items: center;
-            gap: 0.2rem;
-            padding: 0.2rem 0.3rem;
-            border-radius: var(--radius-sm);
-            transition: background 0.15s;
-            min-height: 32px;
+            gap: 0.3rem;
+            padding: 0.32rem 0.65rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.18s ease;
         }
-        .stat .stat-btn:hover {
-            background: var(--surface-sunk);
+        .detail-stat-btn:hover {
+            background: var(--surface);
+            border-color: var(--accent);
+            color: var(--text);
         }
-        .stat .stat-btn.liked {
-            color: var(--like-red);
+        .detail-stat-btn.liked {
+            color: #ef4444;
+            background: #fef2f2;
+            border-color: #fecaca;
         }
-        .stat .stat-btn.liked svg {
-            fill: var(--like-red);
-            stroke: var(--like-red);
+        .detail-stat-btn.liked svg {
+            fill: #ef4444;
+            stroke: #ef4444;
         }
 
-        .detail-contact {
-            margin: 0.7rem 0;
-            padding: 0.6rem 0.8rem;
-            background: var(--surface-sunk);
-            border-radius: var(--radius);
+        /* Slide Footer CTA */
+        .detail-slide-footer {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.9rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-soft);
+            align-items: center;
+        }
+        .detail-slide-footer .btn {
+            flex: 1;
+            justify-content: center;
             font-size: 0.82rem;
+            padding: 0.6rem 0.85rem;
+            border-radius: var(--radius-sm);
         }
-        .detail-contact .label {
-            font-weight: 600;
-            font-size: 0.78rem;
-            margin-bottom: 0.3rem;
+
+        /* Slide 2: Description & Downloads */
+        .detail-info-card {
+            background: var(--surface-soft, rgba(0, 0, 0, 0.02));
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius);
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.75rem;
         }
-        .contact-row {
+        .detail-info-row {
             display: flex;
             align-items: center;
-            gap: 0.4rem;
-            margin-top: 0.3rem;
-            font-size: 0.8rem;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.76rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
         }
-        .contact-row svg {
-            width: 14px;
-            height: 14px;
-            stroke: var(--text-secondary);
-            fill: none;
-            stroke-width: 1.8;
-            flex-shrink: 0;
+        .detail-info-row:last-child {
+            margin-bottom: 0;
         }
-        .contact-row a {
+        .detail-info-row strong {
             color: var(--text);
-            font-weight: 500;
-            overflow-wrap: anywhere;
+            font-weight: 600;
         }
-        .contact-row a:hover {
-            color: var(--accent-dark);
+        .detail-desc-text {
+            font-size: 0.84rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0.6rem 0;
+            overflow-wrap: anywhere;
+            white-space: pre-line;
+        }
+        .detail-specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+        }
+        @media (max-width: 480px) {
+            .detail-specs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .detail-spec-item {
+            background: var(--surface);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius-sm);
+            padding: 0.45rem 0.6rem;
+            font-size: 0.74rem;
+        }
+        .detail-spec-item .label {
+            font-size: 0.64rem;
+            text-transform: uppercase;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            margin-bottom: 0.15rem;
+        }
+        .detail-spec-item .value {
+            font-weight: 600;
+            color: var(--text);
         }
 
         .detail-links {
             display: flex;
             flex-direction: column;
-            gap: 0.35rem;
-            margin-top: 0.7rem;
+            gap: 0.4rem;
+            margin-top: 0.75rem;
         }
         .detail-links a {
             display: flex;
             align-items: center;
-            gap: 0.45rem;
-            padding: 0.55rem 0.6rem;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 0.6rem 0.75rem;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border-soft);
             color: var(--text);
             font-size: 0.8rem;
-            font-weight: 500;
-            transition: border-color 0.15s, background 0.15s;
+            font-weight: 600;
+            background: var(--surface);
+            transition: all 0.15s ease;
             text-decoration: none;
             cursor: pointer;
         }
         .detail-links a:hover {
-            border-color: var(--border);
+            border-color: var(--accent);
             background: var(--surface-sunk);
+            transform: translateY(-1px);
+        }
+        .detail-links a .link-label-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
         }
         .detail-links a svg {
             width: 15px;
             height: 15px;
-            stroke: var(--text-secondary);
+            stroke: var(--accent);
             fill: none;
             stroke-width: 1.8;
             flex-shrink: 0;
+        }
+
+        /* Slide 3: Order / Purchase Form */
+        .detail-order-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.08) 0%, rgba(13, 148, 136, 0.04) 100%);
+            border: 1px solid rgba(20, 184, 166, 0.25);
+            border-radius: var(--radius);
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.85rem;
+            gap: 0.75rem;
+        }
+        .detail-order-summary .item-info h4 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 0;
+            line-height: 1.25;
+        }
+        .detail-order-summary .item-info p {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            margin-top: 0.15rem;
+        }
+        .detail-order-price {
+            font-family: var(--font-mono);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+            white-space: nowrap;
+        }
+
+        .order-form-card {
+            background: var(--surface-soft, rgba(0, 0, 0, 0.02));
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius);
+            padding: 0.95rem 1rem;
+            margin-bottom: 0.85rem;
+        }
+        .order-form-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-bottom: 0.75rem;
+        }
+        .order-form-title svg {
+            width: 15px;
+            height: 15px;
+            stroke: var(--accent);
+            stroke-width: 2;
+        }
+
+        /* Order Channel Selector (Pills) */
+        .order-channel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.45rem;
+            margin-bottom: 0.8rem;
+        }
+        @media (max-width: 420px) {
+            .order-channel-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .order-channel-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.55rem 0.65rem;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+            cursor: pointer;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+        .order-channel-chip input[type="radio"] {
+            margin: 0;
+            accent-color: var(--accent);
+        }
+        .order-channel-chip:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+        .order-channel-chip.active {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+            color: var(--accent-dark);
+        }
+
+        /* Live Message Preview Box */
+        .detail-msg-preview-box {
+            background: var(--surface);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 0.85rem;
+            margin-top: 0.6rem;
+            position: relative;
+        }
+        .detail-msg-preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.4rem;
+        }
+        .detail-msg-preview-content {
+            font-size: 0.8rem;
+            color: var(--text);
+            line-height: 1.5;
+            background: var(--surface-sunk);
+            padding: 0.55rem 0.7rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-soft);
+            white-space: pre-wrap;
+            font-family: inherit;
+        }
+        .copy-msg-btn {
+            border: none;
+            background: none;
+            color: var(--accent-dark);
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            padding: 0;
+        }
+        .copy-msg-btn:hover {
+            text-decoration: underline;
         }
 
         .preset-owner-actions {
@@ -3459,12 +4351,15 @@
                 <div class="sheet-handle"></div>
                 <div class="modal-head">
                     <h2 id="modalTitle">Upload Template</h2>
-                    <button class="modal-close" id="closeUploadModal"><svg viewBox="0 0 24 24" width="17" height="17"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                    <button class="modal-close" id="closeUploadModal" aria-label="Tutup"><svg viewBox="0 0 24 24" width="17" height="17"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                 </div>
                 <form id="uploadForm">
-                    <div class="form-section">
-                        <div class="section-label">Info Dasar</div>
-                        <div class="form-group"><label>Judul *</label><input type="text" id="fJudul" required /></div>
+                    <div class="form-section-card">
+                        <div class="section-card-title">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>Informasi Template</span>
+                        </div>
+                        <div class="form-group"><label>Judul Preset *</label><input type="text" id="fJudul" required placeholder="Misal: Jedag Jedug Viral AM 2026" /></div>
                         <div class="form-group">
                             <label>Kode Preset * <span class="form-hint" style="display:inline;font-weight:400;">(bisa custom/acak, maks. 10 karakter)</span></label>
                             <div class="input-with-btn">
@@ -3472,8 +4367,20 @@
                                 <button type="button" class="btn-random-code" id="fRandomKodeBtn" title="Buat kode acak"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px;margin-right:2px;"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.2"/><circle cx="15.5" cy="15.5" r="1.2"/><circle cx="15.5" cy="8.5" r="1.2"/><circle cx="8.5" cy="15.5" r="1.2"/><circle cx="12" cy="12" r="1.2"/></svg>Acak</button>
                             </div>
                         </div>
-                        <div class="form-group"><label>Kategori *</label>
-                            <select id="fKategori" required><option value="">Pilih kategori</option><option value="Preset">Preset</option><option value="Assets">Assets</option><option value="Lainnya">Lainnya</option></select>
+                        <div class="form-row2">
+                            <div class="form-group"><label>Kategori *</label>
+                                <select id="fKategori" required><option value="">Pilih kategori</option><option value="Preset">Preset</option><option value="Assets">Assets</option><option value="Lainnya">Lainnya</option></select>
+                            </div>
+                            <div class="form-group"><label>Aspect Ratio *</label>
+                                <select id="fAspect" required>
+                                    <option value="">Pilih rasio</option>
+                                    <option value="9:16">9:16 &mdash; Vertical (TikTok/Reels)</option>
+                                    <option value="16:9">16:9 &mdash; Landscape (YouTube)</option>
+                                    <option value="1:1">1:1 &mdash; Square</option>
+                                    <option value="4:3">4:3</option>
+                                    <option value="3:4">3:4</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group" id="customCategoryGroup" style="display:none;">
                             <label>Nama Kategori Lainnya *</label><input type="text" id="fCustomKategori" placeholder="Tulis kategori..." />
@@ -3492,43 +4399,46 @@
                             <label>Nama Style Custom</label>
                             <input type="text" id="fCustomStyle" placeholder="Tulis style (misal: Typography, Anime, 3D)..." />
                         </div>
-                        <div class="form-group"><label>Deskripsi</label><textarea id="fDeskripsi" rows="2" placeholder="Ceritakan tentang karya ini..."></textarea></div>
+                        <div class="form-group"><label>Deskripsi (Opsional)</label><textarea id="fDeskripsi" rows="2" placeholder="Ceritakan tentang karya atau cara pakainya..."></textarea></div>
                     </div>
-                    <div class="form-section">
-                        <div class="section-label">Preview</div>
-                        <div class="form-group"><label>YouTube URL</label><input type="url" id="fLinkYoutube" placeholder="https://youtube.com/watch?v=..." /></div>
-                        <div class="form-group"><label>Aspect Ratio *</label>
-                            <select id="fAspect" required>
-                                <option value="">Pilih rasio</option>
-                                <option value="9:16">9:16 &mdash; Vertical</option>
-                                <option value="16:9">16:9 &mdash; Landscape</option>
-                                <option value="1:1">1:1 &mdash; Square</option>
-                                <option value="4:3">4:3</option>
-                                <option value="3:4">3:4</option>
-                            </select>
+
+                    <div class="form-section-card">
+                        <div class="section-card-title">
+                            <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                            <span>Preview Video</span>
                         </div>
+                        <div class="form-group"><label>YouTube URL</label><input type="url" id="fLinkYoutube" placeholder="https://youtube.com/watch?v=... atau https://youtu.be/..." /></div>
                     </div>
-                    <div class="form-section">
-                        <div class="section-label">Akses</div>
-                        <div class="form-group"><label>Tipe *</label>
+
+                    <div class="form-section-card">
+                        <div class="section-card-title">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="18" x2="12" y2="6"/></svg>
+                            <span>Akses &amp; Lisensi</span>
+                        </div>
+                        <div class="form-group"><label>Tipe Akses *</label>
                             <select id="fLicense" required><option value="free">Gratis</option><option value="paid">Berbayar</option></select>
                         </div>
                         <div class="price-wrap" id="priceWrapper">
                             <div class="form-group"><label>Harga (Rp)</label><input type="number" id="fHarga" placeholder="10000" min="1000" step="1000" /></div>
                         </div>
                     </div>
-                    <div class="form-section" id="fileLinksSection">
-                        <div class="section-label">File &amp; Link <span style="font-weight:400;text-transform:none;font-family:var(--font);color:var(--text-muted);font-size:0.65rem;">(hanya untuk template gratis)</span></div>
-                        <div class="form-group"><label>Link Project</label><input type="url" id="fLinkProject" placeholder="https://..." /></div>
-                        <div class="form-group"><label>Link Drive</label><input type="url" id="fLinkDrive" placeholder="https://drive.google.com/..." /></div>
+
+                    <div class="form-section-card" id="fileLinksSection">
+                        <div class="section-card-title">
+                            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            <span>File &amp; Tautan Unduh <span style="font-weight:400;text-transform:none;color:var(--text-muted);font-size:0.75rem;">(Gratis)</span></span>
+                        </div>
+                        <div class="form-group"><label>Link Project (XML / 5MB / JSON)</label><input type="url" id="fLinkProject" placeholder="https://..." /></div>
+                        <div class="form-group"><label>Link Google Drive / Cloud</label><input type="url" id="fLinkDrive" placeholder="https://drive.google.com/..." /></div>
                         <div class="form-row2">
                             <div class="form-group"><label>Link Asset 1</label><input type="url" id="fLinkAsset1" placeholder="https://..." /></div>
                             <div class="form-group"><label>Link Asset 2</label><input type="url" id="fLinkAsset2" placeholder="https://..." /></div>
                         </div>
                         <div class="form-hint" id="fileLinksHint">Untuk template <strong>gratis</strong>, sertakan link download atau project. Untuk template <strong>berbayar</strong>, link tidak akan ditampilkan.</div>
                     </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Publikasikan</button>
+
+                    <div class="form-actions" style="margin-top:1rem;">
+                        <button type="submit" class="btn btn-primary" id="fSubmitBtn">Publikasikan Preset</button>
                         <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
                     </div>
                 </form>
@@ -3546,7 +4456,7 @@
                 <div class="sheet-handle"></div>
                 <div class="modal-head">
                     <h2>Daftar sebagai Kreator</h2>
-                    <button class="modal-close" id="closeRegisterModal"><svg viewBox="0 0 24 24" width="17" height="17"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                    <button class="modal-close" id="closeRegisterModal" aria-label="Tutup"><svg viewBox="0 0 24 24" width="17" height="17"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                 </div>
 
                 <div class="multistep-progress" id="modalStepProgress">
@@ -3576,9 +4486,13 @@
                         <div class="multistep-track" id="modalStepTrack">
                             <!-- STEP 1: PROFIL -->
                             <div class="multistep-slide" data-slide="1">
-                                <div class="form-section">
+                                <div class="form-section-card">
+                                    <div class="section-card-title">
+                                        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                        <span>Identitas &amp; Visual Kreator</span>
+                                    </div>
                                     <div class="form-group">
-                                        <label>Username * (unik, akan muncul di URL)</label>
+                                        <label>Username * (unik, untuk tautan profil)</label>
                                         <input type="text" id="rUsername" required placeholder="contoh: imctfy" pattern="[a-zA-Z0-9_]{3,20}" />
                                         <div class="username-hint" id="usernameHint">Min 3 karakter, hanya huruf/angka/garis bawah.</div>
                                     </div>
@@ -3586,8 +4500,12 @@
                                         <label>Nama Tampilan *</label>
                                         <input type="text" id="rDisplayName" required placeholder="Nama yang akan dilihat publik" />
                                     </div>
-                                    <div class="form-group"><label>Bio</label><textarea id="rBio" rows="2" placeholder="Sedikit tentang kamu sebagai kreator"></textarea></div>
-                                    <div class="form-group"><label>Software yang Digunakan * <span style="font-size:0.72rem;font-weight:normal;color:var(--text-muted);">(Bisa pilih lebih dari 1)</span></label>
+                                    <div class="form-group"><label>Bio Singkat</label><textarea id="rBio" rows="2" placeholder="Sedikit tentang kamu dan ciri khas editingmu..."></textarea></div>
+
+                                    <!-- AVATAR SELECTION WRAPPER -->
+                                    <div id="rAvatarPickerContainer"></div>
+
+                                    <div class="form-group" style="margin-top:0.75rem;"><label>Software yang Digunakan * <span style="font-size:0.72rem;font-weight:normal;color:var(--text-muted);">(Bisa pilih lebih dari 1)</span></label>
                                         <div class="software-checkbox-grid" id="rSoftwareGroup">
                                             <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="Alight Motion" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">Alight Motion</span></label>
                                             <label class="software-chip"><input type="checkbox" name="rSoftwareOption" value="CapCut" onchange="window.toggleSoftwareCustomInput &amp;&amp; window.toggleSoftwareCustomInput('r')"><span class="chip-check"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="chip-label">CapCut</span></label>
@@ -3610,9 +4528,13 @@
 
                             <!-- STEP 2: KONTAK -->
                             <div class="multistep-slide" data-slide="2">
-                                <div class="form-section">
-                                    <div class="form-group"><label>No. WhatsApp</label><input type="text" id="rWa" placeholder="628xxxxxxxx" /></div>
-                                    <div class="form-group"><label>Email</label><input type="email" id="rEmail" placeholder="kreator@email.com" /></div>
+                                <div class="form-section-card">
+                                    <div class="section-card-title">
+                                        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                        <span>Informasi Kontak</span>
+                                    </div>
+                                    <div class="form-group"><label>No. WhatsApp (opsional)</label><input type="text" id="rWa" placeholder="628xxxxxxxx" /></div>
+                                    <div class="form-group"><label>Email Kontak (opsional)</label><input type="email" id="rEmail" placeholder="kreator@email.com" /></div>
                                 </div>
                                 <div class="multistep-actions form-actions">
                                     <button type="button" class="btn btn-secondary btn-prev-step">&larr; Kembali</button>
@@ -3622,8 +4544,12 @@
 
                             <!-- STEP 3: PORTFOLIO -->
                             <div class="multistep-slide" data-slide="3">
-                                <div class="form-section">
-                                    <div class="form-group"><label>Portfolio / Social Media (opsional)</label><input type="url" id="rPortfolio" placeholder="https://..." /></div>
+                                <div class="form-section-card">
+                                    <div class="section-card-title">
+                                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                                        <span>Tautan Portofolio &amp; Media</span>
+                                    </div>
+                                    <div class="form-group"><label>Portfolio / Channel / Instagram (opsional)</label><input type="url" id="rPortfolio" placeholder="https://..." /></div>
                                 </div>
                                 <div class="multistep-actions form-actions">
                                     <button type="button" class="btn btn-secondary btn-prev-step">&larr; Kembali</button>
@@ -3633,7 +4559,11 @@
 
                             <!-- STEP 4: KONFIRMASI -->
                             <div class="multistep-slide" data-slide="4">
-                                <div class="form-section">
+                                <div class="form-section-card">
+                                    <div class="section-card-title">
+                                        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                        <span>Tinjauan Data Kreator</span>
+                                    </div>
                                     <div class="summary-card">
                                         <div class="summary-item">
                                             <span class="summary-label">Username</span>
@@ -3667,7 +4597,7 @@
                                 </div>
                                 <div class="multistep-actions form-actions">
                                     <button type="button" class="btn btn-secondary btn-prev-step">&larr; Kembali</button>
-                                    <button type="submit" class="btn btn-primary" id="registerSubmitBtn">Daftar sebagai Kreator</button>
+                                    <button type="submit" class="btn btn-primary" id="registerSubmitBtn" style="flex:1;">Daftar sebagai Kreator</button>
                                 </div>
                             </div>
                         </div>
@@ -4103,7 +5033,11 @@
                 chart: '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
                 wallet: '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>',
                 shield: '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-                bell: '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>'
+                bell: '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+                arrowRight: '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+                upload: '<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
+                badgeCheck: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 2.8 3.7-.4 1.2 3.5 3.3 1.7-1 3.6 2.1 3.1-2.9 2.3-.2 3.7-3.7.8-1.9 3.2L12 21l-3 1.4-1.9-3.2-3.7-.8-.2-3.7-2.9-2.3 2.1-3.1-1-3.6 3.3-1.7 1.2-3.5 3.7.4L12 2z"/><polyline points="9 12 11 14 15 10"/></svg>',
+                rocket: '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>'
             };
 
             // ===== STATE VARIABLES =====
@@ -4322,9 +5256,9 @@
 
                 if (photoURL && typeof photoURL === 'string' && photoURL.trim() !== '') {
                     var safeUrl = escapeHtml(photoURL.trim());
-                    return '<div class="avatar ' + extraClass + '" style="' + sizeStyle + ';overflow:hidden;position:relative;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;"><img src="' + safeUrl + '" alt="' + safeName + '" class="avatar-img" referrerpolicy="no-referrer" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;" onerror="this.style.display=\'none\'; if(this.nextElementSibling) this.nextElementSibling.style.display=\'flex\';" /><div class="avatar-fallback" style="' + fallbackBg + ';display:none;width:100%;height:100%;border-radius:50%;align-items:center;justify-content:center;font-weight:600;font-size:0.8em;">' + initials + '</div></div>';
+                    return '<div class="avatar ' + extraClass + '" style="' + sizeStyle + ';margin:0;flex-shrink:0;overflow:hidden;position:relative;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;"><img src="' + safeUrl + '" alt="' + safeName + '" class="avatar-img" referrerpolicy="no-referrer" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;margin:0;" onerror="this.style.display=\'none\'; if(this.nextElementSibling) this.nextElementSibling.style.display=\'flex\';" /><div class="avatar-fallback" style="' + fallbackBg + ';display:none;width:100%;height:100%;border-radius:50%;align-items:center;justify-content:center;font-weight:600;font-size:0.8em;margin:0;">' + initials + '</div></div>';
                 }
-                return '<div class="avatar ' + extraClass + '" style="' + fallbackBg + ';' + sizeStyle + ';border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:600;">' + initials + '</div>';
+                return '<div class="avatar ' + extraClass + '" style="' + fallbackBg + ';' + sizeStyle + ';margin:0;flex-shrink:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:600;">' + initials + '</div>';
             }
 
             function signInWithGoogle() {
@@ -4349,28 +5283,192 @@
                     });
             }
 
-            function renderAvatarPickerHtml(selectedColor, idPrefix) {
+            function renderAvatarPickerHtml(selectedColor, idPrefix, currentPhotoURL) {
                 idPrefix = idPrefix || 'a';
-                var current = selectedColor || AVATAR_PALETTE[0].bg;
-                var html = '<div class="form-group"><label>Warna Foto Profil (PP)</label><div class="avatar-color-picker" id="' + idPrefix + 'AvatarColorPicker">';
+                var hasGoogle = !!(currentUser && currentUser.photoURL);
+                var googlePhoto = (currentUser && currentUser.photoURL) || currentPhotoURL || '';
+                var isGoogleActive = hasGoogle && (currentPhotoURL === googlePhoto || (!currentPhotoURL && !selectedColor));
+                var currentHex = selectedColor || (AVATAR_PALETTE[0] ? AVATAR_PALETTE[0].bg : '#6366F1');
+
+                var html = '<div class="avatar-selection-wrapper" id="' + idPrefix + 'AvatarSelectionWrapper">';
+                
+                // Live preview box
+                html += '<div class="avatar-live-preview-box">';
+                html += '<div class="avatar-live-preview-circle" id="' + idPrefix + 'LiveAvatarPreview" style="background:' + currentHex + ';">';
+                if (isGoogleActive && googlePhoto) {
+                    html += '<img src="' + escapeHtml(googlePhoto) + '" alt="Google Photo" referrerpolicy="no-referrer" onerror="this.style.display=\'none\';" />';
+                } else {
+                    var currentInitials = currentUser ? getInitials(currentUser.displayName || currentUser.email || 'K') : 'K';
+                    html += '<span>' + currentInitials + '</span>';
+                }
+                html += '</div>';
+                html += '<div class="avatar-live-preview-info">';
+                html += '<span class="avatar-preview-title">Foto Profil Kreator</span>';
+                html += '<span class="avatar-preview-sub" id="' + idPrefix + 'AvatarModeSub">' + (isGoogleActive ? 'Menggunakan foto akun Google' : 'Warna &amp; inisial kustom') + '</span>';
+                html += '</div>';
+                html += '</div>';
+
+                // Source choice (Google vs Custom) if user has Google photo
+                if (hasGoogle) {
+                    html += '<div class="avatar-source-options">';
+                    html += '<label class="avatar-source-chip ' + (isGoogleActive ? 'active' : '') + '" id="' + idPrefix + 'OptGoogle">';
+                    html += '<input type="radio" name="' + idPrefix + 'AvatarSource" value="google" ' + (isGoogleActive ? 'checked' : '') + ' style="display:none;" />';
+                    html += '<span class="chip-google-icon"><svg viewBox="0 0 24 24" width="14" height="14"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg></span>';
+                    html += '<span>Pakai Foto Google</span>';
+                    html += '</label>';
+                    html += '<label class="avatar-source-chip ' + (!isGoogleActive ? 'active' : '') + '" id="' + idPrefix + 'OptCustom">';
+                    html += '<input type="radio" name="' + idPrefix + 'AvatarSource" value="custom" ' + (!isGoogleActive ? 'checked' : '') + ' style="display:none;" />';
+                    html += '<span>Warna &amp; RGB Kustom</span>';
+                    html += '</label>';
+                    html += '</div>';
+                }
+
+                // Color & RGB controls
+                html += '<div class="avatar-color-controls" id="' + idPrefix + 'ColorControls" style="' + (isGoogleActive ? 'display:none;' : '') + '">';
+                html += '<div class="avatar-color-label">Pilih Warna Palet atau RGB Kustom:</div>';
+                html += '<div class="avatar-color-picker" id="' + idPrefix + 'AvatarColorPicker">';
                 AVATAR_PALETTE.forEach(function(item) {
-                    html += '<button type="button" class="color-swatch ' + (current === item.bg ? 'selected' : '') + '" data-color="' + item.bg + '" style="background:' + item.bg + ';" title="' + item.label + '"><span class="swatch-check">&check;</span></button>';
+                    var isSel = (!isGoogleActive && (currentHex.toLowerCase() === item.bg.toLowerCase()));
+                    html += '<button type="button" class="color-swatch ' + (isSel ? 'selected' : '') + '" data-color="' + item.bg + '" style="background:' + item.bg + ';" title="' + item.label + '"><span class="swatch-check">&#10003;</span></button>';
                 });
-                html += '</div><input type="hidden" id="' + idPrefix + 'AvatarColor" value="' + current + '" /></div>';
+                // RGB native picker wrap
+                html += '<div class="rgb-picker-wrap" title="Pilih Warna RGB Bebas">';
+                html += '<input type="color" id="' + idPrefix + 'RgbNativePicker" class="rgb-native-input" value="' + currentHex + '" />';
+                html += '<button type="button" class="btn-custom-rgb" id="' + idPrefix + 'RgbPickerBtn">';
+                html += '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/><path d="M17.64 4.36a2 2 0 0 1 2.83 2.83l-1.42 1.42-2.83-2.83 1.42-1.42z"/></svg>';
+                html += '<span>RGB</span>';
+                html += '<span class="rgb-color-preview-pill" id="' + idPrefix + 'RgbColorPill" style="background:' + currentHex + ';"></span>';
+                html += '</button>';
+                html += '</div>';
+                html += '</div>';
+
+                html += '<div class="rgb-val-indicator" id="' + idPrefix + 'RgbValIndicator">';
+                html += 'Kode Warna: <strong class="mono" id="' + idPrefix + 'RgbHexDisplay">' + currentHex.toUpperCase() + '</strong>';
+                html += '</div>';
+                html += '</div>';
+
+                // Hidden inputs
+                html += '<input type="hidden" id="' + idPrefix + 'AvatarColor" value="' + currentHex + '" />';
+                html += '<input type="hidden" id="' + idPrefix + 'AvatarPhotoURL" value="' + (isGoogleActive ? escapeHtml(googlePhoto) : '') + '" />';
+                html += '<input type="hidden" id="' + idPrefix + 'AvatarSourceType" value="' + (isGoogleActive ? 'google' : 'custom') + '" />';
+                html += '</div>';
+
                 return html;
             }
 
             function bindAvatarPickerEvents(idPrefix) {
+                var wrapper = document.getElementById(idPrefix + 'AvatarSelectionWrapper');
+                if (!wrapper) return;
+
+                var previewCircle = document.getElementById(idPrefix + 'LiveAvatarPreview');
+                var subLabel = document.getElementById(idPrefix + 'AvatarModeSub');
+                var colorControls = document.getElementById(idPrefix + 'ColorControls');
+                var colorHidden = document.getElementById(idPrefix + 'AvatarColor');
+                var photoHidden = document.getElementById(idPrefix + 'AvatarPhotoURL');
+                var sourceHidden = document.getElementById(idPrefix + 'AvatarSourceType');
+                var rgbPicker = document.getElementById(idPrefix + 'RgbNativePicker');
+                var rgbPill = document.getElementById(idPrefix + 'RgbColorPill');
+                var rgbHexDisplay = document.getElementById(idPrefix + 'RgbHexDisplay');
                 var picker = document.getElementById(idPrefix + 'AvatarColorPicker');
-                if (!picker) return;
-                picker.querySelectorAll('.color-swatch').forEach(function(swatch) {
-                    swatch.addEventListener('click', function() {
-                        picker.querySelectorAll('.color-swatch').forEach(function(s) { s.classList.remove('selected'); });
-                        this.classList.add('selected');
-                        var hiddenInput = document.getElementById(idPrefix + 'AvatarColor');
-                        if (hiddenInput) hiddenInput.value = this.dataset.color;
+
+                function getCurrentDisplayName() {
+                    var nameInput = document.getElementById(idPrefix + 'DisplayName') || document.getElementById(idPrefix + 'Username');
+                    var nameVal = nameInput ? nameInput.value.trim() : '';
+                    if (!nameVal && currentUser) nameVal = currentUser.displayName || currentUser.email || 'K';
+                    return nameVal || 'K';
+                }
+
+                function updatePreview() {
+                    var isGoogle = sourceHidden && sourceHidden.value === 'google';
+                    var googlePhoto = (currentUser && currentUser.photoURL) || (photoHidden ? photoHidden.value : '');
+                    var color = (colorHidden && colorHidden.value) ? colorHidden.value : '#6366F1';
+                    var name = getCurrentDisplayName();
+                    var initials = getInitials(name);
+
+                    if (isGoogle && googlePhoto) {
+                        if (previewCircle) {
+                            previewCircle.style.background = '#e2e8f0';
+                            previewCircle.innerHTML = '<img src="' + escapeHtml(googlePhoto) + '" alt="' + escapeHtml(name) + '" referrerpolicy="no-referrer" onerror="this.style.display=\'none\';" />';
+                        }
+                        if (subLabel) subLabel.textContent = 'Menggunakan foto akun Google';
+                        if (colorControls) colorControls.style.display = 'none';
+                    } else {
+                        if (previewCircle) {
+                            previewCircle.style.background = color;
+                            previewCircle.innerHTML = '<span>' + initials + '</span>';
+                        }
+                        if (subLabel) subLabel.textContent = 'Warna & inisial kustom';
+                        if (colorControls) colorControls.style.display = 'flex';
+                    }
+                    if (rgbPill) rgbPill.style.background = color;
+                    if (rgbHexDisplay) rgbHexDisplay.textContent = color.toUpperCase();
+                }
+
+                // Google vs Custom radio options
+                var optGoogle = document.getElementById(idPrefix + 'OptGoogle');
+                var optCustom = document.getElementById(idPrefix + 'OptCustom');
+                if (optGoogle) {
+                    optGoogle.addEventListener('click', function() {
+                        if (sourceHidden) sourceHidden.value = 'google';
+                        if (photoHidden && currentUser) photoHidden.value = currentUser.photoURL || '';
+                        optGoogle.classList.add('active');
+                        if (optCustom) optCustom.classList.remove('active');
+                        updatePreview();
                     });
-                });
+                }
+                if (optCustom) {
+                    optCustom.addEventListener('click', function() {
+                        if (sourceHidden) sourceHidden.value = 'custom';
+                        if (photoHidden) photoHidden.value = '';
+                        optCustom.classList.add('active');
+                        if (optGoogle) optGoogle.classList.remove('active');
+                        updatePreview();
+                    });
+                }
+
+                // Swatches
+                if (picker) {
+                    picker.querySelectorAll('.color-swatch').forEach(function(swatch) {
+                        swatch.addEventListener('click', function() {
+                            picker.querySelectorAll('.color-swatch').forEach(function(s) { s.classList.remove('selected'); });
+                            this.classList.add('selected');
+                            var color = this.dataset.color;
+                            if (colorHidden) colorHidden.value = color;
+                            if (rgbPicker) rgbPicker.value = color;
+                            if (sourceHidden) sourceHidden.value = 'custom';
+                            if (photoHidden) photoHidden.value = '';
+                            if (optCustom) optCustom.classList.add('active');
+                            if (optGoogle) optGoogle.classList.remove('active');
+                            updatePreview();
+                        });
+                    });
+                }
+
+                // RGB native picker
+                if (rgbPicker) {
+                    rgbPicker.addEventListener('input', function() {
+                        var color = this.value;
+                        if (colorHidden) colorHidden.value = color;
+                        if (picker) {
+                            picker.querySelectorAll('.color-swatch').forEach(function(s) {
+                                s.classList.toggle('selected', (s.dataset.color || '').toLowerCase() === color.toLowerCase());
+                            });
+                        }
+                        if (sourceHidden) sourceHidden.value = 'custom';
+                        if (photoHidden) photoHidden.value = '';
+                        if (optCustom) optCustom.classList.add('active');
+                        if (optGoogle) optGoogle.classList.remove('active');
+                        updatePreview();
+                    });
+                }
+
+                // Live update initials when typing in name / display name inputs
+                var nameInput = document.getElementById(idPrefix + 'DisplayName') || document.getElementById(idPrefix + 'Username');
+                if (nameInput) {
+                    nameInput.addEventListener('input', function() {
+                        updatePreview();
+                    });
+                }
             }
 
             // ===== NAV BUILDER =====
@@ -4978,7 +6076,11 @@
                 }
 
                 if (!isCreator || !currentUserCreator) {
-                    cardGrid.innerHTML = '<div class="profile-page-card-wrap"><div class="section-header" style="margin-bottom:1.2rem;text-align:center;"><h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:0.4rem;">' + ICON.userPlus + ' Daftar sebagai Kreator</h2><p class="sub-text" style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem;">Lengkapi profil kreator kamu untuk mulai membagikan preset & asset.</p></div><div class="multistep-progress" id="pageStepProgress"><div class="step-pill active" data-step="1"><span class="step-num">1</span><span class="step-label">Profil</span></div><div class="step-divider">&rarr;</div><div class="step-pill" data-step="2"><span class="step-num">2</span><span class="step-label">Kontak</span></div><div class="step-divider">&rarr;</div><div class="step-pill" data-step="3"><span class="step-num">3</span><span class="step-label">Portfolio</span></div><div class="step-divider">&rarr;</div><div class="step-pill" data-step="4"><span class="step-num">4</span><span class="step-label">Konfirmasi</span></div></div><form id="pageRegisterCreatorForm"><div class="multistep-viewport"><div class="multistep-track" id="pageStepTrack"><div class="multistep-slide" data-slide="1"><div class="form-group"><label>Username *</label><input type="text" id="prUsername" required placeholder="username_kamu" pattern="[a-zA-Z0-9_]{3,20}" /><div class="username-hint" id="prUsernameHint">Min 3 karakter, hanya huruf/angka/garis bawah.</div></div><div class="form-group"><label>Nama Tampilan *</label><input type="text" id="prDisplayName" required placeholder="Nama Lengkap / Studio" /></div><div class="form-group"><label>Bio Singkat</label><textarea id="prBio" rows="2" placeholder="Ceritakan gaya editing atau keahlianmu..."></textarea></div><div class="form-group"><label>Software yang Digunakan * <span style="font-size:0.72rem;font-weight:normal;color:var(--text-muted);">(Bisa pilih lebih dari 1)</span></label>' + renderSoftwareCheckboxesHtml('pr') + '</div>' + renderAvatarPickerHtml(AVATAR_PALETTE[0].bg, 'pr') + '<div class="multistep-actions"><button type="button" class="btn btn-primary btn-next-step" style="width:100%;">Lanjut &rarr;</button></div></div><div class="multistep-slide" data-slide="2"><div class="form-group"><label>No. WhatsApp (opsional)</label><input type="text" id="prWa" placeholder="628xxxxxxxx" /></div><div class="form-group"><label>Email Kontak (opsional)</label><input type="email" id="prEmail" placeholder="kreator@email.com" /></div><div class="multistep-actions form-actions"><button type="button" class="btn btn-secondary btn-prev-step">&larr; Kembali</button><button type="button" class="btn btn-primary btn-next-step">Lanjut &rarr;</button></div></div><div class="multistep-slide" data-slide="3"><div class="form-group"><label>Portfolio / Social Media (opsional)</label><input type="url" id="prPortfolio" placeholder="https://instagram.com/..." /></div><div class="multistep-actions form-actions"><button type="button" class="btn btn-secondary btn-prev-step">&larr; Kembali</button><button type="button" class="btn btn-primary btn-next-step">Lanjut &rarr;</button></div></div><div class="multistep-slide" data-slide="4"><div class="summary-card"><div class="summary-item"><span class="summary-label">Username</span><span class="summary-val mono" id="prSumUsername">—</span></div><div class="summary-item"><span class="summary-label">Nama Tampilan</span><span class="summary-val" id="prSumDisplayName">—</span></div><div class="summary-item"><span class="summary-label">Bio</span><span class="summary-val" id="prSumBio">—</span></div><div class="summary-item"><span class="summary-label">Software</span><span class="summary-val" id="prSumSoftware">—</span></div><div class="summary-item"><span class="summary-label">No. WhatsApp</span><span class="summary-val" id="prSumWa">—</span></div><div class="summary-item"><span class="summary-label">Email Kontak</span><span class="summary-val" id="prSumEmail">—</span></div><div class="summary-item"><span class="summary-label">Portfolio</span><span class="summary-val" id="prSumPortfolio">—</span></div></div><div class="multistep-actions form-actions"><button type="button" class="btn btn-secondary btn-prev-step">&larr; Kembali</button><button type="submit" class="btn btn-primary" style="flex:1;">Daftar sebagai Kreator</button></div></div></div></div></form></div>';
+                    var defaultName = (currentUser && currentUser.displayName) ? currentUser.displayName : '';
+                    var defaultEmail = (currentUser && currentUser.email) ? currentUser.email : '';
+                    var suggestedUsername = defaultEmail ? defaultEmail.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 20) : '';
+
+                    cardGrid.innerHTML = '<div class="profile-page-card-wrap"><div class="section-header" style="margin-bottom:1.2rem;text-align:center;"><h2 style="font-family:var(--font-display);font-size:1.2rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:0.4rem;">' + ICON.userPlus + ' Daftar sebagai Kreator</h2><p class="sub-text" style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem;">Lengkapi profil kreator kamu untuk mulai membagikan preset &amp; asset.</p></div><div class="multistep-progress" id="pageStepProgress"><div class="step-pill active" data-step="1"><span class="step-num">1</span><span class="step-label">Profil</span></div><div class="step-divider">&rarr;</div><div class="step-pill" data-step="2"><span class="step-num">2</span><span class="step-label">Kontak</span></div><div class="step-divider">&rarr;</div><div class="step-pill" data-step="3"><span class="step-num">3</span><span class="step-label">Portfolio</span></div><div class="step-divider">&rarr;</div><div class="step-pill" data-step="4"><span class="step-num">4</span><span class="step-label">Konfirmasi</span></div></div><form id="pageRegisterCreatorForm"><div class="multistep-viewport"><div class="multistep-track" id="pageStepTrack"><div class="multistep-slide" data-slide="1"><div class="form-section-card"><div class="section-card-title"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Identitas &amp; Visual Kreator</span></div><div class="form-group"><label>Username * (unik, untuk tautan profil)</label><input type="text" id="prUsername" required placeholder="username_kamu" value="' + escapeHtml(suggestedUsername) + '" pattern="[a-zA-Z0-9_]{3,20}" /><div class="username-hint" id="prUsernameHint">Min 3 karakter, hanya huruf/angka/garis bawah.</div></div><div class="form-group"><label>Nama Tampilan *</label><input type="text" id="prDisplayName" required placeholder="Nama Lengkap / Studio" value="' + escapeHtml(defaultName) + '" /></div><div class="form-group"><label>Bio Singkat</label><textarea id="prBio" rows="2" placeholder="Ceritakan gaya editing atau keahlianmu..."></textarea></div>' + renderAvatarPickerHtml(AVATAR_PALETTE[0].bg, 'pr') + '<div class="form-group" style="margin-top:0.75rem;"><label>Software yang Digunakan * <span style="font-size:0.72rem;font-weight:normal;color:var(--text-muted);">(Bisa pilih lebih dari 1)</span></label>' + renderSoftwareCheckboxesHtml('pr') + '</div></div><div class="multistep-actions"><button type="button" class="btn btn-primary btn-next-step" style="width:100%;">Lanjut &rarr;</button></div></div><div class="multistep-slide" data-slide="2"><div class="form-section-card"><div class="section-card-title"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Informasi Kontak</span></div><div class="form-group"><label>No. WhatsApp (opsional)</label><input type="text" id="prWa" placeholder="628xxxxxxxx" /></div><div class="form-group"><label>Email Kontak (opsional)</label><input type="email" id="prEmail" placeholder="kreator@email.com" value="' + escapeHtml(defaultEmail) + '" /></div></div><div class="multistep-actions form-actions"><button type="button" class="btn btn-secondary btn-prev-step">&larr; Kembali</button><button type="button" class="btn btn-primary btn-next-step">Lanjut &rarr;</button></div></div><div class="multistep-slide" data-slide="3"><div class="form-section-card"><div class="section-card-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg><span>Tautan Portofolio &amp; Media</span></div><div class="form-group"><label>Portfolio / Social Media (opsional)</label><input type="url" id="prPortfolio" placeholder="https://instagram.com/..." /></div></div><div class="multistep-actions form-actions"><button type="button" class="btn btn-secondary btn-prev-step">&larr; Kembali</button><button type="button" class="btn btn-primary btn-next-step">Lanjut &rarr;</button></div></div><div class="multistep-slide" data-slide="4"><div class="form-section-card"><div class="section-card-title"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>Tinjauan Data Kreator</span></div><div class="summary-card"><div class="summary-item"><span class="summary-label">Username</span><span class="summary-val mono" id="prSumUsername">—</span></div><div class="summary-item"><span class="summary-label">Nama Tampilan</span><span class="summary-val" id="prSumDisplayName">—</span></div><div class="summary-item"><span class="summary-label">Bio</span><span class="summary-val" id="prSumBio">—</span></div><div class="summary-item"><span class="summary-label">Software</span><span class="summary-val" id="prSumSoftware">—</span></div><div class="summary-item"><span class="summary-label">No. WhatsApp</span><span class="summary-val" id="prSumWa">—</span></div><div class="summary-item"><span class="summary-label">Email Kontak</span><span class="summary-val" id="prSumEmail">—</span></div><div class="summary-item"><span class="summary-label">Portfolio</span><span class="summary-val" id="prSumPortfolio">—</span></div></div></div><div class="multistep-actions form-actions"><button type="button" class="btn btn-secondary btn-prev-step">&larr; Kembali</button><button type="submit" class="btn btn-primary" style="flex:1;">Daftar sebagai Kreator</button></div></div></div></div></form></div>';
                     bindPageRegisterCreatorEvents();
                     return;
                 }
@@ -5091,6 +6193,10 @@
                         var software = getSelectedSoftwareValues('pr');
                         if (!software) { showToast('Pilih software yang digunakan', 'error'); return; }
 
+                        var sourceType = (document.getElementById('prAvatarSourceType') && document.getElementById('prAvatarSourceType').value) || 'custom';
+                        var avatarColor = (document.getElementById('prAvatarColor') && document.getElementById('prAvatarColor').value) || AVATAR_PALETTE[0].bg;
+                        var photoURL = (sourceType === 'google' && currentUser && currentUser.photoURL) ? currentUser.photoURL : '';
+
                         var data = {
                             name: name,
                             displayName: displayName,
@@ -5099,8 +6205,9 @@
                             wa: document.getElementById('prWa').value.trim(),
                             email: document.getElementById('prEmail').value.trim(),
                             portfolio: document.getElementById('prPortfolio').value.trim(),
-                            avatarColor: (document.getElementById('prAvatarColor') && document.getElementById('prAvatarColor').value) || AVATAR_PALETTE[0].bg,
-                            photoURL: (currentUser && currentUser.photoURL) || '',
+                            avatarColor: avatarColor,
+                            photoURL: photoURL,
+                            avatarSource: sourceType,
                             uid: currentUser.uid,
                             registeredAt: firebase.firestore.FieldValue.serverTimestamp()
                         };
@@ -5190,7 +6297,69 @@
                     }
                 }
 
-                var html = '<div class="creator-directory-top"><span class="title">' + ICON.users + ' Semua Kreator</span></div>';
+                var html = '';
+
+                // Registration showcase banner when not yet a creator
+                if (!isCreator) {
+                    html += '<div class="creator-register-banner">' +
+                        '<div class="creator-register-banner-left">' +
+                            '<div class="creator-register-icon-wrap">' +
+                                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                                    '<polygon points="23 7 16 12 23 17 23 7"></polygon>' +
+                                    '<rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>' +
+                                '</svg>' +
+                            '</div>' +
+                            '<div class="creator-register-info">' +
+                                '<div class="creator-register-badge">' +
+                                    (ICON.sparkle || '') + ' Program Kreator Preset' +
+                                '</div>' +
+                                '<h2 class="creator-register-title">Bergabung Sebagai Kreator Preset</h2>' +
+                                '<p class="creator-register-desc">Bagikan preset video kamu, bangun audiens editor, dan mulai hasilkan pendapatan dari setiap karya.</p>' +
+                                '<div class="creator-register-pills">' +
+                                    '<span class="creator-register-pill">' + (ICON.upload || '') + ' Upload Preset Video</span>' +
+                                    '<span class="creator-register-pill">' + (ICON.coin || '') + ' Monetisasi Karya</span>' +
+                                    '<span class="creator-register-pill">' + (ICON.badgeCheck || '') + ' Profil Kreator & Portofolio</span>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="creator-register-btn-wrap">' +
+                            '<button type="button" class="btn-banner-register" id="bannerRegisterCreatorBtn">' +
+                                '<span>Daftar Jadi Kreator</span>' +
+                                (ICON.arrowRight || '') +
+                            '</button>' +
+                        '</div>' +
+                    '</div>';
+                } else {
+                    var myCount = allTemplates.filter(function(t) {
+                        return (currentUserCreator && (t.creator || '').toLowerCase() === (currentUserCreator.name || '').toLowerCase()) || (currentUser && t.creatorUid === currentUser.uid);
+                    }).length;
+
+                    html += '<div class="creator-active-banner">' +
+                        '<div class="creator-active-info">' +
+                            '<div class="creator-active-badge">' +
+                                (ICON.badgeCheck || ICON.crown || '') +
+                            '</div>' +
+                            '<div>' +
+                                '<div style="font-weight:700;font-size:0.92rem;color:var(--text);display:flex;align-items:center;gap:0.4rem;">' +
+                                    'Kamu adalah Kreator Terverifikasi' +
+                                    '<span style="font-size:0.68rem;background:var(--accent);color:#fff;padding:0.1rem 0.45rem;border-radius:10px;font-weight:600;">Aktif</span>' +
+                                '</div>' +
+                                '<div style="font-size:0.78rem;color:var(--text-secondary);margin-top:0.1rem;">' +
+                                    myCount + ' template telah kamu publikasikan di katalog preset' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="creator-active-actions">' +
+                            '<button class="btn btn-secondary btn-sm" id="creatorActiveDashboardBtn" style="font-size:0.78rem;padding:0.35rem 0.85rem;">' + (ICON.chart || '') + ' Dashboard</button>' +
+                            '<button class="btn btn-primary btn-sm" id="creatorActiveUploadBtn" style="font-size:0.78rem;padding:0.35rem 0.85rem;">' + (ICON.plusBox || '') + ' Upload Preset</button>' +
+                        '</div>' +
+                    '</div>';
+                }
+
+                html += '<div class="creator-directory-top">' +
+                    '<span class="title">' + ICON.users + ' Semua Kreator (' + creators.length + ')</span>' +
+                '</div>';
+
                 if (creators.length === 0 && isCreator) {
                     html += emptyStateHtml('creators');
                     cardGrid.innerHTML = html;
@@ -5199,7 +6368,22 @@
                 html += '<div class="creator-grid">';
 
                 if (!isCreator) {
-                    html += '<div class="creator-card register-creator-card" id="registerCreatorCardBtn" style="border:2px dashed var(--accent);background:rgba(var(--accent-rgb, 99, 102, 241), 0.04);cursor:pointer;text-align:center;justify-content:center;align-items:center;"><div class="creator-card-avatar" style="background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:bold;width:44px;height:44px;border-radius:50%;">+</div><div class="name" style="color:var(--accent);font-weight:600;">Daftar Jadi Kreator</div><div class="sub" style="font-size:0.75rem;color:var(--text-muted);">Bagikan karya & preset kamu</div><div class="count" style="margin-top:0.2rem;font-size:0.72rem;color:var(--accent);font-weight:500;">Klik untuk Mendaftar &rarr;</div></div>';
+                    html += '<div class="creator-card register-creator-card" id="registerCreatorCardBtn">' +
+                        '<div class="register-card-icon">' +
+                            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                                '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>' +
+                                '<circle cx="8.5" cy="7" r="4"></circle>' +
+                                '<line x1="20" y1="8" x2="20" y2="14"></line>' +
+                                '<line x1="23" y1="11" x2="17" y2="11"></line>' +
+                            '</svg>' +
+                        '</div>' +
+                        '<div class="name">Daftar Kreator</div>' +
+                        '<div class="sub">Mulai bagikan karya</div>' +
+                        '<div class="count">' +
+                            '<span>+ Daftar</span>' +
+                            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>' +
+                        '</div>' +
+                    '</div>';
                 }
 
                 creators.forEach(function(c) {
@@ -5210,6 +6394,32 @@
                 });
                 html += '</div>';
                 cardGrid.innerHTML = html;
+
+                var bannerBtn = document.getElementById('bannerRegisterCreatorBtn');
+                if (bannerBtn) {
+                    bannerBtn.addEventListener('click', function() {
+                        if (!currentUser) {
+                            showToast('Silakan masuk terlebih dahulu untuk mendaftar sebagai kreator', 'info');
+                            openLoginModal();
+                            return;
+                        }
+                        goToView('profile');
+                    });
+                }
+
+                var activeDashBtn = document.getElementById('creatorActiveDashboardBtn');
+                if (activeDashBtn) {
+                    activeDashBtn.addEventListener('click', function() {
+                        goToView('dashboard');
+                    });
+                }
+
+                var activeUploadBtn = document.getElementById('creatorActiveUploadBtn');
+                if (activeUploadBtn) {
+                    activeUploadBtn.addEventListener('click', function() {
+                        openUploadFlow();
+                    });
+                }
 
                 cardGrid.querySelectorAll('.creator-card').forEach(function(el) {
                     if (el.id === 'registerCreatorCardBtn') {
@@ -5272,7 +6482,8 @@
             function renderAkunProfileForm() {
                 if (!currentUserCreator) return '<p style="color:var(--text-muted);">Data kreator tidak ditemukan.</p>';
                 var c = currentUserCreator;
-                return '<form id="akunProfileForm"><div class="form-section"><div class="section-label">Edit Profil</div><div class="form-group"><label>Username *</label><input type="text" id="aUsername" required value="' + escapeHtml(c.name || '') + '" pattern="[a-zA-Z0-9_]{3,20}" /><div class="username-hint" id="aUsernameHint">Min 3 karakter, hanya huruf/angka/garis bawah.</div></div><div class="form-group"><label>Nama Tampilan *</label><input type="text" id="aDisplayName" required value="' + escapeHtml(c.displayName || c.name || '') + '" /></div><div class="form-group"><label>Bio</label><textarea id="aBio" rows="2">' + escapeHtml(c.bio || '') + '</textarea></div><div class="form-group"><label>Software yang Digunakan <span style="font-size:0.72rem;font-weight:normal;color:var(--text-muted);">(Bisa pilih lebih dari 1)</span></label>' + renderSoftwareCheckboxesHtml('a', c.software || '') + '</div>' + renderAvatarPickerHtml(c.avatarColor, 'a') + '</div><div class="form-section"><div class="section-label">Kontak</div><div class="form-group"><label>No. WhatsApp</label><input type="text" id="aWa" value="' + escapeHtml(c.wa || '') + '" placeholder="628xxxxxxxx" /></div><div class="form-group"><label>Email</label><input type="email" id="aEmail" value="' + escapeHtml(c.email || '') + '" placeholder="kreator@email.com" /></div><div class="form-group"><label>Portfolio</label><input type="url" id="aPortfolio" value="' + escapeHtml(c.portfolio || '') + '" placeholder="https://..." /></div></div><div class="form-actions"><button type="submit" class="btn btn-primary">Simpan Perubahan</button></div></form>';
+                var currentPhoto = c.photoURL || (currentUser && currentUser.photoURL) || '';
+                return '<form id="akunProfileForm"><div class="form-section-card"><div class="section-card-title"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Identitas &amp; Visual Kreator</span></div><div class="form-group"><label>Username *</label><input type="text" id="aUsername" required value="' + escapeHtml(c.name || '') + '" pattern="[a-zA-Z0-9_]{3,20}" /><div class="username-hint" id="aUsernameHint">Min 3 karakter, hanya huruf/angka/garis bawah.</div></div><div class="form-group"><label>Nama Tampilan *</label><input type="text" id="aDisplayName" required value="' + escapeHtml(c.displayName || c.name || '') + '" /></div><div class="form-group"><label>Bio</label><textarea id="aBio" rows="2">' + escapeHtml(c.bio || '') + '</textarea></div>' + renderAvatarPickerHtml(c.avatarColor, 'a', currentPhoto) + '<div class="form-group" style="margin-top:0.75rem;"><label>Software yang Digunakan <span style="font-size:0.72rem;font-weight:normal;color:var(--text-muted);">(Bisa pilih lebih dari 1)</span></label>' + renderSoftwareCheckboxesHtml('a', c.software || '') + '</div></div><div class="form-section-card"><div class="section-card-title"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>Kontak &amp; Tautan</span></div><div class="form-group"><label>No. WhatsApp</label><input type="text" id="aWa" value="' + escapeHtml(c.wa || '') + '" placeholder="628xxxxxxxx" /></div><div class="form-group"><label>Email</label><input type="email" id="aEmail" value="' + escapeHtml(c.email || '') + '" placeholder="kreator@email.com" /></div><div class="form-group"><label>Portfolio</label><input type="url" id="aPortfolio" value="' + escapeHtml(c.portfolio || '') + '" placeholder="https://..." /></div></div><div class="form-actions"><button type="submit" class="btn btn-primary" style="width:100%;">Simpan Perubahan</button></div></form>';
             }
 
             function bindAkunProfileEvents() {
@@ -5319,9 +6530,10 @@
                             return (c.name || '').toLowerCase() === username.toLowerCase() && c.id !== currentUserCreatorId;
                         });
                         if (exists) { showToast('Username sudah digunakan', 'error'); return; }
+                        var sourceType = (document.getElementById('aAvatarSourceType') && document.getElementById('aAvatarSourceType').value) || 'custom';
                         var avatarColor = (document.getElementById('aAvatarColor') && document.getElementById('aAvatarColor').value) || AVATAR_PALETTE[0].bg;
-                        var photoURL = (currentUser && currentUser.photoURL) || (currentUserCreator && currentUserCreator.photoURL) || '';
-                        var data = { name: username, displayName: displayName, bio: bio, software: software, wa: wa, email: email, portfolio: portfolio, avatarColor: avatarColor, photoURL: photoURL };
+                        var photoURL = (sourceType === 'google' && currentUser && currentUser.photoURL) ? currentUser.photoURL : (sourceType === 'custom' ? '' : ((currentUserCreator && currentUserCreator.photoURL) || ''));
+                        var data = { name: username, displayName: displayName, bio: bio, software: software, wa: wa, email: email, portfolio: portfolio, avatarColor: avatarColor, photoURL: photoURL, avatarSource: sourceType };
                         updateCreator(currentUserCreatorId, data)
                             .then(function() {
                                 showToast('Profil berhasil diperbarui!', 'success');
@@ -5371,7 +6583,7 @@
                 });
             }
 
-            // ===== DETAIL MODAL =====
+            // ===== DETAIL MODAL (3-SLIDE INTERFACE) =====
             function openDetail(template) {
                 if (!template || !template.id) { showToast('Template tidak ditemukan', 'error'); return; }
                 var ytId = template.linkYoutube ? getYoutubeId(template.linkYoutube) : null;
@@ -5379,6 +6591,7 @@
                 var content = document.getElementById('detailContent');
                 var userId = currentUser ? currentUser.uid : null;
 
+                // View tracker
                 var viewKey = userId ? userId + '_' + template.id : 'anon_' + template.id;
                 if (!viewedTemplates[viewKey]) {
                     viewedTemplates[viewKey] = true;
@@ -5408,49 +6621,28 @@
                     }
                 }
 
-                var linksHtml = '';
-                if (isFree) {
-                    var links = [];
-                    if (template.linkProject) links.push({ label: 'Buka Project', url: template.linkProject, icon: ICON.folder });
-                    if (template.linkDrive) links.push({ label: 'Unduh dari Drive', url: template.linkDrive, icon: ICON.download });
-                    if (template.linkAsset1) links.push({ label: 'Asset tambahan 1', url: template.linkAsset1, icon: ICON.link });
-                    if (template.linkAsset2) links.push({ label: 'Asset tambahan 2', url: template.linkAsset2, icon: ICON.link });
-                    if (links.length) {
-                        linksHtml = '<div class="detail-links">';
-                        links.forEach(function(l) {
-                            linksHtml += '<a href="' + l.url + '" target="_blank" rel="noopener" data-template-id="' + template.id + '">' + l.icon + l.label + '</a>';
-                        });
-                        linksHtml += '</div>';
-                    }
-                }
+                // Lookup creator object
+                var creatorObj = allCreators.find(function(c) {
+                    return (template.creatorUid && c.uid === template.creatorUid) ||
+                           (c.name && c.name.toLowerCase() === (template.creator || '').toLowerCase()) ||
+                           c.id === template.creatorUid;
+                }) || {};
 
-                var contactHtml = '';
-                var isPurchased = userOrders.some(function(o) { return o.templateId === template.id && (o.status === 'paid' || o.status === 'completed'); });
-                
-                if (!isFree) {
-                    if (isPurchased) {
-                        contactHtml = '<div class="detail-contact" style="background:var(--green-soft);border:1px solid rgba(16,185,129,0.3);"><div class="label" style="color:var(--green);font-size:0.9rem;font-weight:700;">✓ Telah Dibeli (Akses Lunas)</div><div style="font-size:0.8rem;color:var(--text-secondary);margin:0.4rem 0;">Akses private ke file preset ini sudah dibuka secara permanen untuk akun Anda.</div></div>';
-                        var links2 = [];
-                        if (template.linkProject) links2.push({ label: 'Buka Project Preset (Unlocked)', url: template.linkProject, icon: ICON.folder });
-                        if (template.linkDrive) links2.push({ label: 'Unduh File dari Drive (Unlocked)', url: template.linkDrive, icon: ICON.download });
-                        if (template.linkAsset1) links2.push({ label: 'Asset Tambahan 1', url: template.linkAsset1, icon: ICON.link });
-                        if (template.linkAsset2) links2.push({ label: 'Asset Tambahan 2', url: template.linkAsset2, icon: ICON.link });
-                        if (links2.length) {
-                            linksHtml = '<div class="detail-links">';
-                            links2.forEach(function(l) {
-                                linksHtml += '<a href="' + l.url + '" target="_blank" rel="noopener" data-template-id="' + template.id + '">' + l.icon + l.label + '</a>';
-                            });
-                            linksHtml += '</div>';
-                        } else {
-                            linksHtml = '<div class="detail-links"><a href="#" id="viewPurchasedInvoiceBtn" style="background:var(--accent);color:#fff;">' + (ICON.fileText || '') + ' Lihat Struk Invois Pembelian</a></div>';
-                        }
-                    } else {
-                        contactHtml = '<div class="detail-contact"><div class="label">' + ICON.coin + ' Template Berbayar &mdash; ' + formatRupiah(template.harga || 0) + '</div><div style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:0.6rem;">Akses instan & terverifikasi langsung dengan jaminan pengunduhan aman:</div><button class="btn btn-primary" id="buyPresetBtn" style="width:100%;padding:0.75rem;font-weight:700;font-size:0.92rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;box-shadow:0 4px 14px rgba(20,184,166,0.25);">' + ICON.coin + ' Beli Sekarang &mdash; ' + formatRupiah(template.harga || 0) + '</button></div>';
-                    }
-                } else {
-                    contactHtml = '<div class="detail-contact" style="background:var(--green-soft);"><div class="label" style="color:var(--green);">' + ICON.sparkle + ' Template Gratis</div><div style="font-size:0.76rem;color:var(--text-secondary);">Unduh langsung melalui tombol link di bawah.</div></div>';
+                var creatorDisplayName = creatorObj.displayName || creatorObj.name || template.creator || 'Kreator';
+                var creatorUsername = creatorObj.name || template.creator || 'kreator';
+                var creatorSoftware = creatorObj.software || template.kategori || 'Video Editor';
+                var creatorWa = creatorObj.wa || template.creatorWa || '';
+                var cleanWa = creatorWa.replace(/\D/g, '');
+                if (cleanWa.startsWith('08')) {
+                    cleanWa = '628' + cleanWa.slice(2);
+                } else if (cleanWa.startsWith('8')) {
+                    cleanWa = '628' + cleanWa.slice(1);
                 }
+                var creatorEmail = creatorObj.email || '';
 
+                var isPurchased = userOrders.some(function(o) {
+                    return o.templateId === template.id && (o.status === 'paid' || o.status === 'completed');
+                });
                 var isOwner = currentUser && (template.creatorUid === currentUser.uid || isAdmin);
                 var uploadDate = formatDate(template.createdAt);
 
@@ -5469,30 +6661,255 @@
                     likedState = false;
                 }
 
+                // Default buyer name from current user profile
+                var buyerDefaultName = '';
+                if (currentUser) {
+                    buyerDefaultName = currentUser.displayName || (currentUserCreator && currentUserCreator.displayName) || '';
+                    if (!buyerDefaultName && currentUser.email) {
+                        buyerDefaultName = currentUser.email.split('@')[0];
+                    }
+                }
+
+                // ===== SLIDE 1: PREVIEW & KREATOR =====
+                var slide1Html = '<div class="detail-preview" style="aspect-ratio:' + ratioCss(template.aspectRatio || '16:9') + '">' +
+                    (ytId ? '<iframe src="' + embedYoutube(ytId) + '" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>' : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#8a8578;">' + ICON.noVideo + '</div>') +
+                '</div>' +
+                '<div class="detail-caption-box">' +
+                    '<div class="detail-caption-title">' + escapeHtml(template.judul || 'Tanpa Judul') + '</div>' +
+                    '<div class="detail-meta-row">' +
+                        '<span class="tag ' + (isFree ? 'free' : 'paid') + '">' + (isFree ? 'Gratis' : formatRupiah(template.harga || 0)) + '</span>' +
+                        '<span class="tag">' + escapeHtml(template.kategori || 'Semua') + '</span>' +
+                        (template.aspectRatio ? '<span class="tag mono">' + escapeHtml(template.aspectRatio) + '</span>' : '') +
+                        (template.style ? '<span class="tag style-tag">' + escapeHtml(template.style) + '</span>' : '') +
+                        (template.kode ? '<button class="tag mono tag-code-copy" id="copyCodeBtn" title="Klik untuk menyalin kode preset" data-kode="' + escapeHtml(template.kode) + '">' + ICON.copy + ' ' + escapeHtml(template.kode) + '</button>' : '') +
+                    '</div>' +
+                '</div>' +
+                '<div class="detail-creator-card" id="detailCreatorCard" data-creator="' + escapeHtml(creatorUsername) + '">' +
+                    '<div class="detail-creator-left">' +
+                        renderAvatarHtml(creatorObj.uid ? creatorObj : (template.creatorUid ? { uid: template.creatorUid, name: template.creator } : template.creator), 'detail-creator-avatar', 38) +
+                        '<div class="detail-creator-info">' +
+                            '<div class="name">' + escapeHtml(creatorDisplayName) + '</div>' +
+                            '<div class="creator-meta">@' + escapeHtml(creatorUsername) + ' &bull; ' + escapeHtml(creatorSoftware) + '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="detail-creator-right">' +
+                        '<span>Lihat Profil</span>' +
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="detail-engagement-bar">' +
+                    '<div class="detail-stats-group">' +
+                        '<span class="detail-stat-item">' + ICON.download + '<span id="detailUsesCount">' + formatNumber(template.uses || 0) + '</span> unduhan</span>' +
+                        '<span class="detail-stat-item">' + ICON.eye + '<span id="detailViewCount">' + formatNumber(template.views || 0) + '</span> dilihat</span>' +
+                    '</div>' +
+                    '<div style="display:flex;align-items:center;gap:0.4rem;">' +
+                        '<button class="detail-stat-btn ' + (likedState ? 'liked' : '') + '" id="likeBtn" data-id="' + template.id + '">' + ICON.heart + ' <span id="detailLikeCount">' + formatNumber(template.likes || 0) + '</span> Suka</button>' +
+                        '<button class="detail-stat-btn" id="shareDetailBtn" title="Bagikan link preset">' + ICON.share + ' Bagikan</button>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="detail-slide-footer">' +
+                    '<button class="btn btn-primary" id="goToSlide2Btn">Lihat Deskripsi &amp; File &rarr;</button>' +
+                '</div>';
+
+                // ===== SLIDE 2: DESKRIPSI & DOWNLOAD =====
+                var linksHtml = '';
+                if (isFree) {
+                    var links = [];
+                    if (template.linkProject) links.push({ label: 'Buka Project Preset (XML / 5MB / JSON)', url: template.linkProject, icon: ICON.folder });
+                    if (template.linkDrive) links.push({ label: 'Unduh File dari Google Drive', url: template.linkDrive, icon: ICON.download });
+                    if (template.linkAsset1) links.push({ label: 'Asset Tambahan 1', url: template.linkAsset1, icon: ICON.link });
+                    if (template.linkAsset2) links.push({ label: 'Asset Tambahan 2', url: template.linkAsset2, icon: ICON.link });
+                    if (links.length) {
+                        linksHtml = '<div class="detail-links">';
+                        links.forEach(function(l) {
+                            linksHtml += '<a href="' + l.url + '" target="_blank" rel="noopener" data-template-id="' + template.id + '"><span class="link-label-wrap">' + l.icon + l.label + '</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>';
+                        });
+                        linksHtml += '</div>';
+                    }
+                } else {
+                    if (isPurchased) {
+                        var links2 = [];
+                        if (template.linkProject) links2.push({ label: 'Buka Project Preset (Unlocked)', url: template.linkProject, icon: ICON.folder });
+                        if (template.linkDrive) links2.push({ label: 'Unduh File dari Drive (Unlocked)', url: template.linkDrive, icon: ICON.download });
+                        if (template.linkAsset1) links2.push({ label: 'Asset Tambahan 1', url: template.linkAsset1, icon: ICON.link });
+                        if (template.linkAsset2) links2.push({ label: 'Asset Tambahan 2', url: template.linkAsset2, icon: ICON.link });
+                        if (links2.length) {
+                            linksHtml = '<div class="detail-links" style="margin-top:0.6rem;">';
+                            links2.forEach(function(l) {
+                                linksHtml += '<a href="' + l.url + '" target="_blank" rel="noopener" data-template-id="' + template.id + '" style="border-color:var(--accent);background:var(--accent-soft);"><span class="link-label-wrap">' + l.icon + l.label + '</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>';
+                            });
+                            linksHtml += '</div>';
+                        }
+                    } else {
+                        linksHtml = '<div class="detail-info-card" style="margin-top:0.75rem;border:1.5px dashed rgba(20, 184, 166, 0.4);background:var(--accent-soft);">' +
+                            '<div style="font-weight:700;color:var(--accent-dark);font-size:0.85rem;display:flex;align-items:center;gap:0.4rem;">' + (ICON.lock || '') + ' File Terkunci (Preset Berbayar)</div>' +
+                            '<p style="font-size:0.76rem;color:var(--text-secondary);margin:0.35rem 0 0.6rem;">Dapatkan akses link project, file XML, dan asset lengkap dengan memesan langsung di Slide 3.</p>' +
+                            '<button class="btn btn-primary" id="slide2ToOrderBtn" style="width:100%;font-size:0.82rem;padding:0.55rem;">Pesan / Beli Preset Ini (' + formatRupiah(template.harga || 0) + ') &rarr;</button>' +
+                        '</div>';
+                    }
+                }
+
                 var ownerActions = '';
                 if (isOwner) {
                     ownerActions = '<div class="preset-owner-actions"><button class="btn btn-secondary" id="editPresetBtn" data-id="' + template.id + '">' + ICON.edit + ' Edit Preset</button><button class="btn btn-danger" id="deletePresetBtn" data-id="' + template.id + '">' + ICON.trash + ' Hapus Preset</button></div>';
                 }
 
-                content.innerHTML = '<div class="modal-head"><h2>' + escapeHtml(template.judul || '') + '</h2><button class="modal-close" id="closeDetailModal"><svg viewBox="0 0 24 24" width="17" height="17"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="detail-preview" style="aspect-ratio:' + ratioCss(template.aspectRatio || '16:9') + '">' + (ytId ? '<iframe src="' + embedYoutube(ytId) + '" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>' : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#8a8578;">' + ICON.noVideo + '</div>') + '</div><div class="detail-meta-row"><span class="tag ' + (isFree ? 'free' : 'paid') + '">' + (isFree ? 'Gratis' : formatRupiah(template.harga || 0)) + '</span><span class="tag">' + escapeHtml(template.kategori || '') + '</span>' + (template.style ? '<span class="tag style-tag">' + escapeHtml(template.style) + '</span>' : '') + (template.kode ? '<button class="tag mono tag-code-copy" id="copyCodeBtn" title="Klik untuk menyalin kode preset" data-kode="' + escapeHtml(template.kode) + '">' + ICON.copy + ' ' + escapeHtml(template.kode) + '</button>' : '') + '</div>' + (uploadDate ? '<div class="detail-date">' + ICON.calendar + ' Diunggah ' + uploadDate + '</div>' : '') + '<div class="detail-creator-line" id="detailCreatorLine" data-creator="' + escapeHtml(template.creator || '') + '">' + renderAvatarHtml(template.creatorUid ? { uid: template.creatorUid, name: template.creator } : template.creator, 'detail-creator-avatar', 36) + '<div><div class="name">' + escapeHtml(template.creator || 'Anonim') + '</div><div class="role">Kreator</div></div></div>' + (template.deskripsi ? '<p class="detail-desc">' + escapeHtml(template.deskripsi) + '</p>' : '') + '<div class="detail-stats"><span class="stat">' + ICON.download + '<span id="detailUsesCount">' + formatNumber(template.uses || 0) + '</span> unduhan</span><span class="stat">' + ICON.eye + '<span id="detailViewCount">' + formatNumber(template.views || 0) + '</span> dilihat</span><span class="stat"><button class="stat-btn ' + (likedState ? 'liked' : '') + '" id="likeBtn" data-id="' + template.id + '">' + ICON.heart + ' <span id="detailLikeCount">' + formatNumber(template.likes || 0) + '</span></button></span></div>' + ownerActions + contactHtml + linksHtml;
+                var slide2Html = '<div class="detail-info-card">' +
+                    '<div class="detail-info-row"><span>Status Lisensi:</span><strong>' + (isFree ? 'Gratis (Free to use)' : 'Berbayar &mdash; ' + formatRupiah(template.harga || 0)) + '</strong></div>' +
+                    (uploadDate ? '<div class="detail-info-row"><span>Tanggal Diunggah:</span><strong>' + uploadDate + '</strong></div>' : '') +
+                    (template.kode ? '<div class="detail-info-row"><span>Kode Unik:</span><strong style="font-family:var(--font-mono);">' + escapeHtml(template.kode) + '</strong></div>' : '') +
+                '</div>' +
+                '<div class="detail-info-card">' +
+                    '<div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--text-muted);margin-bottom:0.3rem;">Deskripsi Preset</div>' +
+                    '<div class="detail-desc-text">' + (template.deskripsi ? escapeHtml(template.deskripsi) : '<span style="color:var(--text-muted);">Tidak ada deskripsi tambahan dari kreator.</span>') + '</div>' +
+                '</div>' +
+                '<div class="detail-specs-grid">' +
+                    '<div class="detail-spec-item"><div class="label">Kategori / Software</div><div class="value">' + escapeHtml(template.kategori || 'Video Preset') + '</div></div>' +
+                    '<div class="detail-spec-item"><div class="label">Rasio Layar (Aspect)</div><div class="value" style="font-family:var(--font-mono);">' + escapeHtml(template.aspectRatio || '16:9') + '</div></div>' +
+                    (template.style ? '<div class="detail-spec-item" style="grid-column:1/-1;"><div class="label">Style Editing</div><div class="value">' + escapeHtml(template.style) + '</div></div>' : '') +
+                '</div>' +
+                linksHtml +
+                ownerActions +
+                '<div class="detail-slide-footer">' +
+                    '<button class="btn btn-secondary" id="backToSlide1Btn">&larr; Preview</button>' +
+                    '<button class="btn btn-primary" id="goToSlide3Btn">' + (isFree ? 'Info Lisensi &rarr;' : 'Pesan / Beli Preset &rarr;') + '</button>' +
+                '</div>';
+
+                // ===== SLIDE 3: PEMESANAN / ORDER (KHUSUS PRESET BERBAYAR) =====
+                var slide3Html = '';
+                if (!isFree) {
+                    var defaultTarget = cleanWa ? 'wa' : 'checkout';
+                    slide3Html = '<div class="detail-order-summary">' +
+                        '<div class="item-info">' +
+                            '<h4>' + escapeHtml(template.judul || 'Preset Video') + '</h4>' +
+                            '<p>Oleh: <strong>@' + escapeHtml(creatorUsername) + '</strong> &bull; Kode: <span style="font-family:var(--font-mono);">' + escapeHtml(template.kode || '-') + '</span></p>' +
+                        '</div>' +
+                        '<div class="detail-order-price">' + formatRupiah(template.harga || 0) + '</div>' +
+                    '</div>' +
+                    '<div class="order-form-card">' +
+                        '<div class="order-form-title">' +
+                            '<svg viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+                            '<span>Data Pemesanan &amp; Tujuan</span>' +
+                        '</div>' +
+                        '<div class="form-group">' +
+                            '<label for="orderBuyerName">Nama Lengkap / Panggilan Kamu *</label>' +
+                            '<input type="text" id="orderBuyerName" placeholder="Contoh: Budi Pratama" value="' + escapeHtml(buyerDefaultName) + '" maxlength="50" autocomplete="name" />' +
+                        '</div>' +
+                        '<div class="form-group" style="margin-top:0.6rem;">' +
+                            '<label>Pilih Cara / Saluran Pemesanan:</label>' +
+                            '<div class="order-channel-grid">' +
+                                '<label class="order-channel-chip ' + (defaultTarget === 'wa' ? 'active' : '') + '" id="channelChipWa">' +
+                                    '<input type="radio" name="orderChannel" value="wa" ' + (defaultTarget === 'wa' ? 'checked' : '') + ' />' +
+                                    '<span>WhatsApp Kreator</span>' +
+                                '</label>' +
+                                '<label class="order-channel-chip ' + (defaultTarget === 'checkout' ? 'active' : '') + '" id="channelChipCheckout">' +
+                                    '<input type="radio" name="orderChannel" value="checkout" ' + (defaultTarget === 'checkout' ? 'checked' : '') + ' />' +
+                                    '<span>Checkout QRIS / VA</span>' +
+                                '</label>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="detail-msg-preview-box">' +
+                            '<div class="detail-msg-preview-header">' +
+                                '<span>Format Pesan Otomatis:</span>' +
+                                '<button class="copy-msg-btn" id="copyOrderMsgBtn">' + ICON.copy + ' Salin Pesan</button>' +
+                            '</div>' +
+                            '<div class="detail-msg-preview-content" id="orderMsgPreviewText"></div>' +
+                        '</div>' +
+                        '<div style="margin-top:0.85rem;">' +
+                            '<button class="btn btn-primary" id="executeOrderBtn" style="width:100%;padding:0.75rem;font-size:0.9rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:0.5rem;box-shadow:0 4px 14px rgba(20,184,166,0.25);">' +
+                                (defaultTarget === 'wa' ? (ICON.wa || '') + ' Kirim Pesanan via WhatsApp' : (ICON.coin || '') + ' Beli Sekarang &mdash; ' + formatRupiah(template.harga || 0)) +
+                            '</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="detail-slide-footer">' +
+                        '<button class="btn btn-secondary" id="backToSlide2Btn">&larr; Kembali ke Deskripsi</button>' +
+                    '</div>';
+                } else {
+                    slide3Html = '<div class="detail-info-card" style="text-align:center;padding:1.4rem 1rem;background:var(--green-soft);border-color:rgba(16,185,129,0.3);">' +
+                        '<div style="width:48px;height:48px;border-radius:50%;background:rgba(16,185,129,0.15);color:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 0.6rem;">' +
+                            '<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' +
+                        '</div>' +
+                        '<div style="font-size:1rem;font-weight:700;color:var(--text);margin-bottom:0.3rem;">Preset Ini 100% Gratis</div>' +
+                        '<p style="font-size:0.8rem;color:var(--text-secondary);max-width:340px;margin:0 auto 0.9rem;">Kamu dapat mengunduh dan memakai preset ini secara bebas. Jangan lupa tinggalkan tanda suka (Like) atau bagikan ke teman-temanmu!</p>' +
+                        '<div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;">' +
+                            '<button class="btn btn-primary" id="slide3FreeLikeBtn" style="font-size:0.8rem;">' + ICON.heart + ' Sukai Preset Ini</button>' +
+                            '<button class="btn btn-secondary" id="slide3FreeShareBtn" style="font-size:0.8rem;">' + ICON.share + ' Bagikan Preset</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="detail-slide-footer">' +
+                        '<button class="btn btn-secondary" id="backToSlide2Btn">&larr; Kembali ke Deskripsi</button>' +
+                        '<button class="btn btn-primary" id="slide3BackToDownloadBtn">Unduh File di Slide 2 &rarr;</button>' +
+                    '</div>';
+                }
+
+                // Assemble the complete 3-Slide Modal HTML
+                content.innerHTML = '<div class="detail-modal-header">' +
+                    '<div class="title-wrap">' +
+                        '<h2>' + escapeHtml(template.judul || 'Detail Preset') + '</h2>' +
+                        '<div class="sub-meta">Oleh <strong>@' + escapeHtml(creatorUsername) + '</strong> &bull; ' + (isFree ? 'Gratis' : formatRupiah(template.harga || 0)) + '</div>' +
+                    '</div>' +
+                    '<button class="modal-close" id="closeDetailModal" title="Tutup"><svg viewBox="0 0 24 24" width="17" height="17"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>' +
+                '</div>' +
+                '<div class="detail-slide-tabs">' +
+                    '<button class="detail-tab-btn active" data-slide="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>1. Preview</span></button>' +
+                    '<button class="detail-tab-btn" data-slide="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>2. Deskripsi</span></button>' +
+                    '<button class="detail-tab-btn" data-slide="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span>3. ' + (isFree ? 'Lisensi' : 'Pesan') + '</span>' + (!isFree ? '<span class="tab-badge">' + formatRupiah(template.harga || 0) + '</span>' : '') + '</button>' +
+                '</div>' +
+                '<div class="detail-viewport">' +
+                    '<div class="detail-slides-track" id="detailSlidesTrack">' +
+                        '<div class="detail-slide-pane" id="detailSlide1">' + slide1Html + '</div>' +
+                        '<div class="detail-slide-pane" id="detailSlide2">' + slide2Html + '</div>' +
+                        '<div class="detail-slide-pane" id="detailSlide3">' + slide3Html + '</div>' +
+                    '</div>' +
+                '</div>';
 
                 document.getElementById('detailModal').classList.add('active');
 
-                document.getElementById('closeDetailModal').addEventListener('click', closeDetail);
-
-                var buyBtn = document.getElementById('buyPresetBtn');
-                if (buyBtn) {
-                    buyBtn.addEventListener('click', function() {
-                        if (!currentUser) {
-                            showToast('Yuk masuk atau daftar akun dulu untuk membeli preset!', 'info');
-                            promptLogin('🔑 Yuk masuk atau daftar akun gratis dulu untuk membeli preset ini!');
-                            return;
-                        }
-                        closeDetail();
-                        openCheckoutModal(template);
+                // ===== SLIDE CONTROLLER =====
+                var currentDetailSlide = 0;
+                function setDetailSlide(idx) {
+                    currentDetailSlide = Math.max(0, Math.min(2, idx));
+                    var track = document.getElementById('detailSlidesTrack');
+                    if (track) {
+                        track.style.transform = 'translateX(-' + (currentDetailSlide * 33.33333) + '%)';
+                    }
+                    document.querySelectorAll('.detail-tab-btn').forEach(function(btn) {
+                        btn.classList.toggle('active', parseInt(btn.dataset.slide) === currentDetailSlide);
                     });
+                    var activePane = document.getElementById('detailSlide' + (currentDetailSlide + 1));
+                    if (activePane) activePane.scrollTop = 0;
                 }
 
+                document.querySelectorAll('.detail-tab-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        var slideIdx = parseInt(this.dataset.slide) || 0;
+                        setDetailSlide(slideIdx);
+                    });
+                });
+
+                // Next/Back buttons in slides
+                var btnTo2 = document.getElementById('goToSlide2Btn');
+                if (btnTo2) btnTo2.addEventListener('click', function() { setDetailSlide(1); });
+
+                var btnBack1 = document.getElementById('backToSlide1Btn');
+                if (btnBack1) btnBack1.addEventListener('click', function() { setDetailSlide(0); });
+
+                var btnTo3 = document.getElementById('goToSlide3Btn');
+                if (btnTo3) btnTo3.addEventListener('click', function() { setDetailSlide(2); });
+
+                var btnBack2 = document.getElementById('backToSlide2Btn');
+                if (btnBack2) btnBack2.addEventListener('click', function() { setDetailSlide(1); });
+
+                var s2OrderBtn = document.getElementById('slide2ToOrderBtn');
+                if (s2OrderBtn) s2OrderBtn.addEventListener('click', function() { setDetailSlide(2); });
+
+                var s3BackToDl = document.getElementById('slide3BackToDownloadBtn');
+                if (s3BackToDl) s3BackToDl.addEventListener('click', function() { setDetailSlide(1); });
+
+                // Close Button
+                document.getElementById('closeDetailModal').addEventListener('click', closeDetail);
+
+                // Copy Preset Code Button
                 var copyCodeBtn = document.getElementById('copyCodeBtn');
                 if (copyCodeBtn) {
                     copyCodeBtn.addEventListener('click', function(e) {
@@ -5502,15 +6919,140 @@
                     });
                 }
 
-                document.getElementById('detailCreatorLine').addEventListener('click', function() {
-                    closeDetail();
-                    currentCreator = this.dataset.creator;
-                    currentView = 'creators';
-                    updateNavActiveState();
-                    render();
-                    updateUrl();
+                // Creator Card Click -> View Profile
+                var creatorCard = document.getElementById('detailCreatorCard');
+                if (creatorCard) {
+                    creatorCard.addEventListener('click', function() {
+                        closeDetail();
+                        currentCreator = this.dataset.creator;
+                        currentView = 'creators';
+                        updateNavActiveState();
+                        render();
+                        updateUrl();
+                    });
+                }
+
+                // Share Preset Button
+                var shareBtn = document.getElementById('shareDetailBtn');
+                if (shareBtn) {
+                    shareBtn.addEventListener('click', function() {
+                        var username = template.creator || 'anonim';
+                        var kode = template.kode || '';
+                        var shareUrl = window.location.origin + window.location.pathname + '#/' + encodeURIComponent(username) + '/' + kode;
+                        if (navigator.share) {
+                            navigator.share({
+                                title: template.judul || 'Preset Video',
+                                text: 'Cek preset ' + (template.judul || '') + ' oleh @' + username + ' di Preset Library!',
+                                url: shareUrl
+                            }).catch(function() {});
+                        } else {
+                            copyToClipboard(shareUrl);
+                        }
+                    });
+                }
+
+                // Slide 3 Dynamic Order Message Generator
+                function getGeneratedOrderMessage() {
+                    var nameInput = document.getElementById('orderBuyerName');
+                    var buyerName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : '(nama)';
+                    var judul = template.judul || 'Preset Video';
+                    var harga = formatRupiah(template.harga || 0);
+                    var kode = template.kode ? ' (Kode: ' + template.kode + ')' : '';
+                    
+                    // Specific user template format: "hai, aku (nama) mau pesan (judul preset) seharga (harganya)"
+                    return 'hai, aku ' + buyerName + ' mau pesan ' + judul + ' seharga ' + harga + kode;
+                }
+
+                function refreshOrderMessagePreview() {
+                    var previewEl = document.getElementById('orderMsgPreviewText');
+                    if (previewEl) {
+                        previewEl.textContent = getGeneratedOrderMessage();
+                    }
+                }
+
+                var buyerNameInput = document.getElementById('orderBuyerName');
+                if (buyerNameInput) {
+                    buyerNameInput.addEventListener('input', refreshOrderMessagePreview);
+                }
+                refreshOrderMessagePreview();
+
+                // Channel Selector Radios
+                var channelRadios = document.querySelectorAll('input[name="orderChannel"]');
+                channelRadios.forEach(function(radio) {
+                    radio.addEventListener('change', function() {
+                        var selectedVal = this.value;
+                        document.querySelectorAll('.order-channel-chip').forEach(function(chip) {
+                            var chipRadio = chip.querySelector('input');
+                            chip.classList.toggle('active', chipRadio && chipRadio.checked);
+                        });
+                        var executeBtn = document.getElementById('executeOrderBtn');
+                        if (executeBtn) {
+                            if (selectedVal === 'wa') {
+                                executeBtn.innerHTML = (ICON.wa || '') + ' Kirim Pesanan via WhatsApp';
+                            } else {
+                                executeBtn.innerHTML = (ICON.coin || '') + ' Beli Sekarang &mdash; ' + formatRupiah(template.harga || 0);
+                            }
+                        }
+                    });
                 });
 
+                // Copy Message Preview Button
+                var copyMsgBtn = document.getElementById('copyOrderMsgBtn');
+                if (copyMsgBtn) {
+                    copyMsgBtn.addEventListener('click', function() {
+                        var msg = getGeneratedOrderMessage();
+                        copyToClipboard(msg);
+                    });
+                }
+
+                // Execute Order Button (WA or Checkout)
+                var executeBtn = document.getElementById('executeOrderBtn');
+                if (executeBtn) {
+                    executeBtn.addEventListener('click', function() {
+                        var selectedRadio = document.querySelector('input[name="orderChannel"]:checked');
+                        var channel = selectedRadio ? selectedRadio.value : 'wa';
+                        var nameInput = document.getElementById('orderBuyerName');
+                        var rawName = nameInput ? nameInput.value.trim() : '';
+
+                        if (channel === 'wa') {
+                            if (!rawName) {
+                                showToast('Silakan masukkan nama kamu terlebih dahulu', 'warning');
+                                if (nameInput) nameInput.focus();
+                                return;
+                            }
+                            var msg = getGeneratedOrderMessage();
+                            var targetWa = cleanWa || '6281234567890';
+                            var waUrl = 'https://wa.me/' + targetWa + '?text=' + encodeURIComponent(msg);
+                            window.open(waUrl, '_blank');
+                        } else {
+                            if (!currentUser) {
+                                showToast('Yuk masuk atau daftar akun dulu untuk membeli preset!', 'info');
+                                promptLogin('🔑 Yuk masuk atau daftar akun gratis dulu untuk membeli preset ini!');
+                                return;
+                            }
+                            closeDetail();
+                            openCheckoutModal(template);
+                        }
+                    });
+                }
+
+                // Slide 3 Free Likes / Share
+                var freeLikeBtn = document.getElementById('slide3FreeLikeBtn');
+                if (freeLikeBtn) {
+                    freeLikeBtn.addEventListener('click', function() {
+                        var likeBtn = document.getElementById('likeBtn');
+                        if (likeBtn) likeBtn.click();
+                    });
+                }
+                var freeShareBtn = document.getElementById('slide3FreeShareBtn');
+                if (freeShareBtn) {
+                    freeShareBtn.addEventListener('click', function() {
+                        var shareBtn = document.getElementById('shareDetailBtn');
+                        if (shareBtn) shareBtn.click();
+                    });
+                }
+
+                // Like Button Event
                 var likeBtn = document.getElementById('likeBtn');
                 if (likeBtn) {
                     likeBtn.addEventListener('click', function(e) {
@@ -5569,6 +7111,7 @@
                     });
                 }
 
+                // Owner Actions: Delete & Edit
                 var deleteBtn = document.getElementById('deletePresetBtn');
                 if (deleteBtn) {
                     deleteBtn.addEventListener('click', function() {
@@ -5600,6 +7143,7 @@
                     });
                 }
 
+                // Increment uses on download link click
                 content.querySelectorAll('.detail-links a').forEach(function(link) {
                     link.addEventListener('click', function(e) {
                         var templateId = this.dataset.templateId;
@@ -6786,6 +8330,9 @@
                     var waEl = document.getElementById('rWa');
                     var emailEl = document.getElementById('rEmail');
                     var portEl = document.getElementById('rPortfolio');
+                    var sourceType = (document.getElementById('rAvatarSourceType') && document.getElementById('rAvatarSourceType').value) || 'custom';
+                    var avatarColor = (document.getElementById('rAvatarColor') && document.getElementById('rAvatarColor').value) || AVATAR_PALETTE[0].bg;
+                    var photoURL = (sourceType === 'google' && currentUser && currentUser.photoURL) ? currentUser.photoURL : '';
                     var data = {
                         name: name,
                         displayName: displayName,
@@ -6794,6 +8341,9 @@
                         wa: waEl ? waEl.value.trim() : '',
                         email: emailEl ? emailEl.value.trim() : '',
                         portfolio: portEl ? portEl.value.trim() : '',
+                        avatarColor: avatarColor,
+                        photoURL: photoURL,
+                        avatarSource: sourceType,
                         uid: currentUser.uid,
                         registeredAt: firebase.firestore.FieldValue.serverTimestamp()
                     };
